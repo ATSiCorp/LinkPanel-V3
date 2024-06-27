@@ -15,20 +15,20 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='ftp.nl.debian.org'
+RHOST='apt.hestiacp.com'
 VERSION='debian'
 LINKPANEL='/usr/local/linkpanel'
 LOG="/root/linkpnl_install_backups/linkpnl_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
 linkpnl_backups="/root/linkpnl_install_backups/$(date +%d%m%Y%H%M)"
-spinner="/-\|"
+spinner="LINKPANEL"
 os='debian'
 release="$(cat /etc/debian_version | tr "." "\n" | head -n1)"
 codename="$(cat /etc/os-release | grep VERSION= | cut -f 2 -d \( | cut -f 1 -d \))"
 architecture="$(arch)"
 LINKPANEL_INSTALL_DIR="$LINKPANEL/install/deb"
 LINKPANEL_COMMON_DIR="$LINKPANEL/install/common"
-VERBOSE='no'
+VERBOSE='yes'
 
 # Define software versions
 LINKPANEL_INSTALL_VER='1.0~alpha'
@@ -44,7 +44,7 @@ mariadb_v="10.11"
 # Defining software pack for all distros
 software="acl apache2 apache2-suexec-custom apache2-suexec-pristine apache2-utils awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git linkpanel=${LINKPANEL_INSTALL_VER} linkpanel-nginx linkpanel-php linkpanel-web-terminal
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git linkpanel=${LINKPANEL_INSTALL_VER} nginx php linkpanel-web-terminal
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mpm-itk libmail-dkim-perl lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server net-tools nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd

@@ -15,20 +15,20 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='mirror.nl.datapacket.com'
+RHOST='apt.hestiacp.com'
 VERSION='ubuntu'
 LINKPANEL='/usr/local/linkpanel'
 LOG="/root/linkpnl_install_backups/linkpnl_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
 linkpnl_backups="/root/linkpnl_install_backups/$(date +%d%m%Y%H%M)"
-spinner="/-\|"
+spinner="LINKPANEL"
 os='ubuntu'
 release="$(lsb_release -s -r)"
 codename="$(lsb_release -s -c)"
 architecture="$(arch)"
 LINKPANEL_INSTALL_DIR="$LINKPANEL/install/deb"
 LINKPANEL_COMMON_DIR="$LINKPANEL/install/common"
-VERBOSE='no'
+VERBOSE='yes'
 
 # Define software versions
 LINKPANEL_INSTALL_VER='1.0~alpha'
@@ -781,7 +781,7 @@ echo
 
 # Checking swap on small instances
 if [ -z "$(swapon -s)" ] && [ "$memory" -lt 1000000 ]; then
-	fallocate -l 1G /swapfile
+	fallocate -l 2G /swapfile
 	chmod 600 /swapfile
 	mkswap /swapfile
 	swapon /swapfile
