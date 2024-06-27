@@ -15,18 +15,18 @@ domain_idn=$2
 status=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/rebuild.sh
+source $LINKPANEL/func/rebuild.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source $LINKPANEL/func/syshealth.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -51,8 +51,8 @@ fi
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
 
-if [ "$DNS_CLUSTER_SYSTEM" != 'hestia-zone' ]; then
-	check_result "$E_DISABLED" "DNSSEC is not supported when DNS_CLUSTER_SYSTEM is not set to hestia-zone"
+if [ "$DNS_CLUSTER_SYSTEM" != 'linkpanel-zone' ]; then
+	check_result "$E_DISABLED" "DNSSEC is not supported when DNS_CLUSTER_SYSTEM is not set to linkpanel-zone"
 fi
 
 version=$(named -v | awk 'NR==1{print $2}')
@@ -64,8 +64,8 @@ fi
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ -f "$HESTIA/data/queue/dns-cluster.pipe" ]; then
-	bash $HESTIA/data/queue/dns-cluster.pipe
+if [ -f "$LINKPANEL/data/queue/dns-cluster.pipe" ]; then
+	bash $LINKPANEL/data/queue/dns-cluster.pipe
 fi
 
 syshealth_repair_dns_config
@@ -89,15 +89,15 @@ fi
 # Updating dns-cluster queue
 if [ "$DNS_CLUSTER" = "yes" ]; then
 	# Check for first sync
-	dlock=$(grep "domain $user $domain" $HESTIA/data/queue/dns-cluster.pipe)
+	dlock=$(grep "domain $user $domain" $LINKPANEL/data/queue/dns-cluster.pipe)
 	if [ -z "$dlock" ]; then
 		cmd="$BIN/v-add-remote-dns-domain $user $domain yes"
-		echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+		echo "$cmd" >> $LINKPANEL/data/queue/dns-cluster.pipe
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

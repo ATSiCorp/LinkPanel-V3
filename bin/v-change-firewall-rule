@@ -21,19 +21,19 @@ protocol=$(echo $protocol | tr '[:lower:]' '[:upper:]')
 comment=$6
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Sort function
 sort_fw_rules() {
-	cat $HESTIA/data/firewall/rules.conf \
-		| sort -n -k 2 -t \' > $HESTIA/data/firewall/rules.conf.tmp
-	mv -f $HESTIA/data/firewall/rules.conf.tmp \
-		$HESTIA/data/firewall/rules.conf
+	cat $LINKPANEL/data/firewall/rules.conf \
+		| sort -n -k 2 -t \' > $LINKPANEL/data/firewall/rules.conf.tmp
+	mv -f $LINKPANEL/data/firewall/rules.conf.tmp \
+		$LINKPANEL/data/firewall/rules.conf
 }
 
 #----------------------------------------------------------#
@@ -74,10 +74,10 @@ str="$str IP='$ip' COMMENT='$comment' SUSPENDED='no'"
 str="$str TIME='$time' DATE='$date'"
 
 # Deleting old rule
-sed -i "/RULE='$rule' /d" $HESTIA/data/firewall/rules.conf
+sed -i "/RULE='$rule' /d" $LINKPANEL/data/firewall/rules.conf
 
 # Adding new
-echo "$str" >> $HESTIA/data/firewall/rules.conf
+echo "$str" >> $LINKPANEL/data/firewall/rules.conf
 
 # Sorting firewall rules by id number
 sort_fw_rules
@@ -86,7 +86,7 @@ sort_fw_rules
 $BIN/v-update-firewall
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

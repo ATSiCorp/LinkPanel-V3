@@ -21,16 +21,16 @@ ssl_dir=$3
 restart=$4
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -59,7 +59,7 @@ is_web_domain_cert_valid
 rm -f $HOMEDIR/$user/conf/web/$domain/ssl/mail.$domain.*
 rm -f $USER_DATA/ssl/mail.$domain.*
 
-# Add certificate to Hestia user configuration data directory
+# Add certificate to LinkPanel user configuration data directory
 if [ -f "$ssl_dir/$domain.crt" ]; then
 	cp -f $ssl_dir/$domain.crt $USER_DATA/ssl/mail.$domain.crt
 	cp -f $ssl_dir/$domain.key $USER_DATA/ssl/mail.$domain.key
@@ -82,7 +82,7 @@ if [ -e "$USER_DATA/ssl/mail.$domain.ca" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restarting mail server

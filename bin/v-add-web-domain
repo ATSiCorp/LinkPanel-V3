@@ -25,18 +25,18 @@ aliases=$5
 proxy_ext=$6
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source $LINKPANEL/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -127,7 +127,7 @@ user_exec chmod 751 $HOMEDIR/$user/web/$domain/*
 user_exec chmod 551 $HOMEDIR/$user/web/$domain/stats $HOMEDIR/$user/web/$domain/logs
 user_exec chmod 644 $HOMEDIR/$user/web/$domain/public_*html/*
 
-# domain folder permissions: DOMAINDIR_WRITABLE: default-val:no source:hestia.conf
+# domain folder permissions: DOMAINDIR_WRITABLE: default-val:no source:linkpanel.conf
 DOMAINDIR_MODE=551
 if [ "$DOMAINDIR_WRITABLE" = 'yes' ]; then DOMAINDIR_MODE=751; fi
 
@@ -222,7 +222,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Increasing counters

@@ -13,12 +13,12 @@ user=$1
 ttl=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -73,7 +73,7 @@ chown ${user}: "${AUTHKEY_FILE}"
 chown "hestiaweb": "${PRVKEY_FILE}"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

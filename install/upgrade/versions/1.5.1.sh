@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.5.1
+# LinkPanel Control Panel upgrade script for target version 1.5.1
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -37,10 +37,10 @@ case $architecture in
 	*) ;;
 esac
 
-chmod +x $HESTIA/install/deb/
+chmod +x $LINKPANEL/install/deb/
 
-echo "[ * ] Updating hestia apt configuration..."
-sed -i "s|deb https://$RHOST/ $codename main|deb [arch=$ARCH] https://$RHOST/ $codename main|g" /etc/apt/sources.list.d/hestia.list
+echo "[ * ] Updating linkpanel apt configuration..."
+sed -i "s|deb https://$RHOST/ $codename main|deb [arch=$ARCH] https://$RHOST/ $codename main|g" /etc/apt/sources.list.d/linkpanel.list
 
 if [ -n "$IMAP_SYSTEM" ]; then
 	echo "[ * ] Updating dovecot configuration..."

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Hestia\WebApp;
+namespace LinkPanel\WebApp;
 
-use Hestia\System\HestiaApp;
+use LinkPanel\System\LinkPanelApp;
 
 class AppWizard {
 	private $domain;
@@ -19,7 +19,7 @@ class AppWizard {
 		"database_password" => ["type" => "password", "placeholder" => "auto"],
 	];
 
-	public function __construct(InstallerInterface $app, string $domain, HestiaApp $context) {
+	public function __construct(InstallerInterface $app, string $domain, LinkPanelApp $context) {
 		$this->domain = $domain;
 		$this->appcontext = $context;
 

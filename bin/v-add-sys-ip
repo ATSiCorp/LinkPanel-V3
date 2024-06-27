@@ -34,18 +34,18 @@ ip_name="$6"
 nat_ip="$7"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source "$HESTIA/func/syshealth.sh"
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source "$LINKPANEL/func/syshealth.sh"
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 if [ -z "$4" ]; then
 	user="$ROOT_USER"
@@ -93,10 +93,10 @@ if [ -z "$sys_ip_check" ]; then
 	fi
 
 	if [ "$netplan" = "true" ]; then
-		if [ -f "/etc/netplan/60-hestia.yaml" ]; then
+		if [ -f "/etc/netplan/60-linkpanel.yaml" ]; then
 			sys_ip="        - $ip/$cidr"
 		else
-			sys_ip="# Added by Hestia, please do not edit the file manually!"
+			sys_ip="# Added by LinkPanel, please do not edit the file manually!"
 			sys_ip="$sys_ip\nnetwork:"
 			sys_ip="$sys_ip\n  version: 2"
 			sys_ip="$sys_ip\n  renderer: networkd"
@@ -106,10 +106,10 @@ if [ -z "$sys_ip_check" ]; then
 			sys_ip="$sys_ip\n        - $ip/$cidr"
 		fi
 		IFS='%'
-		echo -e "$sys_ip" >> /etc/netplan/60-hestia.yaml
+		echo -e "$sys_ip" >> /etc/netplan/60-linkpanel.yaml
 		unset IFS
 	else
-		sys_ip="\n# Added by Hestia Control Panel"
+		sys_ip="\n# Added by LinkPanel Control Panel"
 		sys_ip="$sys_ip\nauto $iface"
 		sys_ip="$sys_ip\niface $iface inet static"
 		sys_ip="$sys_ip\naddress $ip"
@@ -121,7 +121,7 @@ fi
 # Generating timestamp
 new_timestamp
 
-# Adding Hestia IP
+# Adding LinkPanel IP
 echo "OWNER='$user'
 STATUS='$ip_status'
 NAME='$ip_name'
@@ -131,8 +131,8 @@ INTERFACE='$iface'
 NETMASK='$netmask'
 NAT='$nat_ip'
 TIME='$time'
-DATE='$date'" > $HESTIA/data/ips/$ip
-chmod 660 $HESTIA/data/ips/$ip
+DATE='$date'" > $LINKPANEL/data/ips/$ip
+chmod 660 $LINKPANEL/data/ips/$ip
 
 # WEB support
 if [ -n "$WEB_SYSTEM" ]; then
@@ -199,12 +199,12 @@ if [ -n "$PROXY_SYSTEM" ]; then
 	fi
 fi
 
-# Adapt Port Listing in HESTIA NGINX Backend
+# Adapt Port Listing in LINKPANEL NGINX Backend
 syshealth_adapt_hestia_nginx_listen_ports
 # Also update resolver
 syshealth_adapt_nginx_resolver
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Updating user counters
@@ -237,10 +237,10 @@ if [ -n "$FIREWALL_SYSTEM" ]; then
 	$BIN/v-update-firewall
 fi
 
-# Restarting hestia service if nginx backend config was changed
-if [ "$NGINX_BCONF_CHANGED" = "yes" -a -f "/etc/init.d/hestia" ]; then
-	systemctl restart hestia > /dev/null 2>&1
-	check_result $? "Hestia backend restart failed" > /dev/null
+# Restarting linkpanel service if nginx backend config was changed
+if [ "$NGINX_BCONF_CHANGED" = "yes" -a -f "/etc/init.d/linkpanel" ]; then
+	systemctl restart linkpanel > /dev/null 2>&1
+	check_result $? "LinkPanel backend restart failed" > /dev/null
 fi
 
 # Logging

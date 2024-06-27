@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: list hestia ssl certificate
+# info: list linkpanel ssl certificate
 # options: [FORMAT]
 #
-# example: v-list-sys-hestia-ssl
+# example: v-list-sys-linkpanel-ssl
 #
-# This function of obtaining hestia ssl files.
+# This function of obtaining linkpanel ssl files.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,17 +14,17 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
 	echo '{'
-	echo -e "\t\"HESTIA\": {"
+	echo -e "\t\"LINKPANEL\": {"
 	echo "        \"CRT\": \"$crt\","
 	echo "        \"KEY\": \"$key\","
 	echo "        \"CA\": \"$ca\","
@@ -97,11 +97,11 @@ csv_list() {
 #----------------------------------------------------------#
 
 # Parsing SSL certificate
-crt=$(cat $HESTIA/ssl/certificate.crt | sed ':a;N;$!ba;s/\n/\\n/g')
-key=$(cat $HESTIA/ssl/certificate.key | sed ':a;N;$!ba;s/\n/\\n/g')
+crt=$(cat $LINKPANEL/ssl/certificate.crt | sed ':a;N;$!ba;s/\n/\\n/g')
+key=$(cat $LINKPANEL/ssl/certificate.key | sed ':a;N;$!ba;s/\n/\\n/g')
 
 # Parsing SSL certificate details without CA
-info=$(openssl x509 -text -in $HESTIA/ssl/certificate.crt)
+info=$(openssl x509 -text -in $LINKPANEL/ssl/certificate.crt)
 subj=$(echo "$info" | grep Subject: | cut -f 2 -d =)
 before=$(echo "$info" | grep Before: | sed -e "s/.*Before: //")
 after=$(echo "$info" | grep "After :" | sed -e "s/.*After : //")
@@ -122,7 +122,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

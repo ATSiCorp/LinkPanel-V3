@@ -14,13 +14,13 @@
 version=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
-source_conf "$HESTIA/install/upgrade/upgrade.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
+source_conf "$LINKPANEL/install/upgrade/upgrade.conf"
 #----------------------------------------------------------#
 #                    Verifications                         #
 #----------------------------------------------------------#
@@ -42,7 +42,7 @@ if [[ ! $version =~ ^[0-9]\.[0-9]+ ]]; then
 fi
 
 # Check if php version already exists
-if [ -f "$php_fpm" ] && [ -f "$HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl" ]; then
+if [ -f "$php_fpm" ] && [ -f "$LINKPANEL/data/templates/web/php-fpm/PHP-${version/\./_}.tpl" ]; then
 	echo "ERROR: Specified PHP version is already installed."
 	exit "$E_INVALID"
 fi
@@ -153,10 +153,10 @@ sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=100
 
 # Install backend template
 cp -f $HESTIA_INSTALL_DIR/php-fpm/multiphp.tpl \
-	$HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
+	$LINKPANEL/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

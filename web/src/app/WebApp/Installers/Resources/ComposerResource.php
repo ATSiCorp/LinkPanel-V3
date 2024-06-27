@@ -1,15 +1,15 @@
 <?php
 
-namespace Hestia\WebApp\Installers\Resources;
+namespace LinkPanel\WebApp\Installers\Resources;
 
-use Hestia\System\HestiaApp;
+use LinkPanel\System\LinkPanelApp;
 
 class ComposerResource {
 	private $project;
 	private $folder;
 	private $appcontext;
 
-	public function __construct(HestiaApp $appcontext, $data, $destination) {
+	public function __construct(LinkPanelApp $appcontext, $data, $destination) {
 		$this->folder = dirname($destination);
 		$this->project = basename($destination);
 		$this->appcontext = $appcontext;

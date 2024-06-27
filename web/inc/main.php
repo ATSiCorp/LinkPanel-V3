@@ -4,7 +4,7 @@ session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 try {
 	require_once "vendor/autoload.php";
@@ -17,11 +17,11 @@ try {
 	exit(1);
 }
 
-define("HESTIA_DIR_BIN", "/usr/local/hestia/bin/");
-define("HESTIA_CMD", "/usr/bin/sudo /usr/local/hestia/bin/");
+define("HESTIA_DIR_BIN", "/usr/local/linkpanel/bin/");
+define("HESTIA_CMD", "/usr/bin/sudo /usr/local/linkpanel/bin/");
 define("DEFAULT_PHP_VERSION", "php-" . exec('php -r "echo substr(phpversion(),0,3);"'));
 
-// Load Hestia Config directly
+// Load LinkPanel Config directly
 load_hestia_config();
 require_once dirname(__FILE__) . "/prevent_csrf.php";
 require_once dirname(__FILE__) . "/helpers.php";

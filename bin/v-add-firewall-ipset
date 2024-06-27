@@ -17,12 +17,12 @@ autoupdate=${4:-yes}
 refresh=${5:-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -40,7 +40,7 @@ check_hestia_demo_mode
 # Define variables for ipset configuration
 ipset_hstobject='../../../data/firewall/ipset'
 IPSET_BIN="$(command -v ipset)"
-IPSET_PATH="$HESTIA/data/firewall/ipset"
+IPSET_PATH="$LINKPANEL/data/firewall/ipset"
 
 # Ensure ipset is installed
 if [ -z "$IPSET_BIN" ]; then
@@ -57,8 +57,8 @@ fi
 
 # Ensure ipset configuration path and master file exist before attempting to parse
 mkdir -p "$IPSET_PATH"
-if [ ! -f "$HESTIA/data/firewall/ipset.conf" ]; then
-	touch $HESTIA/data/firewall/ipset.conf
+if [ ! -f "$LINKPANEL/data/firewall/ipset.conf" ]; then
+	touch $LINKPANEL/data/firewall/ipset.conf
 fi
 
 if [ -z "$data_source" ]; then
@@ -165,7 +165,7 @@ if [ ! -f "${IPSET_PATH}.conf" ] || [ -z "$(get_object_value "$ipset_hstobject" 
 	str="LISTNAME='$ip_name' IP_VERSION='$ip_version' SOURCE='$data_source'"
 	str="$str AUTOUPDATE='$autoupdate' SUSPENDED='no'"
 	str="$str TIME='$time' DATE='$date'"
-	echo "$str" >> $HESTIA/data/firewall/ipset.conf
+	echo "$str" >> $LINKPANEL/data/firewall/ipset.conf
 	log_type="added"
 
 elif [ "$refresh" = "yes" ]; then
@@ -178,17 +178,17 @@ elif [ "$refresh" = "yes" ]; then
 fi
 
 # Changing permissions
-chmod 660 $HESTIA/data/firewall/ipset.conf
+chmod 660 $LINKPANEL/data/firewall/ipset.conf
 chmod 660 "${IPSET_PATH}/${IPSET_FILE}.iplist"
 
 # Install ipset daily cron updater
-if ! grep --silent --no-messages "v-update-firewall-ipset" $HESTIA/data/queue/daily.pipe; then
+if ! grep --silent --no-messages "v-update-firewall-ipset" $LINKPANEL/data/queue/daily.pipe; then
 	cmd="$BIN/v-update-firewall-ipset yes"
-	echo "$cmd" >> $HESTIA/data/queue/daily.pipe
+	echo "$cmd" >> $LINKPANEL/data/queue/daily.pipe
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

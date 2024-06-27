@@ -18,12 +18,12 @@ domain_idn=$2
 exp=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -55,15 +55,15 @@ update_object_value 'dns' 'DOMAIN' "$domain" '$EXP' "$exp"
 # Updating dns-cluster queue
 if [ "$DNS_CLUSTER" = "yes" ]; then
 	# Check for first sync
-	dlock=$(grep "domain $user $domain" $HESTIA/data/queue/dns-cluster.pipe)
+	dlock=$(grep "domain $user $domain" $LINKPANEL/data/queue/dns-cluster.pipe)
 	if [ -z "$dlock" ]; then
 		cmd="$BIN/v-change-remote-dns-domain-exp $user $domain $exp"
-		echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+		echo "$cmd" >> $LINKPANEL/data/queue/dns-cluster.pipe
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -1,14 +1,14 @@
 <?php
 
-namespace Hestia\WebApp\Installers;
+namespace LinkPanel\WebApp\Installers;
 
-use Hestia\System\Util;
-use Hestia\System\HestiaApp;
-use Hestia\WebApp\InstallerInterface;
-use Hestia\Models\WebDomain;
+use LinkPanel\System\Util;
+use LinkPanel\System\LinkPanelApp;
+use LinkPanel\WebApp\InstallerInterface;
+use LinkPanel\Models\WebDomain;
 
-use Hestia\WebApp\Installers\Resources\ComposerResource;
-use Hestia\WebApp\Installers\Resources\WpResource;
+use LinkPanel\WebApp\Installers\Resources\ComposerResource;
+use LinkPanel\WebApp\Installers\Resources\WpResource;
 
 abstract class BaseSetup implements InstallerInterface {
 	protected $appInfo;
@@ -52,11 +52,12 @@ abstract class BaseSetup implements InstallerInterface {
 				"8.0",
 				"8.1",
 				"8.2",
+				"8.3",
 			];
 		}
 		return $this->appInfo;
 	}
-	public function __construct($domain, HestiaApp $appcontext) {
+	public function __construct($domain, LinkPanelApp $appcontext) {
 		if (filter_var($domain, FILTER_VALIDATE_DOMAIN) === false) {
 			throw new \Exception("Invalid domain name");
 		}

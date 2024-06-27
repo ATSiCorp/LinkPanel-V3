@@ -15,14 +15,14 @@ user=$1
 domain=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
-source $HESTIA/func/remote.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/remote.sh
+source $LINKPANEL/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -44,7 +44,7 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 IFS=$'\n'
-for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
+for cluster in $(grep "SUSPENDED='no'" $LINKPANEL/conf/dns-cluster.conf); do
 
 	# Reset user, password and hash vars
 	clear_dns_cluster_settings
@@ -54,7 +54,7 @@ for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
 
 	# Syncing TTL
 	str=$(grep "DOMAIN='$domain'" $USER_DATA/dns.conf)
-	if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
+	if [ "$DNS_CLUSTER_SYSTEM" = "linkpanel-zone" ]; then
 		str=$(echo "$str" | sed "s/SLAVE='no'/SLAVE='yes'/g")
 		ip=$($BIN/v-list-sys-ips plain | cut -f1)
 		str=$(echo "$str" | sed "s/MASTER='*'/MASTER='$ip'/g")
@@ -78,11 +78,11 @@ for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Updating pipe
-pipe="$HESTIA/data/queue/dns-cluster.pipe"
+pipe="$LINKPANEL/data/queue/dns-cluster.pipe"
 str=$(grep -n "$SCRIPT $1 $2 $3$" $pipe | cut -f1 -d: | head -n1)
 if [ -n "$str" ]; then
 	sed -i "$str d" "$pipe"

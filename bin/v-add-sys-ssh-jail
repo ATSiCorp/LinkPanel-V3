@@ -11,12 +11,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 restart=$1
 
@@ -38,12 +38,12 @@ check_hestia_demo_mode
 
 # Checking sshd directives
 config='/etc/ssh/sshd_config'
-ssh_i=$(grep -n "^# Hestia SSH Chroot" $config)
+ssh_i=$(grep -n "^# LinkPanel SSH Chroot" $config)
 
 # Enabling jailed ssh
 if [ -z "$ssh_i" ]; then
 	echo " " >> $config
-	echo "# Hestia SSH Chroot" >> $config
+	echo "# LinkPanel SSH Chroot" >> $config
 	echo "Match Group ssh-jailed" >> $config
 	echo "    ChrootDirectory /srv/jail/%u" >> $config
 	echo "    X11Forwarding no" >> $config
@@ -54,7 +54,7 @@ fi
 # Validating opensshd config
 if [ "$restart" = 'yes' ]; then
 	subj="OpenSSH restart failed"
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
+	email=$(grep CONTACT "$LINKPANEL/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
 	/usr/sbin/sshd -t > /dev/null 2>&1
 	if [ "$?" -ne 0 ]; then
 		mail_text="OpenSSH can not be restarted. Please check config:
@@ -70,7 +70,7 @@ groupadd ssh-jailed 2> /dev/null
 
 # Checking jailkit init
 jk_init='/etc/jailkit/jk_init.ini'
-jk_php_i=$(grep -n "^# Hestia Jail Settings" $jk_init)
+jk_php_i=$(grep -n "^# LinkPanel Jail Settings" $jk_init)
 
 # Add PHP to jailkit init to allow usage of it within jail
 if [ -z "$jk_php_i" ]; then
@@ -88,7 +88,7 @@ fi
 # Jails need maintenance to update the binaries within the jail. To do so we just reset the chroot
 # and reapply the jail
 for user in $("$BIN/v-list-users" list); do
-	check_jail_enabled=$(grep "SHELL_JAIL_ENABLED='yes'" $HESTIA/data/users/$user/user.conf)
+	check_jail_enabled=$(grep "SHELL_JAIL_ENABLED='yes'" $LINKPANEL/data/users/$user/user.conf)
 
 	# If jail enabled try to jail the user
 	if [ -n "$check_jail_enabled" ]; then
@@ -97,12 +97,12 @@ for user in $("$BIN/v-list-users" list); do
 done
 
 # Add v-add-sys-ssh-jail to startup
-if [ ! -e "/etc/cron.d/hestia-ssh-jail" ]; then
-	echo "@reboot root sleep 60 && /usr/local/hestia/bin/v-add-sys-ssh-jail > /dev/null" > /etc/cron.d/hestia-ssh-jail
+if [ ! -e "/etc/cron.d/linkpanel-ssh-jail" ]; then
+	echo "@reboot root sleep 60 && /usr/local/linkpanel/bin/v-add-sys-ssh-jail > /dev/null" > /etc/cron.d/linkpanel-ssh-jail
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hestia\System;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+namespace LinkPanel\System;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
-class HestiaApp {
+class LinkPanelApp {
 	/** @var string[] */
 	public $errors;
-	protected const TMPDIR_DOWNLOADS = "/tmp/hestia-webapp";
+	protected const TMPDIR_DOWNLOADS = "/tmp/linkpanel-webapp";
 	protected $phpsupport = false;
 
 	public function __construct() {

@@ -1,14 +1,14 @@
 [Unit]
-Description=HestiaCP Web Terminal
+Description=LinkPanelCP Web Terminal
 Documentation=https://hestiacp.com/docs/
 After=network.target
 
 [Service]
 User=root
-Group=hestia-users
+Group=linkpanel-users
 Environment=NODE_ENV=production
-Environment=HESTIA=/usr/local/hestia
-ExecStart=/usr/local/hestia/web-terminal/server.js
+Environment=LINKPANEL=/usr/local/linkpanel
+ExecStart=/usr/local/linkpanel/web-terminal/server.js
 ExecStop=/bin/kill -s TERM $MAINPID
 Restart=on-failure
 

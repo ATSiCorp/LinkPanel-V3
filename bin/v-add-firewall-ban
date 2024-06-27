@@ -18,14 +18,14 @@ chain=$(echo $2 | tr '[:lower:]' '[:upper:]')
 iptables="/sbin/iptables"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/firewall.sh
-source $HESTIA/func/firewall.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/firewall.sh
+source $LINKPANEL/func/firewall.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -46,19 +46,19 @@ check_hestia_demo_mode
 heal_iptables_links
 
 # Checking server ip
-if [ -e "$HESTIA/data/ips/$ip" ] || [ "$ip" = '127.0.0.1' ]; then
+if [ -e "$LINKPANEL/data/ips/$ip" ] || [ "$ip" = '127.0.0.1' ]; then
 	exit
 fi
 
 # Checking ip exclusions
-excludes="$HESTIA/data/firewall/excludes.conf"
+excludes="$LINKPANEL/data/firewall/excludes.conf"
 check_excludes=$(grep "^$ip$" $excludes 2> /dev/null)
 if [ -n "$check_excludes" ]; then
 	exit
 fi
 
 # Checking ip in banlist
-conf="$HESTIA/data/firewall/banlist.conf"
+conf="$LINKPANEL/data/firewall/banlist.conf"
 check_ip=$(grep "IP='$ip' CHAIN='$chain'" $conf 2> /dev/null)
 if [ -n "$check_ip" ]; then
 	exit
@@ -81,7 +81,7 @@ $iptables -I fail2ban-$chain 1 -s $ip \
 chmod 660 $conf
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

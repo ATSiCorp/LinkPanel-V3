@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Rebuild Function Library                           #
+# LinkPanel Control Panel - Rebuild Function Library                           #
 #                                                                           #
 #===========================================================================#
 
@@ -66,8 +66,8 @@ rebuild_user_conf() {
 		sed -i "/SHELL/a SHELL_JAIL_ENABLED='no'" $USER_DATA/user.conf
 	fi
 	# Run template trigger
-	if [ -x "$HESTIA/data/packages/$PACKAGE.sh" ]; then
-		$HESTIA/data/packages/$PACKAGE.sh "$user" "$CONTACT" "$NAME"
+	if [ -x "$LINKPANEL/data/packages/$PACKAGE.sh" ]; then
+		$LINKPANEL/data/packages/$PACKAGE.sh "$user" "$CONTACT" "$NAME"
 	fi
 
 	# Rebuild user
@@ -75,19 +75,19 @@ rebuild_user_conf() {
 	/usr/sbin/useradd "$user" -s "$shell" -c "$CONTACT" \
 		-m -d "$HOMEDIR/$user" > /dev/null 2>&1
 
-	# Add a general group for normal users created by Hestia
-	if [ -z "$(grep "^hestia-users:" /etc/group)" ]; then
-		groupadd --system "hestia-users"
+	# Add a general group for normal users created by LinkPanel
+	if [ -z "$(grep "^linkpanel-users:" /etc/group)" ]; then
+		groupadd --system "linkpanel-users"
 	fi
 
-	# Add membership to hestia-users group to non-admin users
+	# Add membership to linkpanel-users group to non-admin users
 	if [ "$user" = "$ROOT_USER" ]; then
 		setfacl -m "g:$ROOT_USER:r-x" "$HOMEDIR/$user"
 	else
-		usermod -a -G "hestia-users" "$user"
+		usermod -a -G "linkpanel-users" "$user"
 		setfacl -m "u:$user:r-x" "$HOMEDIR/$user"
 	fi
-	setfacl -m "g:hestia-users:---" "$HOMEDIR/$user"
+	setfacl -m "g:linkpanel-users:---" "$HOMEDIR/$user"
 
 	# Update user shell
 	/usr/bin/chsh -s "$shell" "$user" &> /dev/null
@@ -132,8 +132,8 @@ rebuild_user_conf() {
 	fi
 
 	# Update disk pipe
-	sed -i "/ $user$/d" $HESTIA/data/queue/disk.pipe
-	echo "$BIN/v-update-user-disk $user" >> $HESTIA/data/queue/disk.pipe
+	sed -i "/ $user$/d" $LINKPANEL/data/queue/disk.pipe
+	echo "$BIN/v-update-user-disk $user" >> $LINKPANEL/data/queue/disk.pipe
 
 	# WEB
 	if [ -n "$WEB_SYSTEM" ] && [ "$WEB_SYSTEM" != 'no' ]; then
@@ -141,12 +141,12 @@ rebuild_user_conf() {
 		chmod 770 $USER_DATA/ssl
 		touch $USER_DATA/web.conf
 		chmod 660 $USER_DATA/web.conf
-		if [ "$(grep -w $user $HESTIA/data/queue/traffic.pipe)" ]; then
+		if [ "$(grep -w $user $LINKPANEL/data/queue/traffic.pipe)" ]; then
 			echo "$BIN/v-update-web-domains-traff $user" \
-				>> $HESTIA/data/queue/traffic.pipe
+				>> $LINKPANEL/data/queue/traffic.pipe
 		fi
 		echo "$BIN/v-update-web-domains-disk $user" \
-			>> $HESTIA/data/queue/disk.pipe
+			>> $LINKPANEL/data/queue/disk.pipe
 
 		if [[ -L "$HOMEDIR/$user/web" ]]; then
 			rm $HOMEDIR/$user/web
@@ -189,7 +189,7 @@ rebuild_user_conf() {
 		touch $USER_DATA/mail.conf
 		chmod 660 $USER_DATA/mail.conf
 		echo "$BIN/v-update-mail-domains-disk $user" \
-			>> $HESTIA/data/queue/disk.pipe
+			>> $LINKPANEL/data/queue/disk.pipe
 
 		if [[ -L "$HOMEDIR/$user/mail" ]]; then
 			rm $HOMEDIR/$user/mail
@@ -206,7 +206,7 @@ rebuild_user_conf() {
 	if [ -n "$DB_SYSTEM" ] && [ "$DB_SYSTEM" != 'no' ]; then
 		touch $USER_DATA/db.conf
 		chmod 660 $USER_DATA/db.conf
-		echo "$BIN/v-update-databases-disk $user" >> $HESTIA/data/queue/disk.pipe
+		echo "$BIN/v-update-databases-disk $user" >> $LINKPANEL/data/queue/disk.pipe
 
 		if [ "$create_user" = "yes" ]; then
 			$BIN/v-rebuild-databases $user
@@ -371,9 +371,9 @@ rebuild_web_domain_conf() {
 		fi
 
 		webstats="$BIN/v-update-web-domain-stat $user $domain"
-		check_webstats=$(grep "$webstats" $HESTIA/data/queue/webstats.pipe)
+		check_webstats=$(grep "$webstats" $LINKPANEL/data/queue/webstats.pipe)
 		if [ -z "$check_webstats" ]; then
-			echo "$webstats" >> $HESTIA/data/queue/webstats.pipe
+			echo "$webstats" >> $LINKPANEL/data/queue/webstats.pipe
 		fi
 
 		if [ -n "$STATS_USER" ]; then
@@ -466,7 +466,7 @@ rebuild_web_domain_conf() {
 		chgrp $user $htpasswd $htaccess
 	done
 
-	# domain folder permissions: DOMAINDIR_WRITABLE: default-val:no source:hestia.conf
+	# domain folder permissions: DOMAINDIR_WRITABLE: default-val:no source:linkpanel.conf
 	DOMAINDIR_MODE=551
 	if [ "$DOMAINDIR_WRITABLE" = 'yes' ]; then DOMAINDIR_MODE=751; fi
 
@@ -850,7 +850,7 @@ rebuild_mysql_database() {
 # Rebuild PostgreSQL
 rebuild_pgsql_database() {
 
-	host_str=$(grep "HOST='$HOST'" $HESTIA/conf/pgsql.conf)
+	host_str=$(grep "HOST='$HOST'" $LINKPANEL/conf/pgsql.conf)
 	parse_object_kv_list "$host_str"
 	export PGPASSWORD="$PASSWORD"
 	if [ -z $HOST ] || [ -z $USER ] || [ -z $PASSWORD ] || [ -z $TPL ]; then
@@ -898,7 +898,7 @@ rebuild_pgsql_database() {
 # Import MySQL dump
 import_mysql_database() {
 
-	host_str=$(grep "HOST='$HOST'" $HESTIA/conf/mysql.conf)
+	host_str=$(grep "HOST='$HOST'" $LINKPANEL/conf/mysql.conf)
 	parse_object_kv_list "$host_str"
 	if [ -z $HOST ] || [ -z $USER ] || [ -z $PASSWORD ]; then
 		echo "Error: mysql config parsing failed"
@@ -916,7 +916,7 @@ import_mysql_database() {
 # Import PostgreSQL dump
 import_pgsql_database() {
 
-	host_str=$(grep "HOST='$HOST'" $HESTIA/conf/pgsql.conf)
+	host_str=$(grep "HOST='$HOST'" $LINKPANEL/conf/pgsql.conf)
 	parse_object_kv_list "$host_str"
 	export PGPASSWORD="$PASSWORD"
 	if [ -z $HOST ] || [ -z $USER ] || [ -z $PASSWORD ] || [ -z $TPL ]; then

@@ -12,20 +12,20 @@
 format="${1:-shell}"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
 	echo '{'
 	local quote COMMANDS_ARR
-	for api in $HESTIA/data/api/*; do
+	for api in $LINKPANEL/data/api/*; do
 		api="$(basename -- "$api")"
-		source_conf $HESTIA/data/api/$api
+		source_conf $LINKPANEL/data/api/$api
 
 		COMMANDS_ARR='[]'
 		if [[ -n "$COMMANDS" ]]; then
@@ -44,9 +44,9 @@ shell_list() {
 	list="API\tROLE\tCOMMANDS\n"
 	list+="---\t----\t--------\n"
 
-	for api in $HESTIA/data/api/*; do
+	for api in $LINKPANEL/data/api/*; do
 		api="$(basename -- "$api")"
-		source_conf $HESTIA/data/api/$api
+		source_conf $LINKPANEL/data/api/$api
 		list+="${api}\t${ROLE}\t${COMMANDS}\n"
 	done
 	echo -e "$list" | column -t -s "	"
@@ -59,7 +59,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

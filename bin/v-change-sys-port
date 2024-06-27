@@ -12,15 +12,15 @@
 
 # Argument definition
 PORT=$1
-NGINX_CONFIG="$HESTIA/nginx/conf/nginx.conf"
+NGINX_CONFIG="$LINKPANEL/nginx/conf/nginx.conf"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source "$HESTIA/func/main.sh"
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source "$LINKPANEL/func/main.sh"
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Functions
 is_port_valid() {
@@ -34,7 +34,7 @@ is_port_valid() {
 	# Check if PORT is already used
 	BUSY_PORT=$(lsof -i:"$PORT")
 	if [ -n "$BUSY_PORT" ] && [ "$PORT" != "$BACKEND_PORT" ]; then
-		echo "Port is already used by Hestia, please set anotherone!"
+		echo "Port is already used by LinkPanel, please set anotherone!"
 		log_event "$E_INUSE" "$ARGUMENTS"
 		exit "$E_INUSE"
 	fi
@@ -74,12 +74,12 @@ else
 		sed -i "/\"hestia_port\":/c\\\"hestia_host\": $PORT" /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
 	fi
 
-	if [ -f "$HESTIA/data/firewall/rules.conf" ]; then
-		sed -i "/COMMENT='HESTIA'/c\RULE='2' ACTION='ACCEPT' PROTOCOL='TCP' PORT='$PORT' IP='0.0.0.0/0' COMMENT='HESTIA' SUSPENDED='no' TIME='07:40:16' DATE='2014-05-25'" "$HESTIA/data/firewall/rules.conf"
+	if [ -f "$LINKPANEL/data/firewall/rules.conf" ]; then
+		sed -i "/COMMENT='LINKPANEL'/c\RULE='2' ACTION='ACCEPT' PROTOCOL='TCP' PORT='$PORT' IP='0.0.0.0/0' COMMENT='LINKPANEL' SUSPENDED='no' TIME='07:40:16' DATE='2014-05-25'" "$LINKPANEL/data/firewall/rules.conf"
 	fi
 
-	if [ -f "$HESTIA/data/firewall/chains.conf" ]; then
-		sed -i "/CHAIN='HESTIA'/c\CHAIN='HESTIA' PORT='$PORT' PROTOCOL='TCP'" "$HESTIA/data/firewall/chains.conf"
+	if [ -f "$LINKPANEL/data/firewall/chains.conf" ]; then
+		sed -i "/CHAIN='LINKPANEL'/c\CHAIN='LINKPANEL' PORT='$PORT' PROTOCOL='TCP'" "$LINKPANEL/data/firewall/chains.conf"
 	fi
 
 	# Restart services
@@ -87,20 +87,20 @@ else
 		"$BIN/v-restart-service" iptables
 	fi
 
-	# Check if Hestia is running
-	if [[ $(ps -eaf | grep -i hestia | sed '/^$/d' | wc -l) -gt 1 ]]; then
-		"$BIN/v-restart-service" hestia
+	# Check if LinkPanel is running
+	if [[ $(ps -eaf | grep -i linkpanel | sed '/^$/d' | wc -l) -gt 1 ]]; then
+		"$BIN/v-restart-service" linkpanel
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging
-"$BIN/v-log-action" "system" "Warning" "System" "Hestia Control Panel backend port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
+"$BIN/v-log-action" "system" "Warning" "System" "LinkPanel Control Panel backend port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
 if [ $LISTEN_ROWS -gt 1 ]; then
-	"$BIN/v-log-action" "system" "Warning" "System" "Hestia Control Panel backend port: Use first of $LISTEN_ROWS listened ports in $NGINX_CONFIG"
+	"$BIN/v-log-action" "system" "Warning" "System" "LinkPanel Control Panel backend port: Use first of $LISTEN_ROWS listened ports in $NGINX_CONFIG"
 fi
 log_event "$OK" "$ARGUMENTS"
 

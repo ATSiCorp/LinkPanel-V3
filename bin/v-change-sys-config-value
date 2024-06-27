@@ -16,12 +16,12 @@ key=$(echo "$1" | tr '[:lower:]' '[:upper:]')
 value=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -40,13 +40,13 @@ format_no_quotes "$value" 'value'
 change_sys_value "$key" "$value"
 
 # Sort configuration file in alphabetical order on change
-sort $HESTIA/conf/hestia.conf -o /tmp/updconf
-mv $HESTIA/conf/hestia.conf $HESTIA/conf/hestia.conf.bak
-mv /tmp/updconf $HESTIA/conf/hestia.conf
-rm -f $HESTIA/conf/hestia.conf.bak
+sort $LINKPANEL/conf/linkpanel.conf -o /tmp/updconf
+mv $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/linkpanel.conf.bak
+mv /tmp/updconf $LINKPANEL/conf/linkpanel.conf
+rm -f $LINKPANEL/conf/linkpanel.conf.bak
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

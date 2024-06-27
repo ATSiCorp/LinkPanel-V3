@@ -14,12 +14,12 @@
 type=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -41,19 +41,19 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Deleting host config
-rm -f $HESTIA/conf/$type.backup.conf
+rm -f $LINKPANEL/conf/$type.backup.conf
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
-# Updating hestia.conf
+# Updating linkpanel.conf
 bckp=$(echo "$BACKUP_SYSTEM" \
 	| sed "s/,/\n/g" \
 	| sed "s/^$type$//" \
 	| sed "/^$/d" \
 	| sed ':a;N;$!ba;s/\n/,/g')
-sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/hestia.conf
+sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $LINKPANEL/conf/linkpanel.conf
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "Removed remote backup host (Host: $host, Type: $type)."

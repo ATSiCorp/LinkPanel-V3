@@ -35,16 +35,16 @@ if [[ "$domain" =~ .*\.$ ]]; then
 fi
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -96,7 +96,7 @@ fi
 if [ -z "$WEBMAIL_ALIAS" ]; then
 	$BIN/v-change-sys-config-value 'WEBMAIL_ALIAS' "webmail"
 else
-	# Ensure DNS record exists if Hestia is hosting DNS zones
+	# Ensure DNS record exists if LinkPanel is hosting DNS zones
 	if [ -n "$DNS_SYSTEM" ]; then
 		dns_domain=$($BIN/v-list-dns-domains $user | grep $domain | cut -d' ' -f1)
 		webmail_record=$($BIN/v-list-dns-records $user $domain | grep -i " $WEBMAIL_ALIAS " | cut -d' ' -f1)
@@ -132,7 +132,7 @@ else
 		if [ "$WEB_SYSTEM" = "nginx" ]; then
 			WEBMAIL_TEMPLATE="web_system"
 		fi
-	elif [ -f "$HESTIA/data/templates/mail/$WEB_SYSTEM/$webmail.tpl" ]; then
+	elif [ -f "$LINKPANEL/data/templates/mail/$WEB_SYSTEM/$webmail.tpl" ]; then
 		WEBMAIL_TEMPLATE="$webmail"
 		if [ -n "$PROXY_SYSTEM" ]; then
 			PROXY_TEMPLATE="default_$webmail"
@@ -169,7 +169,7 @@ fi
 update_object_value 'mail' 'DOMAIN' "$domain" '$WEBMAIL' "$webmail"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 if [ "$restart" = 'yes' ]; then

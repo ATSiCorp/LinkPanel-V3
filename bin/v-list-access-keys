@@ -13,23 +13,23 @@ user="$1"
 format="${2:-shell}"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
 	echo -n '{'
 	local quote=''
 	local PERMISSIONS_ARR ACCESS_KEY_ID
-	for key_file in $HESTIA/data/access-keys/*; do
+	for key_file in $LINKPANEL/data/access-keys/*; do
 		key_file="$(basename -- "$key_file")"
 		if [[ "$key_file" =~ ^[[:alnum:]]{20}$ ]]; then
 			USER="$ROOT_USER" SECRET_ACCESS_KEY="" PERMISSIONS="" DATE="" TIME="" COMMENT=""
-			source_conf "$HESTIA/data/access-keys/$key_file"
+			source_conf "$LINKPANEL/data/access-keys/$key_file"
 			if [ "$user" = "$USER" ] || [ -z "$user" ]; then
 				PERMISSIONS_ARR='[]'
 				if [[ -n "$PERMISSIONS" ]]; then
@@ -61,11 +61,11 @@ shell_list() {
 	list="ID\tUSER\tPERMISSIONS\tCOMMENT\tTIME\tDATE\n"
 	list+="--\t------\t----\t-----------\t-------\t----\t----\n"
 
-	for key_file in $HESTIA/data/access-keys/*; do
+	for key_file in $LINKPANEL/data/access-keys/*; do
 		key_file="$(basename -- "$key_file")"
 		if [[ "$key_file" =~ ^[[:alnum:]]{20}$ ]]; then
 			USER="$ROOT_USER" SECRET_ACCESS_KEY="" PERMISSIONS="" DATE="" TIME="" COMMENT=""
-			source_conf "$HESTIA/data/access-keys/$key_file"
+			source_conf "$LINKPANEL/data/access-keys/$key_file"
 			if [ "$user" = "$USER" ] || [ -z "$user" ]; then
 				ACCESS_KEY_ID="$(basename "$key_file")"
 				list+="${ACCESS_KEY_ID}\t${USER}\t${PERMISSIONS:--}\t${COMMENT:--}\t${TIME}\t${DATE}\n"
@@ -87,7 +87,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

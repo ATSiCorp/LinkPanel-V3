@@ -2,7 +2,7 @@
 
 # ======================================================== #
 #
-# Hestia Control Panel Installer for Debian
+# LinkPanel Control Panel Installer for Debian
 # https://www.hestiacp.com/
 #
 # Currently Supported Versions:
@@ -17,7 +17,7 @@ export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.hestiacp.com'
 VERSION='debian'
-HESTIA='/usr/local/hestia'
+LINKPANEL='/usr/local/linkpanel'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
 hst_backups="/root/hst_install_backups/$(date +%d%m%Y%H%M)"
@@ -26,8 +26,8 @@ os='debian'
 release="$(cat /etc/debian_version | tr "." "\n" | head -n1)"
 codename="$(cat /etc/os-release | grep VERSION= | cut -f 2 -d \( | cut -f 1 -d \))"
 architecture="$(arch)"
-HESTIA_INSTALL_DIR="$HESTIA/install/deb"
-HESTIA_COMMON_DIR="$HESTIA/install/common"
+HESTIA_INSTALL_DIR="$LINKPANEL/install/deb"
+HESTIA_COMMON_DIR="$LINKPANEL/install/common"
 VERBOSE='no'
 
 # Define software versions
@@ -44,7 +44,7 @@ mariadb_v="10.11"
 # Defining software pack for all distros
 software="acl apache2 apache2-suexec-custom apache2-suexec-pristine apache2-utils awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia=${HESTIA_INSTALL_VER} hestia-nginx hestia-php hestia-web-terminal
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git linkpanel=${HESTIA_INSTALL_VER} linkpanel-nginx linkpanel-php linkpanel-web-terminal
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mpm-itk libmail-dkim-perl lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server net-tools nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd
@@ -84,7 +84,7 @@ help() {
   -e, --email             Set admin email
   -u, --username          Set admin user
   -p, --password          Set admin password
-  -D, --with-debs         Path to Hestia debs
+  -D, --with-debs         Path to LinkPanel debs
   -f, --force             Force installation
   -h, --help              Print this help
 
@@ -160,25 +160,25 @@ set_default_port() {
 	fi
 }
 
-# Write configuration KEY/VALUE pair to $HESTIA/conf/hestia.conf
+# Write configuration KEY/VALUE pair to $LINKPANEL/conf/linkpanel.conf
 write_config_value() {
 	local key="$1"
 	local value="$2"
-	echo "$key='$value'" >> $HESTIA/conf/hestia.conf
+	echo "$key='$value'" >> $LINKPANEL/conf/linkpanel.conf
 }
 
 # Sort configuration file values
-# Write final copy to $HESTIA/conf/hestia.conf for active usage
-# Duplicate file to $HESTIA/conf/defaults/hestia.conf to restore known good installation values
+# Write final copy to $LINKPANEL/conf/linkpanel.conf for active usage
+# Duplicate file to $LINKPANEL/conf/defaults/linkpanel.conf to restore known good installation values
 sort_config_file() {
-	sort $HESTIA/conf/hestia.conf -o /tmp/updconf
-	mv $HESTIA/conf/hestia.conf $HESTIA/conf/hestia.conf.bak
-	mv /tmp/updconf $HESTIA/conf/hestia.conf
-	rm -f $HESTIA/conf/hestia.conf.bak
-	if [ ! -d "$HESTIA/conf/defaults/" ]; then
-		mkdir -p "$HESTIA/conf/defaults/"
+	sort $LINKPANEL/conf/linkpanel.conf -o /tmp/updconf
+	mv $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/linkpanel.conf.bak
+	mv /tmp/updconf $LINKPANEL/conf/linkpanel.conf
+	rm -f $LINKPANEL/conf/linkpanel.conf.bak
+	if [ ! -d "$LINKPANEL/conf/defaults/" ]; then
+		mkdir -p "$LINKPANEL/conf/defaults/"
 	fi
-	cp $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
+	cp $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
 }
 
 # todo add check for usernames that are blocked
@@ -310,7 +310,7 @@ while getopts "a:w:v:j:k:m:M:g:d:x:z:Z:c:t:i:b:r:o:q:L:l:y:s:u:e:p:W:D:fh" Optio
 		e) email=$OPTARG ;;         # Admin email
 		u) username=$OPTARG ;;      # Admin username
 		p) vpass=$OPTARG ;;         # Admin password
-		D) withdebs=$OPTARG ;;      # Hestia debs path
+		D) withdebs=$OPTARG ;;      # LinkPanel debs path
 		f) force='yes' ;;           # Force install
 		h) help ;;                  # Help
 		*) help ;;                  # Print help (default)
@@ -420,8 +420,8 @@ if [ "x$(id -u)" != 'x0' ]; then
 	check_result 1 "Script can be run executed only by root"
 fi
 
-if [ -d "/usr/local/hestia" ]; then
-	check_result 1 "Hestia install detected. Unable to continue"
+if [ -d "/usr/local/linkpanel" ]; then
+	check_result 1 "LinkPanel install detected. Unable to continue"
 fi
 
 # Clear the screen once launch permissions have been verified
@@ -433,7 +433,7 @@ if [ ! -f /etc/apt/apt.conf.d/80-retries ]; then
 fi
 
 # Welcome message
-echo "Welcome to the Hestia Control Panel installer!"
+echo "Welcome to the LinkPanel Control Panel installer!"
 echo
 echo "Please wait, the installer is now checking for missing dependencies..."
 echo
@@ -458,12 +458,12 @@ fi
 
 # Check repository availability
 wget --quiet "https://$RHOST" -O /dev/null
-check_result $? "Unable to connect to the Hestia APT repository"
+check_result $? "Unable to connect to the LinkPanel APT repository"
 
 # Check installed packages
 tmpfile=$(mktemp -p /tmp)
 dpkg --get-selections > $tmpfile
-conflicts_pkg="exim4 mariadb-server apache2 nginx hestia postfix"
+conflicts_pkg="exim4 mariadb-server apache2 nginx linkpanel postfix"
 
 # Drop postfix from the list if exim should not be installed
 if [ "$exim" = 'no' ]; then
@@ -492,7 +492,7 @@ if [ -n "$conflicts" ] && [ -z "$force" ]; then
 		check_result $? 'apt-get remove failed'
 		unset $answer
 	else
-		check_result 1 "Hestia Control Panel should be installed on a clean server."
+		check_result 1 "LinkPanel Control Panel should be installed on a clean server."
 	fi
 fi
 
@@ -525,7 +525,7 @@ fi
 
 # Validate whether installation script matches release version before continuing with install
 if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
-	release_branch_ver=$(curl -s https://raw.githubusercontent.com/hestiacp/hestiacp/release/src/deb/hestia/control | grep "Version:" | awk '{print $2}')
+	release_branch_ver=$(curl -s https://raw.githubusercontent.com/hestiacp/hestiacp/release/src/deb/linkpanel/control | grep "Version:" | awk '{print $2}')
 	if [ "$HESTIA_INSTALL_VER" != "$release_branch_ver" ]; then
 		echo
 		echo -e "\e[91mInstallation aborted\e[0m"
@@ -536,7 +536,7 @@ if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
 		echo -e "\e[33mhttps://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh\e[0m"
 		echo ""
 		echo -e "\e[33mTo test pre-release versions, build the .deb packages and re-run the installer:\e[0m"
-		echo -e "  \e[33m./hst_autocompile.sh \e[1m--hestia branchname no\e[21m\e[0m"
+		echo -e "  \e[33m./hst_autocompile.sh \e[1m--linkpanel branchname no\e[21m\e[0m"
 		echo -e "  \e[33m./hst-install.sh .. \e[1m--with-debs /tmp/hestiacp-src/debs\e[21m\e[0m"
 		echo ""
 		check_result 1 "Installation aborted"
@@ -576,7 +576,7 @@ install_welcome_message() {
 	echo '               |  _  |  __/\__ \ |_| | (_| | |___|  __/                 '
 	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
 	echo "                                                                        "
-	echo "                          Hestia Control Panel                          "
+	echo "                          LinkPanel Control Panel                          "
 	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
@@ -590,7 +590,7 @@ install_welcome_message() {
 	echo
 	echo "========================================================================"
 	echo
-	echo "Thank you for downloading Hestia Control Panel! In a few moments,"
+	echo "Thank you for downloading LinkPanel Control Panel! In a few moments,"
 	echo "we will begin installing the following components on your server:"
 	echo
 }
@@ -861,10 +861,10 @@ if [ "$mysql8" = 'yes' ]; then
 	done
 fi
 
-# Installing HestiaCP repo
-echo "[ * ] Hestia Control Panel"
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/hestia-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
-gpg --no-default-keyring --keyring /usr/share/keyrings/hestia-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
+# Installing LinkPanelCP repo
+echo "[ * ] LinkPanel Control Panel"
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/linkpanel-keyring.gpg] https://$RHOST/ $codename main" > $apt/linkpanel.list
+gpg --no-default-keyring --keyring /usr/share/keyrings/linkpanel-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
 
 # Installing Node.js 20.x repo
 echo "[ * ] Node.js 20.x"
@@ -910,7 +910,7 @@ check_result $? 'apt-get upgrade failed'
 mkdir -p $hst_backups
 cd $hst_backups
 mkdir nginx apache2 php vsftpd proftpd bind exim4 dovecot clamd
-mkdir spamassassin mysql postgresql openssl hestia
+mkdir spamassassin mysql postgresql openssl linkpanel
 
 # Backup OpenSSL configuration
 cp /etc/ssl/openssl.cnf $hst_backups/openssl > /dev/null 2>&1
@@ -964,11 +964,11 @@ mv /var/lib/mysql $hst_backups/mysql/mysql_datadir > /dev/null 2>&1
 cp -r /etc/mysql/* $hst_backups/mysql > /dev/null 2>&1
 mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
 
-# Backup Hestia
-systemctl stop hestia > /dev/null 2>&1
-cp -r $HESTIA/* $hst_backups/hestia > /dev/null 2>&1
-apt-get -y purge hestia hestia-nginx hestia-php > /dev/null 2>&1
-rm -rf $HESTIA > /dev/null 2>&1
+# Backup LinkPanel
+systemctl stop linkpanel > /dev/null 2>&1
+cp -r $LINKPANEL/* $hst_backups/linkpanel > /dev/null 2>&1
+apt-get -y purge linkpanel linkpanel-nginx linkpanel-php > /dev/null 2>&1
+rm -rf $LINKPANEL > /dev/null 2>&1
 
 #----------------------------------------------------------#
 #                     Package Includes                     #
@@ -1066,7 +1066,7 @@ if [ "$iptables" = 'no' ]; then
 fi
 if [ "$webterminal" = 'no' ]; then
 	software=$(echo "$software" | sed -e "s/nodejs//")
-	software=$(echo "$software" | sed -e "s/hestia-web-terminal//")
+	software=$(echo "$software" | sed -e "s/linkpanel-web-terminal//")
 fi
 if [ "$phpfpm" = 'yes' ]; then
 	software=$(echo "$software" | sed -e "s/php$fpm_v-cgi//")
@@ -1075,10 +1075,10 @@ if [ "$phpfpm" = 'yes' ]; then
 	software=$(echo "$software" | sed -e "s/libapache2-mod-php$fpm_v//")
 fi
 if [ -d "$withdebs" ]; then
-	software=$(echo "$software" | sed -e "s/hestia-nginx//")
-	software=$(echo "$software" | sed -e "s/hestia-php//")
-	software=$(echo "$software" | sed -e "s/hestia-web-terminal//")
-	software=$(echo "$software" | sed -e "s/hestia=${HESTIA_INSTALL_VER}//")
+	software=$(echo "$software" | sed -e "s/linkpanel-nginx//")
+	software=$(echo "$software" | sed -e "s/linkpanel-php//")
+	software=$(echo "$software" | sed -e "s/linkpanel-web-terminal//")
+	software=$(echo "$software" | sed -e "s/linkpanel=${HESTIA_INSTALL_VER}//")
 fi
 
 #----------------------------------------------------------#
@@ -1118,35 +1118,35 @@ echo
 echo "========================================================================"
 echo
 
-# Install Hestia packages from local folder
+# Install LinkPanel packages from local folder
 if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 	echo "[ * ] Installing local package files..."
-	echo "    - hestia core package"
+	echo "    - linkpanel core package"
 	dpkg -i $withdebs/hestia_*.deb > /dev/null 2>&1
 
-	if [ -z $(ls $withdebs/hestia-php_*.deb 2> /dev/null) ]; then
-		echo "    - hestia-php backend package (from apt)"
-		apt-get -y install hestia-php > /dev/null 2>&1
+	if [ -z $(ls $withdebs/linkpanel-php_*.deb 2> /dev/null) ]; then
+		echo "    - linkpanel-php backend package (from apt)"
+		apt-get -y install linkpanel-php > /dev/null 2>&1
 	else
-		echo "    - hestia-php backend package"
-		dpkg -i $withdebs/hestia-php_*.deb > /dev/null 2>&1
+		echo "    - linkpanel-php backend package"
+		dpkg -i $withdebs/linkpanel-php_*.deb > /dev/null 2>&1
 	fi
 
-	if [ -z $(ls $withdebs/hestia-nginx_*.deb 2> /dev/null) ]; then
-		echo "    - hestia-nginx backend package (from apt)"
-		apt-get -y install hestia-nginx > /dev/null 2>&1
+	if [ -z $(ls $withdebs/linkpanel-nginx_*.deb 2> /dev/null) ]; then
+		echo "    - linkpanel-nginx backend package (from apt)"
+		apt-get -y install linkpanel-nginx > /dev/null 2>&1
 	else
-		echo "    - hestia-nginx backend package"
-		dpkg -i $withdebs/hestia-nginx_*.deb > /dev/null 2>&1
+		echo "    - linkpanel-nginx backend package"
+		dpkg -i $withdebs/linkpanel-nginx_*.deb > /dev/null 2>&1
 	fi
 
 	if [ "$webterminal" = "yes" ]; then
-		if [ -z $(ls $withdebs/hestia-web-terminal_*.deb 2> /dev/null) ]; then
-			echo "    - hestia-web-terminal package (from apt)"
-			apt-get -y install hestia-web-terminal > /dev/null 2>&1
+		if [ -z $(ls $withdebs/linkpanel-web-terminal_*.deb 2> /dev/null) ]; then
+			echo "    - linkpanel-web-terminal package (from apt)"
+			apt-get -y install linkpanel-web-terminal > /dev/null 2>&1
 		else
-			echo "    - hestia-web-terminal"
-			dpkg -i $withdebs/hestia-web-terminal_*.deb > /dev/null 2>&1
+			echo "    - linkpanel-web-terminal"
+			dpkg -i $withdebs/linkpanel-web-terminal_*.deb > /dev/null 2>&1
 		fi
 	fi
 fi
@@ -1223,59 +1223,59 @@ mount -o remount,defaults,hidepid=2 /proc > /dev/null 2>&1
 if [ $? -ne 0 ]; then
 	echo "Info: Cannot remount /proc (LXC containers require additional perm added to host apparmor profile)"
 else
-	echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/hestia-proc
+	echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/linkpanel-proc
 fi
 
 #----------------------------------------------------------#
-#                     Configure Hestia                     #
+#                     Configure LinkPanel                     #
 #----------------------------------------------------------#
 
-echo "[ * ] Configuring Hestia Control Panel..."
+echo "[ * ] Configuring LinkPanel Control Panel..."
 # Installing sudo configuration
 mkdir -p /etc/sudoers.d
 cp -f $HESTIA_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
 chmod 440 /etc/sudoers.d/hestiaweb
 
-# Add Hestia global config
-if [[ ! -e /etc/hestiacp/hestia.conf ]]; then
+# Add LinkPanel global config
+if [[ ! -e /etc/hestiacp/linkpanel.conf ]]; then
 	mkdir -p /etc/hestiacp
-	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/hestiacp/local.conf instead\n\nexport HESTIA='/usr/local/hestia'\n\n[[ -f /etc/hestiacp/local.conf ]] && source /etc/hestiacp/local.conf" > /etc/hestiacp/hestia.conf
+	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/hestiacp/local.conf instead\n\nexport LINKPANEL='/usr/local/linkpanel'\n\n[[ -f /etc/hestiacp/local.conf ]] && source /etc/hestiacp/local.conf" > /etc/hestiacp/linkpanel.conf
 fi
 
 # Configuring system env
-echo "export HESTIA='$HESTIA'" > /etc/profile.d/hestia.sh
-echo 'PATH=$PATH:'$HESTIA'/bin' >> /etc/profile.d/hestia.sh
-echo 'export PATH' >> /etc/profile.d/hestia.sh
-chmod 755 /etc/profile.d/hestia.sh
-source /etc/profile.d/hestia.sh
+echo "export LINKPANEL='$LINKPANEL'" > /etc/profile.d/linkpanel.sh
+echo 'PATH=$PATH:'$LINKPANEL'/bin' >> /etc/profile.d/linkpanel.sh
+echo 'export PATH' >> /etc/profile.d/linkpanel.sh
+chmod 755 /etc/profile.d/linkpanel.sh
+source /etc/profile.d/linkpanel.sh
 
-# Configuring logrotate for Hestia logs
-cp -f $HESTIA_INSTALL_DIR/logrotate/hestia /etc/logrotate.d/hestia
+# Configuring logrotate for LinkPanel logs
+cp -f $HESTIA_INSTALL_DIR/logrotate/linkpanel /etc/logrotate.d/linkpanel
 
 # Create log path and symbolic link
-rm -f /var/log/hestia
-mkdir -p /var/log/hestia
-ln -s /var/log/hestia $HESTIA/log
+rm -f /var/log/linkpanel
+mkdir -p /var/log/linkpanel
+ln -s /var/log/linkpanel $LINKPANEL/log
 
-# Building directory tree and creating some blank files for Hestia
-mkdir -p $HESTIA/conf $HESTIA/ssl $HESTIA/data/ips \
-	$HESTIA/data/queue $HESTIA/data/users $HESTIA/data/firewall \
-	$HESTIA/data/sessions
-touch $HESTIA/data/queue/backup.pipe $HESTIA/data/queue/disk.pipe \
-	$HESTIA/data/queue/webstats.pipe $HESTIA/data/queue/restart.pipe \
-	$HESTIA/data/queue/traffic.pipe $HESTIA/data/queue/daily.pipe $HESTIA/log/system.log \
-	$HESTIA/log/nginx-error.log $HESTIA/log/auth.log $HESTIA/log/backup.log
-chmod 750 $HESTIA/conf $HESTIA/data/users $HESTIA/data/ips $HESTIA/log
-chmod -R 750 $HESTIA/data/queue
-chmod 660 /var/log/hestia/*
-chmod 770 $HESTIA/data/sessions
+# Building directory tree and creating some blank files for LinkPanel
+mkdir -p $LINKPANEL/conf $LINKPANEL/ssl $LINKPANEL/data/ips \
+	$LINKPANEL/data/queue $LINKPANEL/data/users $LINKPANEL/data/firewall \
+	$LINKPANEL/data/sessions
+touch $LINKPANEL/data/queue/backup.pipe $LINKPANEL/data/queue/disk.pipe \
+	$LINKPANEL/data/queue/webstats.pipe $LINKPANEL/data/queue/restart.pipe \
+	$LINKPANEL/data/queue/traffic.pipe $LINKPANEL/data/queue/daily.pipe $LINKPANEL/log/system.log \
+	$LINKPANEL/log/nginx-error.log $LINKPANEL/log/auth.log $LINKPANEL/log/backup.log
+chmod 750 $LINKPANEL/conf $LINKPANEL/data/users $LINKPANEL/data/ips $LINKPANEL/log
+chmod -R 750 $LINKPANEL/data/queue
+chmod 660 /var/log/linkpanel/*
+chmod 770 $LINKPANEL/data/sessions
 
-# Generating Hestia configuration
-rm -f $HESTIA/conf/hestia.conf > /dev/null 2>&1
-touch $HESTIA/conf/hestia.conf
-chmod 660 $HESTIA/conf/hestia.conf
+# Generating LinkPanel configuration
+rm -f $LINKPANEL/conf/linkpanel.conf > /dev/null 2>&1
+touch $LINKPANEL/conf/linkpanel.conf
+chmod 660 $LINKPANEL/conf/linkpanel.conf
 
-# Write default port value to hestia.conf
+# Write default port value to linkpanel.conf
 # If a custom port is specified it will be set at the end of the installation process.
 write_config_value "BACKEND_PORT" "8083"
 
@@ -1408,19 +1408,19 @@ write_config_value "UPGRADE_SEND_EMAIL_LOG" "false"
 write_config_value "ROOT_USER" "$username"
 
 # Installing hosting packages
-cp -rf $HESTIA_COMMON_DIR/packages $HESTIA/data/
+cp -rf $HESTIA_COMMON_DIR/packages $LINKPANEL/data/
 
 # Update nameservers in hosting package
 IFS='.' read -r -a domain_elements <<< "$servername"
 if [ -n "${domain_elements[-2]}" ] && [ -n "${domain_elements[-1]}" ]; then
 	serverdomain="${domain_elements[-2]}.${domain_elements[-1]}"
-	sed -i s/"domain.tld"/"$serverdomain"/g $HESTIA/data/packages/*.pkg
+	sed -i s/"domain.tld"/"$serverdomain"/g $LINKPANEL/data/packages/*.pkg
 fi
 
 # Installing templates
-cp -rf $HESTIA_INSTALL_DIR/templates $HESTIA/data/
-cp -rf $HESTIA_COMMON_DIR/templates/web/ $HESTIA/data/templates
-cp -rf $HESTIA_COMMON_DIR/templates/dns/ $HESTIA/data/templates
+cp -rf $HESTIA_INSTALL_DIR/templates $LINKPANEL/data/
+cp -rf $HESTIA_COMMON_DIR/templates/web/ $LINKPANEL/data/templates
+cp -rf $HESTIA_COMMON_DIR/templates/dns/ $LINKPANEL/data/templates
 
 mkdir -p /var/www/html
 mkdir -p /var/www/document_errors
@@ -1430,33 +1430,33 @@ cp -rf $HESTIA_COMMON_DIR/templates/web/unassigned/index.html /var/www/html/
 cp -rf $HESTIA_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
 
 # Installing firewall rules
-cp -rf $HESTIA_COMMON_DIR/firewall $HESTIA/data/
-rm -f $HESTIA/data/firewall/ipset/blacklist.sh $HESTIA/data/firewall/ipset/blacklist.ipv6.sh
+cp -rf $HESTIA_COMMON_DIR/firewall $LINKPANEL/data/
+rm -f $LINKPANEL/data/firewall/ipset/blacklist.sh $LINKPANEL/data/firewall/ipset/blacklist.ipv6.sh
 
 # Delete rules for services that are not installed
 if [ "$vsftpd" = "no" ] && [ "$proftpd" = "no" ]; then
 	# Remove FTP
-	sed -i "/COMMENT='FTP'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='FTP'/d" $LINKPANEL/data/firewall/rules.conf
 fi
 if [ "$exim" = "no" ]; then
 	# Remove SMTP
-	sed -i "/COMMENT='SMTP'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='SMTP'/d" $LINKPANEL/data/firewall/rules.conf
 fi
 if [ "$dovecot" = "no" ]; then
 	# Remove IMAP / Dovecot
-	sed -i "/COMMENT='IMAP'/d" $HESTIA/data/firewall/rules.conf
-	sed -i "/COMMENT='POP3'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='IMAP'/d" $LINKPANEL/data/firewall/rules.conf
+	sed -i "/COMMENT='POP3'/d" $LINKPANEL/data/firewall/rules.conf
 fi
 if [ "$named" = "no" ]; then
 	# Remove IMAP / Dovecot
-	sed -i "/COMMENT='DNS'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='DNS'/d" $LINKPANEL/data/firewall/rules.conf
 fi
 
 # Installing apis
-cp -rf $HESTIA_COMMON_DIR/api $HESTIA/data/
+cp -rf $HESTIA_COMMON_DIR/api $LINKPANEL/data/
 
 # Configuring server hostname
-$HESTIA/bin/v-change-sys-hostname $servername > /dev/null 2>&1
+$LINKPANEL/bin/v-change-sys-hostname $servername > /dev/null 2>&1
 
 # Configuring global OpenSSL options
 echo "[ * ] Configuring OpenSSL to improve TLS performance..."
@@ -1476,8 +1476,8 @@ fi
 
 # Generating SSL certificate
 echo "[ * ] Generating default self-signed SSL certificate..."
-$HESTIA/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
-	'San Francisco' 'Hestia Control Panel' 'IT' > /tmp/hst.pem
+$LINKPANEL/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
+	'San Francisco' 'LinkPanel Control Panel' 'IT' > /tmp/hst.pem
 
 crt_end=$(grep -n "END CERTIFICATE-" /tmp/hst.pem | cut -f 1 -d:)
 if [ "$release" = "12" ]; then
@@ -1489,12 +1489,12 @@ else
 fi
 
 # Adding SSL certificate
-echo "[ * ] Adding SSL certificate to Hestia Control Panel..."
-cd $HESTIA/ssl
+echo "[ * ] Adding SSL certificate to LinkPanel Control Panel..."
+cd $LINKPANEL/ssl
 sed -n "1,${crt_end}p" /tmp/hst.pem > certificate.crt
 sed -n "$key_start,${key_end}p" /tmp/hst.pem > certificate.key
-chown root:mail $HESTIA/ssl/*
-chmod 660 $HESTIA/ssl/*
+chown root:mail $LINKPANEL/ssl/*
+chmod 660 $LINKPANEL/ssl/*
 rm /tmp/hst.pem
 
 # Install dhparam.pem
@@ -1502,22 +1502,22 @@ cp -f $HESTIA_INSTALL_DIR/ssl/dhparam.pem /etc/ssl
 
 # Enable sftp jail
 echo "[ * ] Enabling SFTP jail..."
-$HESTIA/bin/v-add-sys-sftp-jail > /dev/null 2>&1
+$LINKPANEL/bin/v-add-sys-sftp-jail > /dev/null 2>&1
 check_result $? "can't enable sftp jail"
 
 # Enable ssh jail
 echo "[ * ] Enabling SSH jail..."
-$HESTIA/bin/v-add-sys-ssh-jail > /dev/null 2>&1
+$LINKPANEL/bin/v-add-sys-ssh-jail > /dev/null 2>&1
 check_result $? "can't enable ssh jail"
 
-# Adding Hestia admin account
+# Adding LinkPanel admin account
 echo "[ * ] Creating default admin account..."
-$HESTIA/bin/v-add-user "$username" "$vpass" "$email" "default" "System Administrator"
+$LINKPANEL/bin/v-add-user "$username" "$vpass" "$email" "default" "System Administrator"
 check_result $? "can't create admin user"
-$HESTIA/bin/v-change-user-shell "$username" nologin no
-$HESTIA/bin/v-change-user-role "$username" admin
-$HESTIA/bin/v-change-user-language "$username" "$lang"
-$HESTIA/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
+$LINKPANEL/bin/v-change-user-shell "$username" nologin no
+$LINKPANEL/bin/v-change-user-role "$username" admin
+$LINKPANEL/bin/v-change-user-language "$username" "$lang"
+$LINKPANEL/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
 
 #----------------------------------------------------------#
 #                     Configure Nginx                      #
@@ -1591,8 +1591,8 @@ if [ "$apache" = 'yes' ]; then
 
 	# Copy configuration files
 	cp -f $HESTIA_INSTALL_DIR/apache2/apache2.conf /etc/apache2/
-	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
-	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/hestia-status.load
+	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/linkpanel-status.conf
+	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/linkpanel-status.load
 	cp -f $HESTIA_INSTALL_DIR/logrotate/apache2 /etc/logrotate.d/
 
 	# Enable needed modules
@@ -1602,7 +1602,7 @@ if [ "$apache" = 'yes' ]; then
 	a2enmod actions > /dev/null 2>&1
 	a2enmod headers > /dev/null 2>&1
 	a2dismod --quiet status > /dev/null 2>&1
-	a2enmod --quiet hestia-status > /dev/null 2>&1
+	a2enmod --quiet linkpanel-status > /dev/null 2>&1
 
 	# Enable mod_ruid/mpm_itk or mpm_event
 	if [ "$phpfpm" = 'yes' ]; then
@@ -1610,14 +1610,14 @@ if [ "$apache" = 'yes' ]; then
 		a2dismod php$fpm_v > /dev/null 2>&1
 		a2dismod mpm_prefork > /dev/null 2>&1
 		a2enmod mpm_event > /dev/null 2>&1
-		cp -f $HESTIA_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
+		cp -f $HESTIA_INSTALL_DIR/apache2/linkpanel-event.conf /etc/apache2/conf.d/
 	else
 		a2enmod mpm_itk > /dev/null 2>&1
 	fi
 
-	echo "# Powered by hestia" > /etc/apache2/sites-available/default
-	echo "# Powered by hestia" > /etc/apache2/sites-available/default-ssl
-	echo "# Powered by hestia" > /etc/apache2/ports.conf
+	echo "# Powered by linkpanel" > /etc/apache2/sites-available/default
+	echo "# Powered by linkpanel" > /etc/apache2/sites-available/default-ssl
+	echo "# Powered by linkpanel" > /etc/apache2/ports.conf
 	echo -e "/home\npublic_html/cgi-bin" > /etc/apache2/suexec/www-data
 	touch /var/log/apache2/access.log /var/log/apache2/error.log
 	mkdir -p /var/log/apache2/domains
@@ -1626,7 +1626,7 @@ if [ "$apache" = 'yes' ]; then
 	chmod 751 /var/log/apache2/domains
 
 	# Prevent remote access to server-status page
-	sed -i '/Allow from all/d' /etc/apache2/mods-available/hestia-status.conf
+	sed -i '/Allow from all/d' /etc/apache2/mods-available/linkpanel-status.conf
 
 	update-rc.d apache2 defaults > /dev/null 2>&1
 	systemctl start apache2 >> $LOG
@@ -1644,11 +1644,11 @@ if [ "$phpfpm" = "yes" ]; then
 	if [ "$multiphp" = 'yes' ]; then
 		for v in "${multiphp_v[@]}"; do
 			echo "[ * ] Installing PHP $v..."
-			$HESTIA/bin/v-add-web-php "$v" > /dev/null 2>&1
+			$LINKPANEL/bin/v-add-web-php "$v" > /dev/null 2>&1
 		done
 	else
 		echo "[ * ] Installing PHP $fpm_v..."
-		$HESTIA/bin/v-add-web-php "$fpm_v" > /dev/null 2>&1
+		$LINKPANEL/bin/v-add-web-php "$fpm_v" > /dev/null 2>&1
 	fi
 
 	echo "[ * ] Configuring PHP-FPM $fpm_v..."
@@ -1678,7 +1678,7 @@ done
 # Cleanup php session files not changed in the last 7 days (60*24*7 minutes)
 echo '#!/bin/sh' > /etc/cron.daily/php-session-cleanup
 echo "find -O3 /home/*/tmp/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
-echo "find -O3 $HESTIA/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
+echo "find -O3 $LINKPANEL/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
 chmod 755 /etc/cron.daily/php-session-cleanup
 
 #----------------------------------------------------------#
@@ -1810,8 +1810,8 @@ fi
 #----------------------------------------------------------#
 
 # Source upgrade.conf with phpmyadmin versions
-# shellcheck source=/usr/local/hestia/install/upgrade/upgrade.conf
-source $HESTIA/install/upgrade/upgrade.conf
+# shellcheck source=/usr/local/linkpanel/install/upgrade/upgrade.conf
+source $LINKPANEL/install/upgrade/upgrade.conf
 
 if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	# Display upgrade information
@@ -1859,11 +1859,11 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	rm -f phpMyAdmin-$pma_v-all-languages.tar.gz
 
 	write_config_value "DB_PMA_ALIAS" "phpmyadmin"
-	$HESTIA/bin/v-change-sys-db-alias 'pma' "phpmyadmin"
+	$LINKPANEL/bin/v-change-sys-db-alias 'pma' "phpmyadmin"
 
 	# Special thanks to Pavel Galkin (https://skurudo.ru)
 	# https://github.com/skurudo/phpmyadmin-fixer
-	# shellcheck source=/usr/local/hestia/install/deb/phpmyadmin/pma.sh
+	# shellcheck source=/usr/local/linkpanel/install/deb/phpmyadmin/pma.sh
 	source $HESTIA_INSTALL_DIR/phpmyadmin/pma.sh > /dev/null 2>&1
 
 	# limit access to /etc/phpmyadmin/
@@ -1900,7 +1900,7 @@ if [ "$postgresql" = 'yes' ]; then
 
 	rm phppgadmin-v$pga_v.tar.gz
 	write_config_value "DB_PGA_ALIAS" "phppgadmin"
-	$HESTIA/bin/v-change-sys-db-alias 'pga' "phppgadmin"
+	$LINKPANEL/bin/v-change-sys-db-alias 'pga' "phppgadmin"
 fi
 
 #----------------------------------------------------------#
@@ -2125,12 +2125,12 @@ fi
 
 # Configuring MariaDB/MySQL host
 if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
-	$HESTIA/bin/v-add-database-host mysql localhost root $mpass
+	$LINKPANEL/bin/v-add-database-host mysql localhost root $mpass
 fi
 
 # Configuring PostgreSQL host
 if [ "$postgresql" = 'yes' ]; then
-	$HESTIA/bin/v-add-database-host pgsql localhost postgres $ppass
+	$LINKPANEL/bin/v-add-database-host pgsql localhost postgres $ppass
 fi
 
 #----------------------------------------------------------#
@@ -2140,7 +2140,7 @@ fi
 # Min requirements Dovecot + Exim + Mysql
 if ([ "$mysql" == 'yes' ] || [ "$mysql8" == 'yes' ]) && [ "$dovecot" == "yes" ]; then
 	echo "[ * ] Installing Roundcube..."
-	$HESTIA/bin/v-add-sys-roundcube
+	$LINKPANEL/bin/v-add-sys-roundcube
 	write_config_value "WEBMAIL_ALIAS" "webmail"
 else
 	write_config_value "WEBMAIL_ALIAS" ""
@@ -2216,7 +2216,7 @@ else
 	write_config_value "API" "no"
 	write_config_value "API_SYSTEM" "0"
 	write_config_value "API_ALLOWED_IP" ""
-	$HESTIA/bin/v-change-sys-api disable
+	$LINKPANEL/bin/v-change-sys-api disable
 fi
 
 #----------------------------------------------------------#
@@ -2227,8 +2227,8 @@ fi
 if [ "$webterminal" = 'yes' ]; then
 	write_config_value "WEB_TERMINAL" "true"
 	systemctl daemon-reload > /dev/null 2>&1
-	systemctl enable hestia-web-terminal > /dev/null 2>&1
-	systemctl restart hestia-web-terminal > /dev/null 2>&1
+	systemctl enable linkpanel-web-terminal > /dev/null 2>&1
+	systemctl restart linkpanel-web-terminal > /dev/null 2>&1
 else
 	write_config_value "WEB_TERMINAL" "false"
 fi
@@ -2238,14 +2238,14 @@ fi
 #----------------------------------------------------------#
 
 echo "[ * ] Configuring File Manager..."
-$HESTIA/bin/v-add-sys-filemanager quiet
+$LINKPANEL/bin/v-add-sys-filemanager quiet
 
 #----------------------------------------------------------#
 #                  Configure dependencies                  #
 #----------------------------------------------------------#
 
 echo "[ * ] Configuring PHP dependencies..."
-$HESTIA/bin/v-add-sys-dependencies quiet
+$LINKPANEL/bin/v-add-sys-dependencies quiet
 
 echo "[ * ] Installing Rclone..."
 curl -s https://rclone.org/install.sh | bash > /dev/null 2>&1
@@ -2256,7 +2256,7 @@ curl -s https://rclone.org/install.sh | bash > /dev/null 2>&1
 
 # Configuring system IPs
 echo "[ * ] Configuring System IP..."
-$HESTIA/bin/v-update-sys-ip > /dev/null 2>&1
+$LINKPANEL/bin/v-update-sys-ip > /dev/null 2>&1
 
 # Get primary IP
 default_nic="$(ip -d -j route show | jq -r '.[] | if .dst == "default" then .dev else empty end')"
@@ -2269,7 +2269,7 @@ local_ip="$primary_ipv4"
 
 # Configuring firewall
 if [ "$iptables" = 'yes' ]; then
-	$HESTIA/bin/v-update-firewall
+	$LINKPANEL/bin/v-update-firewall
 fi
 
 # Get public IP
@@ -2290,13 +2290,13 @@ if [ -n "$pub_ipv4" ] && [ "$pub_ipv4" != "$ip" ]; then
 	check_pve=$(uname -r | grep pve)
 	if [ ! -z "$check_pve" ]; then
 		echo 'hostname=$(hostname --fqdn)' >> /etc/rc.local
-		echo ""$HESTIA/bin/v-change-sys-hostname" "'"$hostname"'"" >> /etc/rc.local
+		echo ""$LINKPANEL/bin/v-change-sys-hostname" "'"$hostname"'"" >> /etc/rc.local
 	fi
-	echo "$HESTIA/bin/v-update-sys-ip" >> /etc/rc.local
+	echo "$LINKPANEL/bin/v-update-sys-ip" >> /etc/rc.local
 	echo "exit 0" >> /etc/rc.local
 	chmod +x /etc/rc.local
 	systemctl enable rc-local > /dev/null 2>&1
-	$HESTIA/bin/v-change-sys-ip-nat "$ip" "$pub_ipv4" > /dev/null 2>&1
+	$LINKPANEL/bin/v-change-sys-ip-nat "$ip" "$pub_ipv4" > /dev/null 2>&1
 	ip="$pub_ipv4"
 fi
 
@@ -2321,7 +2321,7 @@ if [ "$apache" = 'yes' ] && [ "$nginx" = 'yes' ]; then
 fi
 
 # Adding default domain
-$HESTIA/bin/v-add-web-domain "$username" "$servername" "$ip"
+$LINKPANEL/bin/v-add-web-domain "$username" "$servername" "$ip"
 check_result $? "can't create $servername domain"
 
 # Adding cron jobs
@@ -2331,37 +2331,37 @@ min=$(gen_pass '012345' '2')
 hour=$(gen_pass '1234567' '1')
 echo "MAILTO=\"\"" > /var/spool/cron/crontabs/hestiaweb
 echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/2 * * * * sudo /usr/local/hestia/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/hestia/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
-echo "15 02 * * * sudo /usr/local/hestia/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/hestia/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
-echo "30 03 * * * sudo /usr/local/hestia/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/hestia/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 05 * * * sudo /usr/local/hestia/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
-echo "20 00 * * * sudo /usr/local/hestia/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/hestia/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
-echo "$min $hour * * * sudo /usr/local/hestia/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
-echo "41 4 * * * sudo /usr/local/hestia/bin/v-update-sys-hestia-all" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/2 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
+echo "15 02 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
+echo "30 03 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 05 * * * sudo /usr/local/linkpanel/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
+echo "20 00 * * * sudo /usr/local/linkpanel/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
+echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
+echo "41 4 * * * sudo /usr/local/linkpanel/bin/v-update-sys-linkpanel-all" >> /var/spool/cron/crontabs/hestiaweb
 
 chmod 600 /var/spool/cron/crontabs/hestiaweb
 chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
 
 # Enable automatic updates
-$HESTIA/bin/v-add-cron-hestia-autoupdate apt
+$LINKPANEL/bin/v-add-cron-linkpanel-autoupdate apt
 
 # Building initital rrd images
-$HESTIA/bin/v-update-sys-rrd
+$LINKPANEL/bin/v-update-sys-rrd
 
 # Enabling file system quota
 if [ "$quota" = 'yes' ]; then
-	$HESTIA/bin/v-add-sys-quota
+	$LINKPANEL/bin/v-add-sys-quota
 fi
 
 # Set backend port
-$HESTIA/bin/v-change-sys-port $port > /dev/null 2>&1
+$LINKPANEL/bin/v-change-sys-port $port > /dev/null 2>&1
 
 # Create default configuration files
-$HESTIA/bin/v-update-sys-defaults
+$LINKPANEL/bin/v-update-sys-defaults
 
 # Update remaining packages since repositories have changed
 echo -ne "[ * ] Installing remaining software updates..."
@@ -2370,36 +2370,36 @@ apt-get -y upgrade >> $LOG &
 BACK_PID=$!
 echo
 
-# Starting Hestia service
-update-rc.d hestia defaults
-systemctl start hestia
-check_result $? "hestia start failed"
-chown hestiaweb:hestiaweb $HESTIA/data/sessions
+# Starting LinkPanel service
+update-rc.d linkpanel defaults
+systemctl start linkpanel
+check_result $? "linkpanel start failed"
+chown hestiaweb:hestiaweb $LINKPANEL/data/sessions
 
 # Create backup folder and set correct permission
 mkdir -p /backup/
 chmod 755 /backup/
 
 # Create cronjob to generate ssl
-echo "@reboot root sleep 10 && rm /etc/cron.d/hestia-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/hestia/bin/v-add-letsencrypt-host" > /etc/cron.d/hestia-ssl
+echo "@reboot root sleep 10 && rm /etc/cron.d/linkpanel-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/linkpanel/bin/v-add-letsencrypt-host" > /etc/cron.d/linkpanel-ssl
 
 #----------------------------------------------------------#
-#              Set hestia.conf default values              #
+#              Set linkpanel.conf default values              #
 #----------------------------------------------------------#
 
 echo "[ * ] Updating configuration files..."
 
-BIN="$HESTIA/bin"
-source $HESTIA/func/syshealth.sh
+BIN="$LINKPANEL/bin"
+source $LINKPANEL/func/syshealth.sh
 syshealth_repair_system_config
 
-# Add /usr/local/hestia/bin/ to path variable
-echo 'if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+# Add /usr/local/linkpanel/bin/ to path variable
+echo 'if [ "${PATH#*/usr/local/linkpanel/bin*}" = "$PATH" ]; then
+    . /etc/profile.d/linkpanel.sh
 fi' >> /root/.bashrc
 
 #----------------------------------------------------------#
-#                   Hestia Access Info                     #
+#                   LinkPanel Access Info                     #
 #----------------------------------------------------------#
 
 # Comparing hostname and IP
@@ -2415,7 +2415,7 @@ echo -e "\n"
 # Sending notification to admin email
 echo -e "Congratulations!
 
-You have successfully installed Hestia Control Panel on your server.
+You have successfully installed LinkPanel Control Panel on your server.
 
 Ready to get started? Log in using the following credentials:
 
@@ -2426,7 +2426,7 @@ fi
 echo -e -n " 	Username:   $username
 	Password:   $displaypass
 
-Thank you for choosing Hestia Control Panel to power your full stack web server,
+Thank you for choosing LinkPanel Control Panel to power your full stack web server,
 we hope that you enjoy using it as much as we do!
 
 Please feel free to contact us at any time if you have any questions,
@@ -2439,18 +2439,18 @@ GitHub:         https://www.github.com/hestiacp/hestiacp
 Note: Automatic updates are enabled by default. If you would like to disable them,
 please log in and navigate to Server > Updates to turn them off.
 
-Help support the Hestia Control Panel project by donating via PayPal:
+Help support the LinkPanel Control Panel project by donating via PayPal:
 https://www.hestiacp.com/donate
 
 --
 Sincerely yours,
-The Hestia Control Panel development team
+The LinkPanel Control Panel development team
 
 Made with love & pride by the open-source community around the world.
 " >> $tmpfile
 
-send_mail="$HESTIA/web/inc/mail-wrapper.php"
-cat $tmpfile | $send_mail -s "Hestia Control Panel" $email
+send_mail="$LINKPANEL/web/inc/mail-wrapper.php"
+cat $tmpfile | $send_mail -s "LinkPanel Control Panel" $email
 
 # Congrats
 echo
@@ -2458,7 +2458,7 @@ cat $tmpfile
 rm -f $tmpfile
 
 # Add welcome message to notification panel
-$HESTIA/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://hestiacp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.hestiacp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+$LINKPANEL/bin/v-add-user-notification "$username" 'Welcome to LinkPanel Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://hestiacp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.hestiacp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The LinkPanel Control Panel development team</p>'
 
 # Clean-up
 # Sort final configuration file

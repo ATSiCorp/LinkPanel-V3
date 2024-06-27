@@ -16,14 +16,14 @@ domain=$2
 domain_idn=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -86,7 +86,7 @@ build_awstats() {
 
 	# Logo check
 	if [ ! -e "$dir/logo.svg" ]; then
-		cp -r $HESTIA/web/images/logo.svg $dir/
+		cp -r $LINKPANEL/web/images/logo.svg $dir/
 	fi
 
 	# Icon directory check
@@ -141,7 +141,7 @@ groups=$(groups "$user" | cut -f 3 -d ' ')
 chown -R $user:$groups "$dir"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

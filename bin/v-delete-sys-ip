@@ -15,16 +15,16 @@
 ip="$1"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -44,7 +44,7 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Import IP variables
-source "$HESTIA/data/ips/$ip"
+source "$LINKPANEL/data/ips/$ip"
 cidr="$(convert_netmask "$NETMASK")"
 
 # Get primary IP
@@ -76,10 +76,10 @@ if [ -e "/etc/sysconfig/network-scripts/ifcfg-$interface" ]; then
 fi
 
 # Deleting startup conf on Debian/Ubuntu
-if [ -f "/etc/netplan/60-hestia.yaml" ]; then
-	sed -i "/$ip\//d" /etc/netplan/60-hestia.yaml
-	if ! grep -q '-' /etc/netplan/60-hestia.yaml; then
-		rm /etc/netplan/60-hestia.yaml
+if [ -f "/etc/netplan/60-linkpanel.yaml" ]; then
+	sed -i "/$ip\//d" /etc/netplan/60-linkpanel.yaml
+	if ! grep -q '-' /etc/netplan/60-linkpanel.yaml; then
+		rm /etc/netplan/60-linkpanel.yaml
 	fi
 elif [ -e "/etc/network/interfaces" ]; then
 	ip_str="$(grep -n "$ip$" /etc/network/interfaces | cut -f1 -d:)"
@@ -90,8 +90,8 @@ elif [ -e "/etc/network/interfaces" ]; then
 	fi
 fi
 
-# Deleting Hestia IP
-rm -f $HESTIA/data/ips/$ip
+# Deleting LinkPanel IP
+rm -f $LINKPANEL/data/ips/$ip
 
 # Deleting web config
 if [ -n "$WEB_SYSTEM" ]; then
@@ -129,7 +129,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Updating user conf

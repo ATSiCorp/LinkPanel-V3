@@ -15,12 +15,12 @@ rule=$1
 format=${2-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 json_list() {
 	echo '{'
@@ -74,7 +74,7 @@ is_object_valid '../../../data/firewall/rules' 'RULE' "$rule"
 #----------------------------------------------------------#
 
 # Parsing rules
-parse_object_kv_list $(grep "RULE='$rule'" $HESTIA/data/firewall/rules.conf)
+parse_object_kv_list $(grep "RULE='$rule'" $LINKPANEL/data/firewall/rules.conf)
 
 # Listing data
 case $format in
@@ -85,7 +85,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

@@ -11,12 +11,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -34,9 +34,9 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Adding default ruleset
-if [ -z "$(ls -A $HESTIA/data/firewall 2> /dev/null)" ]; then
-	cp -rf $HESTIA_COMMON_DIR/firewall $HESTIA/data/
-	rm -f $HESTIA/data/firewall/ipset/blacklist.sh $HESTIA/data/firewall/ipset/blacklist.ipv6.sh
+if [ -z "$(ls -A $LINKPANEL/data/firewall 2> /dev/null)" ]; then
+	cp -rf $HESTIA_COMMON_DIR/firewall $LINKPANEL/data/
+	rm -f $LINKPANEL/data/firewall/ipset/blacklist.sh $LINKPANEL/data/firewall/ipset/blacklist.ipv6.sh
 fi
 
 # Updating FIREWAL_SYSTEM value
@@ -46,7 +46,7 @@ $BIN/v-change-sys-config-value "FIREWALL_SYSTEM" "iptables"
 $BIN/v-update-firewall
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

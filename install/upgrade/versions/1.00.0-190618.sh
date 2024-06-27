@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.00.0-190618
+# LinkPanel Control Panel upgrade script for target version 1.00.0-190618
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -9,7 +9,7 @@
 # Add webmail alias variable to system configuration if non-existent
 if [ -z "$WEBMAIL_ALIAS" ]; then
 	echo "[ * ] Updating webmail alias configuration..."
-	$HESTIA/bin/v-change-sys-config-value 'WEBMAIL_ALIAS' "webmail"
+	$LINKPANEL/bin/v-change-sys-config-value 'WEBMAIL_ALIAS' "webmail"
 fi
 
 # Update Apache and Nginx configuration to support new file structure
@@ -39,14 +39,14 @@ if [ ! -e /etc/ssl/dhparam.pem ]; then
 fi
 
 # Back up default package and install latest version
-if [ -d $HESTIA/data/packages/ ]; then
+if [ -d $LINKPANEL/data/packages/ ]; then
 	echo "[ * ] Replacing default packages..."
-	cp -f $HESTIA/data/packages/default.pkg $HESTIA_BACKUP/packages/
+	cp -f $LINKPANEL/data/packages/default.pkg $HESTIA_BACKUP/packages/
 fi
 
 # Remove old Office 365 template as there is a newer version with an updated name
-if [ -f $HESTIA/data/templates/dns/o365.tpl ]; then
-	rm -f $HESTIA/data/templates/dns/o365.tpl
+if [ -f $LINKPANEL/data/templates/dns/o365.tpl ]; then
+	rm -f $LINKPANEL/data/templates/dns/o365.tpl
 fi
 
 # Back up and remove default index.html if it exists
@@ -69,7 +69,7 @@ chmod 644 /var/www/html/*
 chmod 644 /var/www/document_errors/*
 
 for user in $($BIN/v-list-users plain | cut -f1); do
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$LINKPANEL/data/users/$user
 	for domain in $($BIN/v-list-web-domains $user plain | cut -f 1); do
 		WEBFOLDER="/home/$user/web/$domain/public_html"
 		folderchecksum=$(find "$WEBFOLDER/css" "$WEBFOLDER/js" "$WEBFOLDER/webfonts" -type f -print0 2> /dev/null | sort -z | xargs -r0 cat | md5sum | cut -d" " -f1)
@@ -95,25 +95,25 @@ if [ -d "/etc/roundcube" ]; then
 	chown root:www-data /etc/roundcube/debian-db*
 fi
 
-# Add a general group for normal users created by Hestia
+# Add a general group for normal users created by LinkPanel
 echo "[ * ] Verifying ACLs and hardening user permissions..."
-if [ -z "$(grep ^hestia-users: /etc/group)" ]; then
-	groupadd --system "hestia-users"
+if [ -z "$(grep ^linkpanel-users: /etc/group)" ]; then
+	groupadd --system "linkpanel-users"
 fi
 
-# Make sure non-admin users belong to correct Hestia group
+# Make sure non-admin users belong to correct LinkPanel group
 for user in $($BIN/v-list-users plain | cut -f1); do
 	if [ "$user" != "admin" ]; then
-		usermod -a -G "hestia-users" "$user"
+		usermod -a -G "linkpanel-users" "$user"
 		setfacl -m "u:$user:r-x" "$HOMEDIR/$user"
 
 		# Update FTP users groups membership
 		uid=$(id -u $user)
 		for ftp_user in $(cat /etc/passwd | grep -v "^$user:" | grep "^$user.*:$uid:$uid:" | cut -d ":" -f1); do
-			usermod -a -G "hestia-users" "$ftp_user"
+			usermod -a -G "linkpanel-users" "$ftp_user"
 		done
 	fi
-	setfacl -m "g:hestia-users:---" "$HOMEDIR/$user"
+	setfacl -m "g:linkpanel-users:---" "$HOMEDIR/$user"
 done
 
 # Add unassigned hosts configuration to Nginx and Apache
@@ -159,7 +159,7 @@ done
 if [ ! -f /etc/cron.daily/php-session-cleanup ]; then
 	echo '#!/bin/sh' > /etc/cron.daily/php-session-cleanup
 	echo "find -O3 /home/*/tmp/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
-	echo "find -O3 $HESTIA/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
+	echo "find -O3 $LINKPANEL/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
 fi
 chmod 755 /etc/cron.daily/php-session-cleanup
 
@@ -190,13 +190,13 @@ if [ -f /etc/roundcube/main.inc.php ]; then
 fi
 
 # Remove old OS-specific installation files if they exist to free up space
-if [ -d $HESTIA/install/ubuntu ]; then
-	echo "[ * ] Removing old HestiaCP installation files for Ubuntu..."
-	rm -rf $HESTIA/install/ubuntu
+if [ -d $LINKPANEL/install/ubuntu ]; then
+	echo "[ * ] Removing old LinkPanelCP installation files for Ubuntu..."
+	rm -rf $LINKPANEL/install/ubuntu
 fi
-if [ -d $HESTIA/install/debian ]; then
-	echo "[ * ] Removing old HestiaCP installation files for Debian..."
-	rm -rf $HESTIA/install/debian
+if [ -d $LINKPANEL/install/debian ]; then
+	echo "[ * ] Removing old LinkPanelCP installation files for Debian..."
+	rm -rf $LINKPANEL/install/debian
 fi
 
 # Fix Dovecot configuration
@@ -230,13 +230,13 @@ fi
 # Add IMAP system variable to configuration if Dovecot is installed
 if [ -z "$IMAP_SYSTEM" ]; then
 	if [ -f /usr/bin/dovecot ]; then
-		echo "[ * ] Adding missing IMAP_SYSTEM variable to hestia.conf..."
-		echo "IMAP_SYSTEM = 'dovecot'" >> $HESTIA/conf/hestia.conf
+		echo "[ * ] Adding missing IMAP_SYSTEM variable to linkpanel.conf..."
+		echo "IMAP_SYSTEM = 'dovecot'" >> $LINKPANEL/conf/linkpanel.conf
 	fi
 fi
 
 # Run sftp jail once
-$HESTIA/bin/v-add-sys-sftp-jail
+$LINKPANEL/bin/v-add-sys-sftp-jail
 
 # Enable SFTP subsystem for SSH
 sftp_subsys_enabled=$(grep -iE "^#?.*subsystem.+(sftp )?sftp-server" /etc/ssh/sshd_config)
@@ -248,7 +248,7 @@ fi
 
 # Remove and migrate obsolete object keys
 for user in $($BIN/v-list-users plain | cut -f1); do
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$LINKPANEL/data/users/$user
 
 	# Web keys
 	for domain in $($BIN/v-list-web-domains $user plain | cut -f 1); do

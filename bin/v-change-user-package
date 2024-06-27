@@ -16,12 +16,12 @@ package=$2
 force=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 is_package_available() {
 
@@ -34,7 +34,7 @@ is_package_available() {
 	DISK_QUOTA='0'
 	BANDWIDTH='0'
 
-	source_conf "$HESTIA/data/packages/$package.pkg"
+	source_conf "$LINKPANEL/data/packages/$package.pkg"
 
 	# Checking usage agains package limits
 	if [ "$WEB_DOMAINS" != 'unlimited' ]; then
@@ -79,7 +79,7 @@ change_user_package() {
 	# Keep user creation date and time saved
 	creation_time="$TIME"
 	creation_date="$DATE"
-	source_conf "$HESTIA/data/packages/$package.pkg"
+	source_conf "$LINKPANEL/data/packages/$package.pkg"
 	echo "NAME='$NAME'
 PACKAGE='$package'
 WEB_TEMPLATE='$WEB_TEMPLATE'
@@ -174,17 +174,17 @@ check_hestia_demo_mode
 change_user_package
 
 # Update user shell
-shell_conf=$(cat "$HESTIA/data/packages/$package.pkg" | grep -m1 'SHELL' | cut -f 2 -d \')
-shell_jail_enabled_conf=$(cat "$HESTIA/data/packages/$package.pkg" | grep 'SHELL_JAIL_ENABLED' | cut -f 2 -d \')
+shell_conf=$(cat "$LINKPANEL/data/packages/$package.pkg" | grep -m1 'SHELL' | cut -f 2 -d \')
+shell_jail_enabled_conf=$(cat "$LINKPANEL/data/packages/$package.pkg" | grep 'SHELL_JAIL_ENABLED' | cut -f 2 -d \')
 $BIN/v-change-user-shell "$user" "$shell_conf" "$shell_jail_enabled_conf"
 
 # Run template trigger
-if [ -x "$HESTIA/data/packages/$package.sh" ]; then
-	$HESTIA/data/packages/$package.sh "$user" "$CONTACT" "$NAME"
+if [ -x "$LINKPANEL/data/packages/$package.sh" ]; then
+	$LINKPANEL/data/packages/$package.sh "$user" "$CONTACT" "$NAME"
 fi
 
 # Update disk quota
-source $HESTIA/conf/hestia.conf
+source $LINKPANEL/conf/linkpanel.conf
 if [ "$DISK_QUOTA" = 'yes' ]; then
 	$BIN/v-update-user-quota "$user"
 fi
@@ -194,7 +194,7 @@ if [ "$RESOURCES_LIMIT" = 'yes' ]; then
 	$BIN/v-update-user-cgroup "$user"
 fi
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -2,7 +2,7 @@
 
 # ======================================================== #
 #
-# Hestia Control Panel Installation Routine
+# LinkPanel Control Panel Installation Routine
 # Automatic OS detection wrapper
 # https://www.hestiacp.com/
 #
@@ -78,7 +78,7 @@ fi
 no_support_message() {
 	echo "****************************************************"
 	echo "Your operating system (OS) is not supported by"
-	echo "Hestia Control Panel. Officially supported releases:"
+	echo "LinkPanel Control Panel. Officially supported releases:"
 	echo "****************************************************"
 	echo "  Debian 10, 11, 12"
 	echo "  Ubuntu 20.04, 22.04 LTS"

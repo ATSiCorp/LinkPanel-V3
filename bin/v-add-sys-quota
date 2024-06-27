@@ -12,10 +12,10 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -81,7 +81,7 @@ if [ -n "$(quotaon -pa | grep " $mnt " | grep 'user\|group' | grep 'is off')" ];
 	check_result $? "quota can't be enabled in $mnt" "$E_DISK"
 fi
 
-# Updating hestia.conf value
+# Updating linkpanel.conf value
 $BIN/v-change-sys-config-value "DISK_QUOTA" "yes"
 
 # Rebuilding user quota
@@ -90,7 +90,7 @@ for user in $("$BIN/v-list-users" list); do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

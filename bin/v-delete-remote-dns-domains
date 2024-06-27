@@ -12,14 +12,14 @@
 host=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
-source $HESTIA/func/remote.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/remote.sh
+source $LINKPANEL/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -40,9 +40,9 @@ check_hestia_demo_mode
 IFS=$'\n'
 
 if [ -z $host ]; then
-	hosts=$(cat "$HESTIA/conf/dns-cluster.conf")
+	hosts=$(cat "$LINKPANEL/conf/dns-cluster.conf")
 else
-	hosts=$(grep "HOST='$host'" "$HESTIA/conf/dns-cluster.conf")
+	hosts=$(grep "HOST='$host'" "$LINKPANEL/conf/dns-cluster.conf")
 fi
 
 # Starting cluster loop
@@ -65,11 +65,11 @@ for cluster in $hosts; do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Updating pipe
-pipe="$HESTIA/data/queue/dns-cluster.pipe"
+pipe="$LINKPANEL/data/queue/dns-cluster.pipe"
 str=$(grep -n "$SCRIPT $1 $2$" $pipe | cut -f1 -d: | head -n1)
 if [ -n "$str" ]; then
 	sed -i "$str d" $pipe

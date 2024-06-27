@@ -7,7 +7,7 @@
 # Original Version by Pavel Galkin (https://skurudo.ru)
 # https://github.com/skurudo/phpmyadmin-fixer
 #
-# Changed some lines to fit to Hestia Configuration.
+# Changed some lines to fit to LinkPanel Configuration.
 #
 
 PASS=$(gen_pass)

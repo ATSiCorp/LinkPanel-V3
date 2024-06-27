@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.2.0
+# LinkPanel Control Panel upgrade script for target version 1.2.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -100,7 +100,7 @@ if [ -z "$($BIN/v-list-cron-jobs admin | grep 'v-update-sys-queue daily')" ]; th
 	command="sudo $BIN/v-update-sys-queue daily"
 	$BIN/v-add-cron-job 'admin' '01' '00' '*' '*' '*' "$command"
 fi
-[ ! -f "touch $HESTIA/data/queue/daily.pipe" ] && touch $HESTIA/data/queue/daily.pipe
+[ ! -f "touch $LINKPANEL/data/queue/daily.pipe" ] && touch $LINKPANEL/data/queue/daily.pipe
 
 # Remove existing network-up hooks so they get regenerated when updating the firewall
 # - network hook will also restore ipset config during start-up
@@ -113,41 +113,41 @@ if [ -f "/etc/network/if-pre-up.d/iptables" ]; then
 	$BIN/v-update-firewall
 fi
 
-# Add hestia-event.conf, if the server is running apache2
+# Add linkpanel-event.conf, if the server is running apache2
 if [ "$WEB_SYSTEM" = "apache2" ]; then
 	echo "[ * ] Updating Apache2 configuration..."
 	# Cleanup
-	rm --force /etc/apache2/mods-available/hestia-event.conf
-	rm --force /etc/apache2/mods-enabled/hestia-event.conf
-	rm --force /etc/apache2/conf-available/hestia-event.conf
-	rm --force /etc/apache2/conf-enabled/hestia-event.conf
+	rm --force /etc/apache2/mods-available/linkpanel-event.conf
+	rm --force /etc/apache2/mods-enabled/linkpanel-event.conf
+	rm --force /etc/apache2/conf-available/linkpanel-event.conf
+	rm --force /etc/apache2/conf-enabled/linkpanel-event.conf
 
-	if [ $(a2query -M) = 'event' ] && [ ! -e "/etc/apache2/conf.d/hestia-event.conf" ]; then
-		cp -f $HESTIA_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
+	if [ $(a2query -M) = 'event' ] && [ ! -e "/etc/apache2/conf.d/linkpanel-event.conf" ]; then
+		cp -f $HESTIA_INSTALL_DIR/apache2/linkpanel-event.conf /etc/apache2/conf.d/
 	fi
 
 	# Move apache mod_status config to /mods-available and rename it to prevent losing changes on upgrade
-	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
-	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/hestia-status.load
+	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/linkpanel-status.conf
+	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/linkpanel-status.load
 	a2dismod --quiet status > /dev/null 2>&1
-	a2enmod --quiet hestia-status > /dev/null 2>&1
+	a2enmod --quiet linkpanel-status > /dev/null 2>&1
 	rm --force /etc/apache2/mods-enabled/status.conf # a2dismod will not remove the file if it isn't a symlink
 fi
 
 # Install File Manager during upgrade if environment variable oesn't already exist and isn't set to false
 # so that we don't override preference
-FILE_MANAGER_CHECK=$(cat $HESTIA/conf/hestia.conf | grep "FILE_MANAGER='false'")
+FILE_MANAGER_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep "FILE_MANAGER='false'")
 if [ -z "$FILE_MANAGER_CHECK" ]; then
-	if [ ! -e "$HESTIA/web/fm/configuration.php" ]; then
+	if [ ! -e "$LINKPANEL/web/fm/configuration.php" ]; then
 		echo "[ ! ] Installing File Manager..."
 		# Install the File Manager
-		$HESTIA/bin/v-add-sys-filemanager quiet
+		$LINKPANEL/bin/v-add-sys-filemanager quiet
 	else
 		echo "[ * ] Updating File Manager configuration..."
 		# Update configuration.php
-		cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $HESTIA/web/fm/configuration.php
+		cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
 		# Set environment variable for interface
-		$HESTIA/bin/v-change-sys-config-value 'FILE_MANAGER' 'true'
+		$LINKPANEL/bin/v-change-sys-config-value 'FILE_MANAGER' 'true'
 	fi
 fi
 
@@ -165,7 +165,7 @@ fi
 
 # Fix public_(s)html group ownership
 echo "[ * ] Updating public_(s)html ownership..."
-for user in $($HESTIA/bin/v-list-sys-users plain); do
+for user in $($LINKPANEL/bin/v-list-sys-users plain); do
 	# skip users with missing home folder
 	[[ -d /home/${user}/ ]] || continue
 
@@ -182,7 +182,7 @@ if [ -e /var/lib/phpmyadmin/blowfish_secret.inc.php ]; then
 fi
 
 # Ensure that backup compression level is correctly set
-GZIP_LVL_CHECK=$(cat $HESTIA/conf/hestia.conf | grep BACKUP_GZIP)
+GZIP_LVL_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep BACKUP_GZIP)
 if [ -z "$GZIP_LVL_CHECK" ]; then
 	echo "[ * ] Updating backup compression level variable..."
 	$BIN/v-change-sys-config-value "BACKUP_GZIP" '9'
@@ -190,29 +190,29 @@ fi
 
 # Update phpMyAdmin/phpPgAdmin templates and set missing alias variables if necessary
 if [ -e "/var/lib/phpmyadmin" ]; then
-	PMA_ALIAS_CHECK=$(cat $HESTIA/conf/hestia.conf | grep DB_PMA_ALIAS)
+	PMA_ALIAS_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep DB_PMA_ALIAS)
 	if [ -z "$PMA_ALIAS_CHECK" ]; then
 		echo "[ * ] Updating phpMyAdmin alias..."
-		$HESTIA/bin/v-change-sys-db-alias "pma" "phpMyAdmin"
+		$LINKPANEL/bin/v-change-sys-db-alias "pma" "phpMyAdmin"
 	else
 		echo "[ * ] Updating phpMyAdmin configuration..."
-		$HESTIA/bin/v-change-sys-db-alias "pma" "$DB_PMA_ALIAS"
+		$LINKPANEL/bin/v-change-sys-db-alias "pma" "$DB_PMA_ALIAS"
 	fi
 fi
 
 if [ -e "/var/lib/phppgadmin" ]; then
-	PGA_ALIAS_CHECK=$(cat $HESTIA/conf/hestia.conf | grep DB_PGA_ALIAS)
+	PGA_ALIAS_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep DB_PGA_ALIAS)
 	if [ -z "$PGA_ALIAS_CHECK" ]; then
 		echo "[ * ] Updating phpPgAdmin alias..."
-		$HESTIA/bin/v-change-sys-db-alias "pga" "phpPgAdmin"
+		$LINKPANEL/bin/v-change-sys-db-alias "pga" "phpPgAdmin"
 	else
 		echo "[ * ] Updating phpPgAdmin configuration..."
-		$HESTIA/bin/v-change-sys-db-alias "pga" "$DB_PGA_ALIAS"
+		$LINKPANEL/bin/v-change-sys-db-alias "pga" "$DB_PGA_ALIAS"
 	fi
 fi
 
 # Ensure that backup compression level is correctly set
-GZIP_LVL_CHECK=$(cat $HESTIA/conf/hestia.conf | grep BACKUP_GZIP)
+GZIP_LVL_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep BACKUP_GZIP)
 if [ -z "$GZIP_LVL_CHECK" ]; then
 	echo "[ * ] Updating backup compression level variable..."
 	$BIN/v-change-sys-config-value "BACKUP_GZIP" '9'

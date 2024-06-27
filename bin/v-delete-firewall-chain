@@ -15,14 +15,14 @@ chain=$(echo "$1" | tr '[:lower:]' '[:upper:]')
 
 iptables='/sbin/iptables'
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source "$HESTIA/func/main.sh"
-# shellcheck source=/usr/local/hestia/func/firewall.sh
-source "$HESTIA/func/firewall.sh"
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source "$LINKPANEL/func/main.sh"
+# shellcheck source=/usr/local/linkpanel/func/firewall.sh
+source "$LINKPANEL/func/firewall.sh"
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -43,8 +43,8 @@ check_hestia_demo_mode
 heal_iptables_links
 
 # Deleting chain
-chains="$HESTIA/data/firewall/chains.conf"
-banlist="$HESTIA/data/firewall/banlist.conf"
+chains="$LINKPANEL/data/firewall/chains.conf"
+banlist="$LINKPANEL/data/firewall/banlist.conf"
 chain_param=""
 [ -f "$chains" ] && chain_param=$(grep "CHAIN='$chain'" "$chains")
 if [ -n "$chain_param" ]; then
@@ -63,7 +63,7 @@ $iptables -X fail2ban-$CHAIN 2> /dev/null
 [ -f "$chains" ] && chmod 660 "$chains"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

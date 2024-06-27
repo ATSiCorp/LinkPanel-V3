@@ -4,7 +4,7 @@
 #
 # example: v-update-mail-templates
 #
-# This function for obtaining updated webmail templates from Hestia package.
+# This function for obtaining updated webmail templates from LinkPanel package.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,19 +15,19 @@ restart=$1
 skip=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                       Action                             #
 #----------------------------------------------------------#
 
 # Update templates
-cp -rf $HESTIA_INSTALL_DIR/templates/mail $HESTIA/data/templates/
+cp -rf $HESTIA_INSTALL_DIR/templates/mail $LINKPANEL/data/templates/
 
 # Rebuild mail domains if mail services are enabled
 if [ -z "$skip" ]; then
@@ -38,7 +38,7 @@ if [ -z "$skip" ]; then
 	fi
 fi
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 if [ -n "$restart" ] || [ "$restart" == "yes" ]; then

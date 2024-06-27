@@ -9,8 +9,8 @@ chmod +x /tmp/hst_autocompile.sh
 
 mkdir -p /opt/hestiacp
 
-# Building Hestia
-if bash /tmp/hst_autocompile.sh --hestia --noinstall --keepbuild $branch; then
+# Building LinkPanel
+if bash /tmp/hst_autocompile.sh --linkpanel --noinstall --keepbuild $branch; then
 	cp /tmp/hestiacp-src/deb/*.deb /opt/hestiacp/
 fi
 

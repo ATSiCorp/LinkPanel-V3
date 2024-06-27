@@ -4,11 +4,11 @@ These are some install script generators created by the community:
 
 - [hestiacp-scriptline-generator](https://github.com/gabizz/hestiacp-scriptline-generator)
 
-  Tiny online app aimed to generate the necessary command for an unattended Hestia Control Panel installation.
+  Tiny online app aimed to generate the necessary command for an unattended LinkPanel Control Panel installation.
 
-- [HestiaCP-Command-Creator](https://github.com/turbopixel/HestiaCP-Command-Creator)
+- [LinkPanelCP-Command-Creator](https://github.com/turbopixel/LinkPanelCP-Command-Creator)
 
-  Vue.js based web app to generate the command line for an unattended Hestia Control Panel installation.
+  Vue.js based web app to generate the command line for an unattended LinkPanel Control Panel installation.
 
 We thank the community for these contributions, which our [official install script generator](/install) is inspired by.
 

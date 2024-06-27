@@ -9,14 +9,14 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 # upgrade config file
-source "$HESTIA/install/upgrade/upgrade.conf"
+source "$LINKPANEL/install/upgrade/upgrade.conf"
 
 # Folder paths
 SM_INSTALL_DIR="/var/lib/snappymail"
@@ -33,9 +33,9 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/hestia/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+# Ensure that $LINKPANEL (/usr/local/linkpanel/) and other variables are valid.
+if [ -z "$LINKPANEL" ]; then
+	LINKPANEL="/usr/local/linkpanel"
 fi
 
 if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
@@ -74,14 +74,14 @@ else
 	mysql -e "DROP DATABASE snappymail" 2>&1
 	mysql -e "DROP USER snappymail@localhost"
 fi
-# Updating hestia.conf
+# Updating linkpanel.conf
 if [ -z "$(echo "$WEBMAIL_SYSTEM" | grep -w 'snappymail')" ]; then
 	# remove snappymail from webmail list and make sure the string doesn't start with a comma
 	$BIN/v-change-sys-config-value 'WEBMAIL_SYSTEM' "$(echo "$WEBMAIL_SYSTEM" | sed "s/snappymail//g" | sed 's/^,//g')"
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "Plugins" "SnappyMail removed (Version: $version)."

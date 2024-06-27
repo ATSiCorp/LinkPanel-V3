@@ -18,14 +18,14 @@ aliases=$3
 mail=${4// /}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # LE API
 LE_API='https://acme-v02.api.letsencrypt.org'
@@ -59,7 +59,7 @@ query_le_v2() {
 	# Save http response to file passed as "$4" arg or print to stdout if not provided
 	# http response headers are always sent to stdout
 	local save_to_file=${4:-"/dev/stdout"}
-	curl --location --user-agent "HestiaCP" --insecure --retry 5 --retry-connrefused --silent --dump-header /dev/stdout --data "$post_data" "$1" --header "$content" --output "$save_to_file"
+	curl --location --user-agent "LinkPanelCP" --insecure --retry 5 --retry-connrefused --silent --dump-header /dev/stdout --data "$post_data" "$1" --header "$content" --output "$save_to_file"
 	debug_log "API call" "exit status: $?"
 }
 
@@ -137,7 +137,7 @@ else
 	fi
 fi
 
-log_file="/var/log/hestia/LE-${user}-${domain}.log"
+log_file="/var/log/linkpanel/LE-${user}-${domain}.log"
 touch "$log_file"
 chmod 600 "$log_file"
 
@@ -152,8 +152,8 @@ domain: ${domain}
 # Registering LetsEncrypt user account
 $BIN/v-add-letsencrypt-user $user
 if [ "$?" -ne 0 ]; then
-	touch $HESTIA/data/queue/letsencrypt.pipe
-	sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+	touch $LINKPANEL/data/queue/letsencrypt.pipe
+	sed -i "/ $domain /d" $LINKPANEL/data/queue/letsencrypt.pipe
 	send_notice "LETSENCRYPT" "Account registration failed ($user)"
 	check_result "$E_CONNECT" "LE account registration ($user)" > /dev/null
 fi
@@ -165,7 +165,7 @@ source $USER_DATA/ssl/le.conf
 if [ "$aliases" = "*.$domain" ]; then
 	wildcard='yes'
 	proto="dns-01"
-	if [ ! -e "$HESTIA/data/users/$user/dns/$domain.conf" ]; then
+	if [ ! -e "$LINKPANEL/data/users/$user/dns/$domain.conf" ]; then
 		check_result "$E_NOTEXIST" "DNS domain $domain doesn't exist"
 	fi
 else
@@ -208,7 +208,7 @@ if [ -n "$DNS_SYSTEM" ]; then
 fi
 
 # Requesting nonce / STEP 1
-answer=$(curl --user-agent "HestiaCP" -s -I "$LE_API/directory")
+answer=$(curl --user-agent "LinkPanelCP" -s -I "$LE_API/directory")
 nonce=$(echo "$answer" | grep -i nonce | cut -f2 -d \  | tr -d '\r\n')
 status=$(echo "$answer" | grep HTTP/ | tail -n1 | cut -f 2 -d ' ')
 
@@ -445,7 +445,7 @@ done
 
 # Generating new ssl certificate
 ssl_dir=$($BIN/v-generate-ssl-cert "$domain" "info@$domain" "US" "California" \
-	"San Francisco" "Hestia" "IT" "$aliases" | tail -n1 | awk '{print $2}')
+	"San Francisco" "LinkPanel" "IT" "$aliases" | tail -n1 | awk '{print $2}')
 
 # Sending CSR to finalize order / STEP 6
 csr=$(openssl req -in $ssl_dir/$domain.csr -outform DER | encode_base64)
@@ -501,7 +501,7 @@ done
 
 # Fallback on depreciated download method for certs (unauthenticated GET)
 if [[ $status != 200 ]]; then
-	answer=$(curl --insecure --user-agent "HestiaCP" --retry 5 --retry-connrefused --silent --dump-header /dev/stdout "$certificate" --output "$ssl_dir/$domain.pem")
+	answer=$(curl --insecure --user-agent "LinkPanelCP" --retry 5 --retry-connrefused --silent --dump-header /dev/stdout "$certificate" --output "$ssl_dir/$domain.pem")
 	status=$(echo "$answer" | grep HTTP/ | tail -n1 | cut -f 2 -d ' ')
 
 	debug_log "Step 8 - Fallback" "- status: ${status}\n- answer: ${answer}"
@@ -562,17 +562,17 @@ fi
 
 if [ "$?" -ne '0' ]; then
 	[ -d "$ssl_dir" ] && rm -rf "$ssl_dir"
-	touch $HESTIA/data/queue/letsencrypt.pipe
-	sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+	touch $LINKPANEL/data/queue/letsencrypt.pipe
+	sed -i "/ $domain /d" $LINKPANEL/data/queue/letsencrypt.pipe
 	send_notice 'LETSENCRYPT' "$domain certificate installation failed ($domain)"
 	check_result $? "SSL install" > /dev/null
 fi
 
 # Adding LE autorenew cronjob
-if [ -z "$(grep v-update-letsen "$HESTIA/data/users/$ROOT_USER/cron.conf")" ]; then
+if [ -z "$(grep v-update-letsen "$LINKPANEL/data/users/$ROOT_USER/cron.conf")" ]; then
 	min=$(generate_password '012345' '2')
 	hour=$(generate_password '1234567' '1')
-	echo "$min $hour * * * sudo /usr/local/hestia/bin/v-update-letsencrypt-ssl" > /etc/cron.d/hestiaweb
+	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" > /etc/cron.d/hestiaweb
 fi
 
 # Updating letsencrypt key
@@ -609,12 +609,12 @@ fi
 [ -d "$ssl_dir" ] && rm -rf "$ssl_dir"
 
 #----------------------------------------------------------#
-#                        Hestia                            #
+#                        LinkPanel                            #
 #----------------------------------------------------------#
 
 # Deleting task from queue
-touch $HESTIA/data/queue/letsencrypt.pipe
-sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+touch $LINKPANEL/data/queue/letsencrypt.pipe
+sed -i "/ $domain /d" $LINKPANEL/data/queue/letsencrypt.pipe
 
 # Notifying user
 send_notice 'LETSENCRYPT' "$domain SSL has been installed successfully"

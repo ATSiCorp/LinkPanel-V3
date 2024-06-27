@@ -29,7 +29,7 @@ web/templates/
 # Patch files
 /install/upgrade/patch/*
 
-# Hestia Nginx.conf
+# LinkPanel Nginx.conf
 /src/deb/nginx/nginx.conf
 /src/rpm/nginx/nginx.conf
 

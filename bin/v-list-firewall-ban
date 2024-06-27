@@ -14,18 +14,18 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
 	IFS=$'\n'
 	i=1
-	objects=$(grep IP $HESTIA/data/firewall/banlist.conf | wc -l)
+	objects=$(grep IP $LINKPANEL/data/firewall/banlist.conf | wc -l)
 	echo "{"
 	while read str; do
 		parse_object_kv_list "$str"
@@ -41,7 +41,7 @@ json_list() {
 			echo
 		fi
 		((i++))
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $LINKPANEL/data/firewall/banlist.conf)
 	echo '}'
 }
 
@@ -53,7 +53,7 @@ shell_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo "$IP $CHAIN $TIME $DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $LINKPANEL/data/firewall/banlist.conf)
 }
 
 # PLAIN list function
@@ -62,7 +62,7 @@ plain_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo -e "$IP\t$CHAIN\t$TIME\t$DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $LINKPANEL/data/firewall/banlist.conf)
 }
 
 # CSV list function
@@ -72,7 +72,7 @@ csv_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo "$IP,$CHAIN,$TIME,$DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $LINKPANEL/data/firewall/banlist.conf)
 }
 
 #----------------------------------------------------------#
@@ -88,7 +88,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

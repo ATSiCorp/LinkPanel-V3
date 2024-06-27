@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 ob_start();
 unset($_SESSION["error_msg"]);

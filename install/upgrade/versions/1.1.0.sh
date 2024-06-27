@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.1.0
+# LinkPanel Control Panel upgrade script for target version 1.1.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -22,7 +22,7 @@ fi
 # Implement recidive jail for fail2ban
 if [ ! -z "$FIREWALL_EXTENSION" ]; then
 	if ! cat /etc/fail2ban/jail.local | grep -q "\[recidive\]"; then
-		echo -e "\n\n[recidive]\nenabled  = true\nfilter   = recidive\naction   = hestia[name=HESTIA]\nlogpath  = /var/log/fail2ban.log\nmaxretry = 3\nfindtime = 86400\nbantime  = 864000" >> /etc/fail2ban/jail.local
+		echo -e "\n\n[recidive]\nenabled  = true\nfilter   = recidive\naction   = linkpanel[name=LINKPANEL]\nlogpath  = /var/log/fail2ban.log\nmaxretry = 3\nfindtime = 86400\nbantime  = 864000" >> /etc/fail2ban/jail.local
 	fi
 fi
 
@@ -52,8 +52,8 @@ if [ -e "/etc/clamav/clamd.conf" ]; then
 fi
 
 # Remove errornous history.log file created by certain builds due to bug in v-restart-system
-if [ -e $HESTIA/data/users/history.log ]; then
-	rm -f $HESTIA/data/users/history.log
+if [ -e $LINKPANEL/data/users/history.log ]; then
+	rm -f $LINKPANEL/data/users/history.log
 fi
 
 # Use exim4 server hostname instead of mail domain and remove hardcoded mail prefix
@@ -78,15 +78,15 @@ if [ -d /home/admin ]; then
 fi
 
 # Fix sftp jail cronjob
-if [ -e "/etc/cron.d/hestia-sftp" ]; then
-	if ! cat /etc/cron.d/hestia-sftp | grep -q 'root'; then
-		echo "@reboot root /usr/local/hestia/bin/v-add-sys-sftp-jail" > /etc/cron.d/hestia-sftp
+if [ -e "/etc/cron.d/linkpanel-sftp" ]; then
+	if ! cat /etc/cron.d/linkpanel-sftp | grep -q 'root'; then
+		echo "@reboot root /usr/local/linkpanel/bin/v-add-sys-sftp-jail" > /etc/cron.d/linkpanel-sftp
 	fi
 fi
 
 # Create default writeable folders for all users
 echo "[ * ] Updating default writable folders for all users..."
-for user in $($HESTIA/bin/v-list-sys-users plain); do
+for user in $($LINKPANEL/bin/v-list-sys-users plain); do
 	mkdir -p \
 		$HOMEDIR/$user/.cache \
 		$HOMEDIR/$user/.config \
@@ -112,13 +112,13 @@ if fail2ban-client status sshd > /dev/null 2>&1; then
 fi
 
 # Update Office 365/Microsoft 365 DNS template
-if [ -e "$HESTIA/data/templates/dns/office365.tpl" ]; then
+if [ -e "$LINKPANEL/data/templates/dns/office365.tpl" ]; then
 	echo "[ * ] Updating DNS template for Office 365..."
-	cp -f $HESTIA/install/deb/templates/dns/office365.tpl $HESTIA/data/templates/dns/office365.tpl
+	cp -f $LINKPANEL/install/deb/templates/dns/office365.tpl $LINKPANEL/data/templates/dns/office365.tpl
 fi
 
 # Ensure that backup compression level is correctly set
-GZIP_LVL_CHECK=$(cat $HESTIA/conf/hestia.conf | grep BACKUP_GZIP)
+GZIP_LVL_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep BACKUP_GZIP)
 if [ -z "$GZIP_LVL_CHECK" ]; then
 	echo "[ * ] Updating backup compression level variable..."
 	$BIN/v-change-sys-config-value "BACKUP_GZIP" '9'
@@ -182,10 +182,10 @@ if [ -e "/etc/logrotate/apache2" ]; then
 fi
 
 # Repair messed up user log permissions from the logrotate bug. Ignoring errors
-for user in $($HESTIA/bin/v-list-users plain | cut -f1); do
-	for domain in $($HESTIA/bin/v-list-web-domains $user plain | cut -f1); do
+for user in $($LINKPANEL/bin/v-list-users plain | cut -f1); do
+	for domain in $($LINKPANEL/bin/v-list-web-domains $user plain | cut -f1); do
 		chown root:$user /var/log/$WEB_SYSTEM/domains/$domain.* > /dev/null 2>&1
-		for sub_domain in $($HESTIA/bin/v-list-web-domain $user $domain plain | cut -f7 | tr ',' '\n'); do
+		for sub_domain in $($LINKPANEL/bin/v-list-web-domain $user $domain plain | cut -f7 | tr ',' '\n'); do
 			chown root:$user /var/log/$WEB_SYSTEM/domains/$sub_domain.* > /dev/null 2>&1
 		done
 	done
@@ -197,13 +197,13 @@ chown root:root /var/log/$WEB_SYSTEM/domains/$WEBMAIL_ALIAS* > /dev/null 2>&1
 if [ "$IMAP_SYSTEM" = "dovecot" ]; then
 	echo "[ * ] Enabling IMAP quota information reporting..."
 	if [ -e /etc/dovecot/conf.d/20-pop3.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/20-pop3.conf /etc/dovecot/conf.d/20-pop3.conf
+		cp -f $LINKPANEL/install/deb/dovecot/conf.d/20-pop3.conf /etc/dovecot/conf.d/20-pop3.conf
 	fi
 	if [ -e /etc/dovecot/conf.d/20-imap.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/20-imap.conf /etc/dovecot/conf.d/20-imap.conf
+		cp -f $LINKPANEL/install/deb/dovecot/conf.d/20-imap.conf /etc/dovecot/conf.d/20-imap.conf
 	fi
 	if [ -e /etc/dovecot/conf.d/90-quota.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/90-quota.conf /etc/dovecot/conf.d/90-quota.conf
+		cp -f $LINKPANEL/install/deb/dovecot/conf.d/90-quota.conf /etc/dovecot/conf.d/90-quota.conf
 	fi
 fi
 
@@ -211,8 +211,8 @@ fi
 num_php_versions=$(ls -d /etc/php/*/fpm/pool.d 2> /dev/null | wc -l)
 if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	echo "[ * ] Enabling modular Multi-PHP backend..."
-	cp -rf $HESTIA/data/templates/web $HESTIA_BACKUP/templates/web
-	bash $HESTIA/install/upgrade/manual/migrate_multiphp.sh > /dev/null 2>&1
+	cp -rf $LINKPANEL/data/templates/web $HESTIA_BACKUP/templates/web
+	bash $LINKPANEL/install/upgrade/manual/migrate_multiphp.sh > /dev/null 2>&1
 fi
 
 # Disable global subfolder alias for webmail in favor of subdomain

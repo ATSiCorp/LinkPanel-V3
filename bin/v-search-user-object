@@ -16,12 +16,12 @@ object=$2
 format=${3-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -94,13 +94,13 @@ IFS=$'\n'
 
 # Search query
 search=$(grep "$object" \
-	$HESTIA/data/users/$user/web.conf \
-	$HESTIA/data/users/$user/dns.conf \
-	$HESTIA/data/users/$user/dns/*.conf \
-	$HESTIA/data/users/$user/mail.conf \
-	$HESTIA/data/users/$user/mail/*.conf \
-	$HESTIA/data/users/$user/db.conf \
-	$HESTIA/data/users/$user/cron.conf 2> /dev/null)
+	$LINKPANEL/data/users/$user/web.conf \
+	$LINKPANEL/data/users/$user/dns.conf \
+	$LINKPANEL/data/users/$user/dns/*.conf \
+	$LINKPANEL/data/users/$user/mail.conf \
+	$LINKPANEL/data/users/$user/mail/*.conf \
+	$LINKPANEL/data/users/$user/db.conf \
+	$LINKPANEL/data/users/$user/cron.conf 2> /dev/null)
 
 for row in $search; do
 	# Initialise variable
@@ -261,7 +261,7 @@ esac
 rm $conf
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

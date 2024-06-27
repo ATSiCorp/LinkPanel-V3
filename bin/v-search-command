@@ -4,7 +4,7 @@
 #
 # example: v-search-command web
 #
-# This function searches for available Hestia Control Panel commands
+# This function searches for available LinkPanel Control Panel commands
 # and returns results based on the specified criteria.
 # Originally developed for VestaCP by Federico Krum
 # <https://github.com/FastDigitalOceanDroplets/VestaCP/blob/master/files/v-search-command>
@@ -14,12 +14,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #

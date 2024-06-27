@@ -3,7 +3,7 @@ import { version } from '../../package.json';
 
 export default defineConfig({
 	lang: 'en-US',
-	title: 'Hestia Control Panel',
+	title: 'LinkPanel Control Panel',
 	description: 'Open-source web server control panel.',
 
 	lastUpdated: true,
@@ -24,7 +24,7 @@ export default defineConfig({
 
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/hestiacp/hestiacp' },
-			{ icon: 'twitter', link: 'https://twitter.com/HestiaPanel' },
+			{ icon: 'twitter', link: 'https://twitter.com/LinkPanelPanel' },
 			{ icon: 'facebook', link: 'https://www.facebook.com/hestiacp' },
 		],
 
@@ -39,7 +39,7 @@ export default defineConfig({
 
 		footer: {
 			message: 'Released under the GPLv3 License.',
-			copyright: 'Copyright © 2019-present Hestia Control Panel',
+			copyright: 'Copyright © 2019-present LinkPanel Control Panel',
 		},
 
 		algolia: {
@@ -143,10 +143,10 @@ function sidebarDocs() {
 			text: 'Community',
 			collapsed: false,
 			items: [
-				{ text: 'Hestia Nginx Cache', link: '/docs/community/hestia-nginx-cache' },
+				{ text: 'LinkPanel Nginx Cache', link: '/docs/community/linkpanel-nginx-cache' },
 				{
-					text: 'Ioncube installer for Hestia',
-					link: '/docs/community/ioncube-hestia-installer',
+					text: 'Ioncube installer for LinkPanel',
+					link: '/docs/community/ioncube-linkpanel-installer',
 				},
 				{ text: 'Install script generator', link: '/docs/community/install-script-generator' },
 			],

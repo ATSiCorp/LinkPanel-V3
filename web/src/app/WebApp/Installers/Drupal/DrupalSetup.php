@@ -1,8 +1,8 @@
 <?php
 
-namespace Hestia\WebApp\Installers\Drupal;
+namespace LinkPanel\WebApp\Installers\Drupal;
 
-use Hestia\WebApp\Installers\BaseSetup as BaseSetup;
+use LinkPanel\WebApp\Installers\BaseSetup as BaseSetup;
 
 class DrupalSetup extends BaseSetup {
 	protected $appname = "drupal";

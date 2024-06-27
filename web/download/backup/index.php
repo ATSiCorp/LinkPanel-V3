@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 ob_start();
 include $_SERVER["DOCUMENT_ROOT"] . "/inc/main.php";
@@ -21,7 +21,7 @@ if (!file_exists("/backup/" . $backup)) {
 	} else {
 		$_SESSION["error_msg"] = implode("<br>", $output);
 		if (empty($_SESSION["error_msg"])) {
-			$_SESSION["error_msg"] = _("Error: Hestia did not return any output.");
+			$_SESSION["error_msg"] = _("Error: LinkPanel did not return any output.");
 		}
 	}
 	unset($output);

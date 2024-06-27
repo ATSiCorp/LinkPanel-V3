@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.9.0
+# LinkPanel Control Panel upgrade script for target version 1.9.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -64,27 +64,27 @@ if [ ! -f "/var/spool/cron/crontabs/hestiaweb" ]; then
 					>> /var/spool/cron/crontabs/hestiaweb
 			$BIN/v-delete-cron-job admin "$JOB"
 		fi
-	done < $HESTIA/data/users/admin/cron.conf
+	done < $LINKPANEL/data/users/admin/cron.conf
 	# Update permissions
 	chmod 600 /var/spool/cron/crontabs/hestiaweb
 	chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
 
 fi
 
-chown hestiaweb:hestiaweb /usr/local/hestia/data/sessions
+chown hestiaweb:hestiaweb /usr/local/linkpanel/data/sessions
 
-packages=$(ls --sort=time $HESTIA/data/packages | grep .pkg)
+packages=$(ls --sort=time $LINKPANEL/data/packages | grep .pkg)
 for package in $packages; do
-	if [ -z "$(grep -e 'SHELL_JAIL_ENABLED' $HESTIA/data/packages/$package)" ]; then
-		echo "SHELL_JAIL_ENABLED='no'" >> $HESTIA/data/packages/$package
+	if [ -z "$(grep -e 'SHELL_JAIL_ENABLED' $LINKPANEL/data/packages/$package)" ]; then
+		echo "SHELL_JAIL_ENABLED='no'" >> $LINKPANEL/data/packages/$package
 	fi
 	# Add additional key-value pairs if they don't exist
 	for key in DISK_QUOTA CPU_QUOTA CPU_QUOTA_PERIOD MEMORY_LIMIT SWAP_LIMIT; do
-		if [ -z "$(grep -e "$key" $HESTIA/data/packages/$package)" ]; then
-			echo "$key='unlimited'" >> $HESTIA/data/packages/$package
+		if [ -z "$(grep -e "$key" $LINKPANEL/data/packages/$package)" ]; then
+			echo "$key='unlimited'" >> $LINKPANEL/data/packages/$package
 		fi
 	done
 done
 
-$BIN/v-add-user-notification 'admin' 'Hestia securirty has been upgraded' 'Here should come a nice message about the upgrade and how to change the user name of the admin user!'
+$BIN/v-add-user-notification 'admin' 'LinkPanel securirty has been upgraded' 'Here should come a nice message about the upgrade and how to change the user name of the admin user!'
 add_upgrade_message 'Here should come a nice message about the upgrade and how to change the user name of the admin user!'

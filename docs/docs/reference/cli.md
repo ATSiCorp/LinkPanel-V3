@@ -25,7 +25,7 @@ v-add-access-key admin v-purge-nginx-cache,v-list-mail-accounts comment json
 ```
 
 The "PERMISSIONS" argument is optional for the admin user only.
-This function creates a key file in $HESTIA/data/access-keys/
+This function creates a key file in $LINKPANEL/data/access-keys/
 
 ## v-add-backup-host
 
@@ -44,15 +44,15 @@ v-add-backup-host b2 bucketName keyID applicationKey
 
 Add a new remote backup location. Currently SFTP, FTP and Backblaze are supported
 
-## v-add-cron-hestia-autoupdate
+## v-add-cron-linkpanel-autoupdate
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-add-cron-hestia-autoupdate)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-add-cron-linkpanel-autoupdate)
 
-add cron job for hestia automatic updates
+add cron job for linkpanel automatic updates
 
 **Options**: `MODE`
 
-This function adds a cronjob for hestia automatic updates
+This function adds a cronjob for linkpanel automatic updates
 that can be downloaded from apt or git.
 
 ## v-add-cron-job
@@ -66,7 +66,7 @@ add cron job
 **Examples**:
 
 ```bash
-v-add-cron-job admin * * * * * sudo /usr/local/hestia/bin/v-backup-users
+v-add-cron-job admin * * * * * sudo /usr/local/linkpanel/bin/v-backup-users
 ```
 
 This function adds a job to cron daemon. When executing commands, any output
@@ -708,14 +708,14 @@ v-add-sys-api-ip 1.1.1.1
 
 **Options**:
 
-Add php dependencies to Hestia
+Add php dependencies to LinkPanel
 options: [MODE]
 
 ## v-add-sys-filemanager
 
 [Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-add-sys-filemanager)
 
-add file manager functionality to Hestia Control Panel
+add file manager functionality to LinkPanel Control Panel
 
 **Options**: `[MODE]`
 
@@ -1725,21 +1725,21 @@ and prevent modification of objects in the control panel.
 It will also disable virtual hosts for Apache and NGINX
 for domains which have been created.
 
-## v-change-sys-hestia-ssl
+## v-change-sys-linkpanel-ssl
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-change-sys-hestia-ssl)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-change-sys-linkpanel-ssl)
 
-change hestia ssl certificate
+change linkpanel ssl certificate
 
 **Options**: `SSL_DIR` `[RESTART]`
 
 **Examples**:
 
 ```bash
-v-change-sys-hestia-ssl /home/new/dir/path yes
+v-change-sys-linkpanel-ssl /home/new/dir/path yes
 ```
 
-This function changes hestia SSL certificate and the key.
+This function changes linkpanel SSL certificate and the key.
 
 ## v-change-sys-hostname
 
@@ -1876,7 +1876,7 @@ update web templates
 **Options**: `[RESTART]`
 
 This function for changing the release branch for the
-Hestia Control Panel. This allows the user to switch between
+LinkPanel Control Panel. This allows the user to switch between
 stable and pre-release builds which will automaticlly update
 based on the appropriate release schedule if auto-update is
 turned on.
@@ -2416,7 +2416,7 @@ check api key
 v-check-api-key random_key 127.0.0.1
 ```
 
-This function checks a key file in $HESTIA/data/keys/
+This function checks a key file in $LINKPANEL/data/keys/
 
 ## v-check-fs-permission
 
@@ -2561,7 +2561,7 @@ delete access key
 v-delete-access-key mykey
 ```
 
-This function removes a key from in $HESTIA/data/access-keys/
+This function removes a key from in $LINKPANEL/data/access-keys/
 
 ## v-delete-backup-host
 
@@ -2579,15 +2579,15 @@ v-delete-backup-host sftp
 
 This function deletes ftp backup host
 
-## v-delete-cron-hestia-autoupdate
+## v-delete-cron-linkpanel-autoupdate
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-delete-cron-hestia-autoupdate)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-delete-cron-linkpanel-autoupdate)
 
-delete hestia autoupdate cron job
+delete linkpanel autoupdate cron job
 
 **Options**: –
 
-This function deletes hestia autoupdate cron job.
+This function deletes linkpanel autoupdate cron job.
 
 ## v-delete-cron-job
 
@@ -2663,7 +2663,7 @@ delete database server
 v-delete-database-host pgsql localhost
 ```
 
-This function for deleting the database host from hestia configuration. It will
+This function for deleting the database host from linkpanel configuration. It will
 be deleted if there are no databases created on it only.
 
 ## v-delete-database-temp-user
@@ -2858,7 +2858,7 @@ delete firewall ipset
 v-delete-firewall-ipset country-nl
 ```
 
-This function removes ipset from system and from hestia
+This function removes ipset from system and from linkpanel
 
 ## v-delete-firewall-rule
 
@@ -3206,7 +3206,7 @@ delete remote dns host
 v-delete-remote-dns-host example.org
 ```
 
-This function for deleting the remote dns host from hestia configuration.
+This function for deleting the remote dns host from linkpanel configuration.
 
 ## v-delete-remote-dns-record
 
@@ -3242,7 +3242,7 @@ v-delete-sys-api-ip 1.1.1.1
 
 [Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-delete-sys-filemanager)
 
-remove file manager functionality from Hestia Control Panel
+remove file manager functionality from LinkPanel Control Panel
 
 **Options**: `[MODE]`
 
@@ -3874,7 +3874,7 @@ generate api key
 
 **Options**: –
 
-This function creates a key file in $HESTIA/data/keys/
+This function creates a key file in $LINKPANEL/data/keys/
 
 ## v-generate-debug-report
 
@@ -3883,7 +3883,7 @@ This function creates a key file in $HESTIA/data/keys/
 **Options**:
 
 Includes
-shellcheck source=/etc/hestiacp/hestia.conf
+shellcheck source=/etc/hestiacp/linkpanel.conf
 
 ## v-generate-password-hash
 
@@ -4717,35 +4717,35 @@ list dovecot config parameters
 
 This function for obtaining the list of dovecot config parameters.
 
-## v-list-sys-hestia-autoupdate
+## v-list-sys-linkpanel-autoupdate
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-hestia-autoupdate)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-linkpanel-autoupdate)
 
-list hestia autoupdate settings
+list linkpanel autoupdate settings
 
 **Options**: `[FORMAT]`
 
 This function for obtaining autoupdate settings.
 
-## v-list-sys-hestia-ssl
+## v-list-sys-linkpanel-ssl
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-hestia-ssl)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-linkpanel-ssl)
 
-list hestia ssl certificate
+list linkpanel ssl certificate
 
 **Options**: `[FORMAT]`
 
-This function of obtaining hestia ssl files.
+This function of obtaining linkpanel ssl files.
 
-## v-list-sys-hestia-updates
+## v-list-sys-linkpanel-updates
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-hestia-updates)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-list-sys-linkpanel-updates)
 
 list system updates
 
 **Options**: `[FORMAT]`
 
-This function checks available updates for hestia packages.
+This function checks available updates for linkpanel packages.
 
 ## v-list-sys-info
 
@@ -4755,7 +4755,7 @@ list system os
 
 **Options**: `[FORMAT]`
 
-This function checks available updates for hestia packages.
+This function checks available updates for linkpanel packages.
 
 ## v-list-sys-interfaces
 
@@ -4807,7 +4807,7 @@ list system languages
 v-list-sys-languages json
 ```
 
-This function for obtaining the available languages for HestiaCP
+This function for obtaining the available languages for LinkPanelCP
 Output is always in the ISO language code
 
 ## v-list-sys-mail-status
@@ -5870,7 +5870,7 @@ revokes api key
 v-revoke-api-key mykey
 ```
 
-This function removes a key from in $HESTIA/data/keys/
+This function removes a key from in $LINKPANEL/data/keys/
 
 ## v-run-cli-cmd
 
@@ -5886,7 +5886,7 @@ run cli command
 v-run-cli-cmd user composer require package
 ```
 
-This function runs a limited list of cli commands with dropped privileges as the specific hestia user
+This function runs a limited list of cli commands with dropped privileges as the specific linkpanel user
 
 ## v-schedule-letsencrypt-domain
 
@@ -5966,7 +5966,7 @@ search for available commands
 v-search-command web
 ```
 
-This function searches for available Hestia Control Panel commands
+This function searches for available LinkPanel Control Panel commands
 and returns results based on the specified criteria.
 Originally developed for VestaCP by Federico Krum
 <https://github.com/FastDigitalOceanDroplets/VestaCP/blob/master/files/v-search-command>
@@ -6699,7 +6699,7 @@ update dns templates
 
 **Options**: `[RESTART]`
 
-This function for obtaining updated dns templates from Hestia package.
+This function for obtaining updated dns templates from LinkPanel package.
 
 ## v-update-firewall
 
@@ -6725,7 +6725,7 @@ This function creates ipset lists and updates the lists if they are expired or o
 
 [Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-host-certificate)
 
-update host certificate for hestia
+update host certificate for linkpanel
 
 **Options**: `USER` `HOSTNAME`
 
@@ -6735,7 +6735,7 @@ update host certificate for hestia
 v-update-host-certificate admin example.com
 ```
 
-This function updates the SSL certificate used for Hestia Control Panel.
+This function updates the SSL certificate used for LinkPanel Control Panel.
 
 ## v-update-letsencrypt-ssl
 
@@ -6806,7 +6806,7 @@ update mail templates
 
 **Options**: `[RESTART]` `[SKIP]`
 
-This function for obtaining updated webmail templates from Hestia package.
+This function for obtaining updated webmail templates from LinkPanel package.
 
 ## v-update-sys-defaults
 
@@ -6825,36 +6825,36 @@ example: v-update-sys-defaults user
 
 This function updates the known key/value pair database
 
-## v-update-sys-hestia
+## v-update-sys-linkpanel
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-hestia)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-linkpanel)
 
-update hestia package/configs
+update linkpanel package/configs
 
 **Options**: `PACKAGE`
 
 **Examples**:
 
 ```bash
-v-update-sys-hestia hestia-php
+v-update-sys-linkpanel linkpanel-php
 ```
 
-This function runs as apt update trigger. It pulls shell script from hestia
-server and runs it. (hestia, hestia-nginx and hestia-php are valid options)
+This function runs as apt update trigger. It pulls shell script from linkpanel
+server and runs it. (linkpanel, linkpanel-nginx and linkpanel-php are valid options)
 
-## v-update-sys-hestia-all
+## v-update-sys-linkpanel-all
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-hestia-all)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-linkpanel-all)
 
-update all hestia packages
+update all linkpanel packages
 
 **Options**: –
 
-This function of updating all hestia packages
+This function of updating all linkpanel packages
 
-## v-update-sys-hestia-git
+## v-update-sys-linkpanel-git
 
-[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-hestia-git)
+[Source](https://github.com/hestiacp/hestiacp/blob/release/bin/v-update-sys-linkpanel-git)
 
 Install update from Git repository
 
@@ -6863,7 +6863,7 @@ Install update from Git repository
 **Examples**:
 
 ```bash
-v-update-sys-hestia-git hestiacp staging/beta install
+v-update-sys-linkpanel-git hestiacp staging/beta install
 # Will download from the hestiacp repository
 # Pulls code from staging/beta branch
 # install: installs package immediately
@@ -6887,7 +6887,7 @@ v-update-sys-ip
 # Intended for internal usage
 ```
 
-This function scans configured IP in the system and register them with Hestia
+This function scans configured IP in the system and register them with LinkPanel
 internal database. This call is intended for use on vps servers, where IP is
 set by hypervisor.
 
@@ -7255,7 +7255,7 @@ update web templates
 
 **Options**: `[RESTART]` `[SKIP]`
 
-This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Hestia package.
+This function for obtaining updated web (Nginx/Apache2/PHP) templates from the LinkPanel package.
 
 ## v-update-white-label-logo
 
@@ -7265,4 +7265,4 @@ update white label logo's
 
 **Options**: `[DOWNLOAD]`
 
-Replace Hestia logos with User created logo's
+Replace LinkPanel logos with User created logo's

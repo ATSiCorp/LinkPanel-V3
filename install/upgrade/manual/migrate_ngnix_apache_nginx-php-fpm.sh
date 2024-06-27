@@ -8,12 +8,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/conf/linkpanel.conf
+source $LINKPANEL/conf/linkpanel.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -34,31 +34,31 @@ fi
 #----------------------------------------------------------#
 
 # Remove apache2 from config
-sed -i "/^WEB_PORT/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^WEB_SSL/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^WEB_SSL_PORT/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^WEB_RGROUPS/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^WEB_SYSTEM/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
+sed -i "/^WEB_PORT/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^WEB_SSL/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^WEB_SSL_PORT/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^WEB_RGROUPS/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^WEB_SYSTEM/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
 
 # Remove nginx (proxy) from config
-sed -i "/^PROXY_PORT/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^PROXY_SSL_PORT/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-sed -i "/^PROXY_SYSTEM/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
+sed -i "/^PROXY_PORT/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^PROXY_SSL_PORT/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+sed -i "/^PROXY_SYSTEM/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
 
 # Add Nginx settings to config
-echo "WEB_PORT='80'" >> $HESTIA/conf/hestia.conf
-echo "WEB_SSL='openssl'" >> $HESTIA/conf/hestia.conf
-echo "WEB_SSL_PORT='443'" >> $HESTIA/conf/hestia.conf
-echo "WEB_SYSTEM='nginx'" >> $HESTIA/conf/hestia.conf
+echo "WEB_PORT='80'" >> $LINKPANEL/conf/linkpanel.conf
+echo "WEB_SSL='openssl'" >> $LINKPANEL/conf/linkpanel.conf
+echo "WEB_SSL_PORT='443'" >> $LINKPANEL/conf/linkpanel.conf
+echo "WEB_SYSTEM='nginx'" >> $LINKPANEL/conf/linkpanel.conf
 
 # Add Nginx settings to config
-echo "WEB_PORT='80'" >> $HESTIA/conf/defaults/hestia.conf
-echo "WEB_SSL='openssl'" >> $HESTIA/conf/defaults/hestia.conf
-echo "WEB_SSL_PORT='443'" >> $HESTIA/conf/defaults/hestia.conf
-echo "WEB_SYSTEM='nginx'" >> $HESTIA/conf/defaults/hestia.conf
+echo "WEB_PORT='80'" >> $LINKPANEL/conf/defaults/linkpanel.conf
+echo "WEB_SSL='openssl'" >> $LINKPANEL/conf/defaults/linkpanel.conf
+echo "WEB_SSL_PORT='443'" >> $LINKPANEL/conf/defaults/linkpanel.conf
+echo "WEB_SYSTEM='nginx'" >> $LINKPANEL/conf/defaults/linkpanel.conf
 
-rm $HESTIA/conf/defaults/hestia.conf
-cp $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
+rm $LINKPANEL/conf/defaults/linkpanel.conf
+cp $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
 
 # Rebuild web config
 

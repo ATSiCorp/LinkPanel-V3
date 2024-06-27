@@ -4,7 +4,7 @@
 // -----------------------
 // A driver to use for password change. Default: "sql".
 // See README file for list of supported driver names.
-$config["password_driver"] = "hestia";
+$config["password_driver"] = "linkpanel";
 
 // Require the new password to be a certain length.
 // set to blank to allow passwords of any length
@@ -25,7 +25,7 @@ $config["password_login_exceptions"] = null;
 // Enable this option to use punycoded names
 $config["password_idn_ascii"] = false;
 
-// Hestia Driver options
+// LinkPanel Driver options
 // -----------------------
 // Control Panel host
 $config["password_hestia_host"] = "localhost";

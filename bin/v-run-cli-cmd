@@ -4,7 +4,7 @@
 #
 # example: v-run-cli-cmd user composer require package
 #
-# This function runs a limited list of cli commands with dropped privileges as the specific hestia user
+# This function runs a limited list of cli commands with dropped privileges as the specific linkpanel user
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,12 +14,12 @@ user=$1
 clicmd=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #

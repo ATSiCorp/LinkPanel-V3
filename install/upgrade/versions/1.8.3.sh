@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.8.3
+# LinkPanel Control Panel upgrade script for target version 1.8.3
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -24,7 +24,7 @@ upgrade_config_set_value 'UPGRADE_REBUILD_USERS' 'false'
 upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Add new API key permission
-if [ -f "$HESTIA/data/api/update-dns-records" ]; then
-	rm $HESTIA/data/api/update-dns-records
+if [ -f "$LINKPANEL/data/api/update-dns-records" ]; then
+	rm $LINKPANEL/data/api/update-dns-records
 fi
-cp $HESTIA/install/common/api/update-dns-records $HESTIA/data/api/update-dns-records
+cp $LINKPANEL/install/common/api/update-dns-records $LINKPANEL/data/api/update-dns-records

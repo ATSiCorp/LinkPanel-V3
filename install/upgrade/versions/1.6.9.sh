@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version unreleased
+# LinkPanel Control Panel upgrade script for target version unreleased
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -22,7 +22,7 @@ upgrade_config_set_value 'UPGRADE_REBUILD_USERS' 'no'
 upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Update api key permissions
-if [ -f "$HESTIA/data/api/sync-dns-cluster" ]; then
-	rm $HESTIA/data/api/sync-dns-cluster
-	cp $HESTIA/install/deb/api/sync-dns-cluster $HESTIA/data/api/sync-dns-cluster
+if [ -f "$LINKPANEL/data/api/sync-dns-cluster" ]; then
+	rm $LINKPANEL/data/api/sync-dns-cluster
+	cp $LINKPANEL/install/deb/api/sync-dns-cluster $LINKPANEL/data/api/sync-dns-cluster
 fi

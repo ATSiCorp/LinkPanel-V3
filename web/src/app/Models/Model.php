@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hestia\Models;
+namespace LinkPanel\Models;
 
 class Model {
 	public function __construct() {

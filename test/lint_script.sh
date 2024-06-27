@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Includes
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/usr/local/linkpanel/conf/linkpanel.conf
+source $LINKPANEL/conf/linkpanel.conf
 
 # Variables and arguments
-HESTIA="/usr/local/hestia"
+LINKPANEL="/usr/local/linkpanel"
 script=$1
 log=$2
 scroll=$3

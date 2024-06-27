@@ -1,5 +1,5 @@
 #!/bin/bash
-# Add php dependencies to Hestia
+# Add php dependencies to LinkPanel
 # options: [MODE]
 #
 # This function install PHPMailer and quoteshellarg as via composer
@@ -9,20 +9,20 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 # upgrade config file
-source "$HESTIA/install/upgrade/upgrade.conf"
+source "$LINKPANEL/install/upgrade/upgrade.conf"
 
 MODE=$1
 user="$ROOT_USER"
 
-PM_INSTALL_DIR="$HESTIA/web/inc"
-QUICK_INSTALL_DIR="$HESTIA/web/src"
+PM_INSTALL_DIR="$LINKPANEL/web/inc"
+QUICK_INSTALL_DIR="$LINKPANEL/web/src"
 COMPOSER_BIN="$HOMEDIR/$user/.composer/composer"
 
 #----------------------------------------------------------#
@@ -35,9 +35,9 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/hestia/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+# Ensure that $LINKPANEL (/usr/local/linkpanel/) and other variables are valid.
+if [ -z "$LINKPANEL" ]; then
+	LINKPANEL="/usr/local/linkpanel"
 fi
 
 if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
@@ -49,7 +49,7 @@ fi
 if [ ! -f "$COMPOSER_BIN" ]; then
 	$BIN/v-add-user-composer "$user"
 	if [ $? -ne 0 ]; then
-		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">Hestia will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a>.</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">LinkPanel will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a>.</p>'
 		exit 1
 	fi
 fi
@@ -66,7 +66,7 @@ rm --recursive --force ${PM_INSTALL_DIR}/vendor
 mkdir -p ${PM_INSTALL_DIR}/vendor
 chown $user: -R ${PM_INSTALL_DIR}/vendor
 
-openssl_installed=$(/usr/local/hestia/php/bin/php -m | grep openssl)
+openssl_installed=$(/usr/local/linkpanel/php/bin/php -m | grep openssl)
 if [ -z "$openssl_installed" ]; then
 	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/bin/php $COMPOSER_BIN --quiet --no-dev install
 else
@@ -78,7 +78,7 @@ if [ $? -ne 0 ]; then
 	echo "ERROR: PHPMailer installation failed!"
 	echo "Please report this to our development team:"
 	echo "https://github.com/hestiacp/hestiacp/issues"
-	$BIN/v-add-user-notification "$ROOT_USER" 'Hestia PHP dependencies installation failed!' '<p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
+	$BIN/v-add-user-notification "$ROOT_USER" 'LinkPanel PHP dependencies installation failed!' '<p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
 	# Installation failed, clean up files
 	rm --recursive --force ${PM_INSTALL_DIR}/vendor
 	$BIN/v-change-sys-config-value 'USE_SERVER_SMTP' 'n'

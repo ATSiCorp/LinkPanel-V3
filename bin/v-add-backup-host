@@ -25,12 +25,12 @@ port=$6
 arch=$(arch)
 
 # Includes
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 # Fetch current verison B2 CLI tool
-source_conf "$HESTIA/install/upgrade/upgrade.conf"
+source_conf "$LINKPANEL/install/upgrade/upgrade.conf"
 
 # Paths
 b2cli="/usr/local/bin/b2"
@@ -289,14 +289,14 @@ if [ "$type" = 'rclone' ]; then
 	curl -s https://rclone.org/install.sh | bash /dev/null > /dev/null 2>&1
 	# Verify account exists
 	if [ ! -z "$(cat /root/.config/rclone/rclone.conf | grep "\[$host\]")" ]; then
-		echo "test" > /tmp/hestia-backup.txt
+		echo "test" > /tmp/linkpanel-backup.txt
 		# Try to upload a single file
 		if [ -z "$path" ]; then
-			rclone copy /tmp/hestia-backup.txt $host:/hestia-backup.txt
-			rclone delete $host:/hestia-backup.txt
+			rclone copy /tmp/linkpanel-backup.txt $host:/linkpanel-backup.txt
+			rclone delete $host:/linkpanel-backup.txt
 		else
-			rclone copy /tmp/hestia-backup.txt $host:$path/hestia-backup.txt
-			rclone delete $host:$path/hestia-backup.txt
+			rclone copy /tmp/linkpanel-backup.txt $host:$path/linkpanel-backup.txt
+			rclone delete $host:$path/linkpanel-backup.txt
 		fi
 	else
 		check_result "$E_CONNECT" "Rclone config does not exist"
@@ -308,35 +308,35 @@ if [ $type == 'ftp' ] || [ $type = 'sftp' ]; then
 	new_timestamp
 	str="HOST='$host'\nUSERNAME='$user'\nPASSWORD='$password'\nPRIVATEKEY='$privatekey'"
 	str="$str\nBPATH='$path'\nPORT='$port'\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
-	chmod 660 $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $LINKPANEL/conf/$type.backup.conf
+	chmod 660 $LINKPANEL/conf/$type.backup.conf
 elif [ $type == 'b2' ]; then
 	new_timestamp
 	str="BUCKET='$host'\nB2_KEYID='$user'\nB2_KEY='$raw_password'"
 	str="$str\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
-	chmod 660 $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $LINKPANEL/conf/$type.backup.conf
+	chmod 660 $LINKPANEL/conf/$type.backup.conf
 elif [ $type == "rclone" ]; then
 	new_timestamp
 	str="HOST='$host'\nBPATH='$path'"
 	str="$str\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $LINKPANEL/conf/$type.backup.conf
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
-# Update hestia.conf
-if [ -z "$(grep BACKUP_SYSTEM $HESTIA/conf/hestia.conf)" ]; then
-	echo "BACKUP_SYSTEM='$type'" >> $HESTIA/conf/hestia.conf
+# Update linkpanel.conf
+if [ -z "$(grep BACKUP_SYSTEM $LINKPANEL/conf/linkpanel.conf)" ]; then
+	echo "BACKUP_SYSTEM='$type'" >> $LINKPANEL/conf/linkpanel.conf
 else
 	bckp=$(echo "$BACKUP_SYSTEM,$type" \
 		| sed "s/,/\n/g" \
 		| sort -r -u \
 		| sed "/^$/d" \
 		| sed ':a;N;$!ba;s/\n/,/g')
-	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/hestia.conf
+	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $LINKPANEL/conf/linkpanel.conf
 fi
 
 # Logging

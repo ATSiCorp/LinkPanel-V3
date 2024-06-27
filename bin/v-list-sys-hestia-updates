@@ -2,9 +2,9 @@
 # info: list system updates
 # options: [FORMAT]
 #
-# example: v-list-sys-hestia-updates
+# example: v-list-sys-linkpanel-updates
 #
-# This function checks available updates for hestia packages.
+# This function checks available updates for linkpanel packages.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,12 +14,12 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 fields="\$NAME \$VERSION \$ARCH \$UPDATED \$DESCR \$TIME \$DATE"
 
@@ -85,20 +85,20 @@ shell_list() {
 
 # Checking official latest version
 if [ -f '/etc/redhat-release' ]; then
-	hestia_v=$(dnf list hestia | grep hestia | awk '{print $2}' | cut -f 1 -d '-')
-	nginx_v=$(dnf list hestia-nginx | grep hestia-nginx | awk '{print $2}' | cut -f 1 -d '-')
-	php_v=$(dnf list hestia-php | grep hestia-php | awk '{print $2}' | cut -f 1 -d '-')
+	hestia_v=$(dnf list linkpanel | grep linkpanel | awk '{print $2}' | cut -f 1 -d '-')
+	nginx_v=$(dnf list linkpanel-nginx | grep linkpanel-nginx | awk '{print $2}' | cut -f 1 -d '-')
+	php_v=$(dnf list linkpanel-php | grep linkpanel-php | awk '{print $2}' | cut -f 1 -d '-')
 else
-	hestia_v=$(apt-cache policy hestia | grep Candidate | cut -d ':' -f 2 | xargs)
-	nginx_v=$(apt-cache policy hestia-nginx | grep Candidate | cut -d ':' -f 2 | xargs)
-	php_v=$(apt-cache policy hestia-php | grep Candidate | cut -d ':' -f 2 | xargs)
+	hestia_v=$(apt-cache policy linkpanel | grep Candidate | cut -d ':' -f 2 | xargs)
+	nginx_v=$(apt-cache policy linkpanel-nginx | grep Candidate | cut -d ':' -f 2 | xargs)
+	php_v=$(apt-cache policy linkpanel-php | grep Candidate | cut -d ':' -f 2 | xargs)
 fi
 
-# Checking installed hestia version
+# Checking installed linkpanel version
 if [ -f '/etc/redhat-release' ]; then
-	check_installed_rpm hestia
+	check_installed_rpm linkpanel
 else
-	check_installed_deb hestia
+	check_installed_deb linkpanel
 fi
 
 UPDATED='yes'
@@ -106,14 +106,14 @@ if [ -n "$hestia_v" ] && [ "$hestia_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="NAME='hestia' VERSION='$VERSION' ARCH='$ARCH'"
-data="$data UPDATED='$UPDATED' DESCR='Hestia core package' TIME='$TIME' DATE='$DATE'"
+data="NAME='linkpanel' VERSION='$VERSION' ARCH='$ARCH'"
+data="$data UPDATED='$UPDATED' DESCR='LinkPanel core package' TIME='$TIME' DATE='$DATE'"
 
-# Checking installed hestia-php version
+# Checking installed linkpanel-php version
 if [ -f '/etc/redhat-release' ]; then
-	check_installed_rpm hestia-php
+	check_installed_rpm linkpanel-php
 else
-	check_installed_deb hestia-php
+	check_installed_deb linkpanel-php
 fi
 
 UPDATED='yes'
@@ -121,15 +121,15 @@ if [ -n "$php_v" ] && [ "$php_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="$data\nNAME='hestia-php' VERSION='$VERSION'"
-data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Hestia internal php interpreter'"
+data="$data\nNAME='linkpanel-php' VERSION='$VERSION'"
+data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='LinkPanel internal php interpreter'"
 data="$data TIME='$TIME' DATE='$DATE'"
 
-# Checking installed hestia-nginx version
+# Checking installed linkpanel-nginx version
 if [ -f '/etc/redhat-release' ]; then
-	check_installed_rpm hestia-nginx
+	check_installed_rpm linkpanel-nginx
 else
-	check_installed_deb hestia-nginx
+	check_installed_deb linkpanel-nginx
 fi
 
 UPDATED='yes'
@@ -137,8 +137,8 @@ if [ -n "$nginx_v" ] && [ "$nginx_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="$data\nNAME='hestia-nginx' VERSION='$VERSION'"
-data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Hestia internal web server'"
+data="$data\nNAME='linkpanel-nginx' VERSION='$VERSION'"
+data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='LinkPanel internal web server'"
 data="$data TIME='$TIME' DATE='$DATE'"
 
 # Listing data
@@ -150,7 +150,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

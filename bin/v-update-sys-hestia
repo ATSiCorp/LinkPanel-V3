@@ -1,11 +1,11 @@
 #!/bin/bash
-# info: update hestia package/configs
+# info: update linkpanel package/configs
 # options: PACKAGE
 #
-# example: v-update-sys-hestia hestia-php
+# example: v-update-sys-linkpanel linkpanel-php
 #
-# This function runs as apt update trigger. It pulls shell script from hestia
-# server and runs it. (hestia, hestia-nginx and hestia-php are valid options)
+# This function runs as apt update trigger. It pulls shell script from linkpanel
+# server and runs it. (linkpanel, linkpanel-nginx and linkpanel-php are valid options)
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,12 +15,12 @@
 package=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -28,7 +28,7 @@ source_conf "$HESTIA/conf/hestia.conf"
 
 # Checking arg number
 check_args '1' "$#" 'PACKAGE'
-is_hestia_package "hestia hestia-nginx hestia-php" "$package"
+is_hestia_package "linkpanel linkpanel-nginx linkpanel-php" "$package"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -38,15 +38,15 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Update repo
-apt-get update -o Dir::Etc::sourcelist="sources.list.d/hestia.list" \
+apt-get update -o Dir::Etc::sourcelist="sources.list.d/linkpanel.list" \
 	-o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" -qq
 
-# Update hestia package
+# Update linkpanel package
 apt-get install $package -qq > /dev/null 2>&1
 check_result $? "$package update failed" "$E_UPDATE"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

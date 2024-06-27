@@ -20,16 +20,16 @@ domain_idn=$2
 restart=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/ip.sh
+source $LINKPANEL/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -101,7 +101,7 @@ fi
 
 # Deleting web stats
 if [ -n "$STATS" ] && [ "$STATS" != 'no' ]; then
-	sed -i "/ $domain$/d" $HESTIA/data/queue/webstats.pipe
+	sed -i "/ $domain$/d" $LINKPANEL/data/queue/webstats.pipe
 	rm -f $HOMEDIR/$user/conf/web/$domain/$STATS.conf
 	rm -f /etc/awstats/$STATS.$domain.conf
 fi
@@ -116,7 +116,7 @@ rm -rf $HOMEDIR/$user/web/$domain
 rm -rf $HOMEDIR/$user/conf/web/$domain
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Decreasing user counters

@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+if [ "${PATH#*/usr/local/linkpanel/bin*}" = "$PATH" ]; then
+    . /etc/profile.d/linkpanel.sh
 fi
 
 load 'test_helper/bats-support/load'
@@ -15,24 +15,24 @@ head /dev/urandom | tr -dc 0-9 | head -c$1
 function setup() {
     # echo "# Setup_file" > &3
     if [ $BATS_TEST_NUMBER = 1 ]; then
-        echo 'user=test-5285' > /tmp/hestia-test-env.sh
-        echo 'user2=test-5286' >> /tmp/hestia-test-env.sh
-        echo 'userbk=testbk-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass1=test-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/hestia-test-env.sh
-        echo 'HESTIA=/usr/local/hestia' >> /tmp/hestia-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/hestia-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'database=test-5285_database' >> /tmp/hestia-test-env.sh
-        echo 'dbuser=test-5285_dbuser' >> /tmp/hestia-test-env.sh
+        echo 'user=test-5285' > /tmp/linkpanel-test-env.sh
+        echo 'user2=test-5286' >> /tmp/linkpanel-test-env.sh
+        echo 'userbk=testbk-5285' >> /tmp/linkpanel-test-env.sh
+        echo 'userpass1=test-5285' >> /tmp/linkpanel-test-env.sh
+        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/linkpanel-test-env.sh
+        echo 'LINKPANEL=/usr/local/linkpanel' >> /tmp/linkpanel-test-env.sh
+        echo 'domain=test-5285.hestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/linkpanel-test-env.sh
+        echo 'rootdomain=testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'database=test-5285_database' >> /tmp/linkpanel-test-env.sh
+        echo 'dbuser=test-5285_dbuser' >> /tmp/linkpanel-test-env.sh
     fi
 
-    source /tmp/hestia-test-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
-    source $HESTIA/func/ip.sh
+    source /tmp/linkpanel-test-env.sh
+    source $LINKPANEL/func/main.sh
+    source $LINKPANEL/conf/linkpanel.conf
+    source $LINKPANEL/func/ip.sh
 }
 
 @test "is_hash_format_valid accesskey:secret valid" {

@@ -14,12 +14,12 @@ use Filegator\Services\Auth\AuthInterface;
 use Filegator\Services\Auth\User;
 use Filegator\Services\Auth\UsersCollection;
 use Filegator\Services\Service;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 /**
  * @codeCoverageIgnore
  */
-class HestiaAuth implements Service, AuthInterface {
+class LinkPanelAuth implements Service, AuthInterface {
 	protected $permissions = [];
 
 	protected $private_repos = false;
@@ -51,7 +51,7 @@ class HestiaAuth implements Service, AuthInterface {
 	}
 
 	public function user(): ?User {
-		$cmd = "/usr/bin/sudo /usr/local/hestia/bin/v-list-user";
+		$cmd = "/usr/bin/sudo /usr/local/linkpanel/bin/v-list-user";
 		exec($cmd . " " . quoteshellarg($this->hestia_user) . " json", $output, $return_var);
 
 		if ($return_var == 0) {
@@ -74,12 +74,12 @@ class HestiaAuth implements Service, AuthInterface {
 	}
 
 	public function authenticate($username, $password): bool {
-		# Auth is handled by Hestia
+		# Auth is handled by LinkPanel
 		return false;
 	}
 
 	public function forget() {
-		// Logout return to Hestia
+		// Logout return to LinkPanel
 		return $this->getGuest();
 	}
 
@@ -88,7 +88,7 @@ class HestiaAuth implements Service, AuthInterface {
 	}
 
 	public function update($username, User $user, $password = ""): User {
-		// Password change is handled by Hestia
+		// Password change is handled by LinkPanel
 		return $this->user();
 	}
 

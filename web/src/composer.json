@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "Hestia\\": "app/"
+            "LinkPanel\\": "app/"
         }
     },
     "require-dev": {

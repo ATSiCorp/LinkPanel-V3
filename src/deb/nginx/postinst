@@ -7,16 +7,16 @@ if [ "$1" != "configure" ]; then
 fi
 
 # Touch and set permisions on default log files on installation
-update-rc.d hestia defaults > /dev/null
-invoke-rc.d hestia start || true
+update-rc.d linkpanel defaults > /dev/null
+invoke-rc.d linkpanel start || true
 
-# Adapt Port Listing in HESTIA NGINX Backend
-source /usr/local/hestia/func/syshealth.sh # Load syshealth functions
+# Adapt Port Listing in LINKPANEL NGINX Backend
+source /usr/local/linkpanel/func/syshealth.sh # Load syshealth functions
 syshealth_adapt_hestia_nginx_listen_ports  # Adapt port listing
 syshealth_adapt_nginx_resolver
 
 # Run triggers only on updates
-if [ ! -e "/usr/local/hestia/data/users/" ]; then
+if [ ! -e "/usr/local/linkpanel/data/users/" ]; then
 	exit
 fi
 
@@ -24,9 +24,9 @@ fi
 #                Initialize functions/variables               #
 ###############################################################
 
-if [ -z "$HESTIA" ]; then
-	export HESTIA='/usr/local/hestia'
-	PATH=$PATH:/usr/local/hestia/bin
+if [ -z "$LINKPANEL" ]; then
+	export LINKPANEL='/usr/local/linkpanel'
+	PATH=$PATH:/usr/local/linkpanel/bin
 	export PATH
 fi
 
@@ -36,21 +36,21 @@ if [ -e "/etc/hestiacp/hooks/nginx/pre_install.sh" ]; then
 fi
 
 # Load upgrade functions and variables
-source /usr/local/hestia/func/main.sh
-source /usr/local/hestia/func/upgrade.sh
-source /usr/local/hestia/conf/hestia.conf
-source /usr/local/hestia/install/upgrade/upgrade.conf
+source /usr/local/linkpanel/func/main.sh
+source /usr/local/linkpanel/func/upgrade.sh
+source /usr/local/linkpanel/conf/linkpanel.conf
+source /usr/local/linkpanel/install/upgrade/upgrade.conf
 
 # Reset backend port
 if [ -n "$BACKEND_PORT" ]; then
-	/usr/local/hestia/bin/v-change-sys-port $BACKEND_PORT
+	/usr/local/linkpanel/bin/v-change-sys-port $BACKEND_PORT
 fi
 
 if [ -e "/etc/hestiacp/hooks/nginx/post_install.sh" ]; then
 	/etc/hestiacp/hooks/nginx/post_install.sh
 fi
 
-# Restart hestia service
-if [ -f "/etc/init.d/hestia" ]; then
-	systemctl restart hestia > /dev/null 2>&1
+# Restart linkpanel service
+if [ -f "/etc/init.d/linkpanel" ]; then
+	systemctl restart linkpanel > /dev/null 2>&1
 fi

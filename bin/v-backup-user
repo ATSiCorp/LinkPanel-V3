@@ -15,18 +15,18 @@ user=$1
 notify=${2-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
-source $HESTIA/func/db.sh
-# shellcheck source=/usr/local/hestia/func/backup.sh
-source $HESTIA/func/backup.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/db.sh
+source $LINKPANEL/func/db.sh
+# shellcheck source=/usr/local/linkpanel/func/backup.sh
+source $LINKPANEL/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Return Disk Usage
 get_user_disk_usage() {
@@ -174,7 +174,7 @@ start_time=$(date '+%s')
 
 # Set notification email and subject
 subj="$user → backup failed"
-email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
+email=$(grep CONTACT "$LINKPANEL/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
 
 # Validate available disk space (take usage * 2, due to the backup handling)
 let u_disk=$(($(get_user_disk_usage) * 2))
@@ -185,7 +185,7 @@ if [ "$u_disk" -gt "$v_disk" ]; then
 	# Always notify on failure
 	echo "Not enough disk space available ($v_disk mb) to perform the backup  of $user. ( $u_disk_original mb * 2 = $u_disk mb). https://hestiacp.com/docs/server-administration/backup-restore.html" | $SENDMAIL -s "$subj" "$email" "yes"
 	# Deleting task from queue
-	sed -i "/v-backup-user $user /d" $HESTIA/data/queue/backup.pipe
+	sed -i "/v-backup-user $user /d" $LINKPANEL/data/queue/backup.pipe
 	check_result "$E_LIMIT" "not enough disk space available ($v_disk mb) to perform the backup  of $user. ( $u_disk_original mb * 2 = $u_disk mb)."
 fi
 
@@ -199,31 +199,31 @@ tmpdir=$(mktemp -p $BACKUP_TEMP -d)
 if [ "$?" -ne 0 ]; then
 	echo "Can't create tmp dir $tmpdir" | $SENDMAIL -s "$subj" "$email" "yes"
 	# Deleting task from queue
-	sed -i "/v-backup-user $user /d" $HESTIA/data/queue/backup.pipe
+	sed -i "/v-backup-user $user /d" $LINKPANEL/data/queue/backup.pipe
 	check_result "$E_NOTEXIST" "can't create tmp dir"
 fi
 
 # Backup sys configs
 echo "-- SYSTEM --" | tee $BACKUP/$user.log
-mkdir $tmpdir/hestia
+mkdir $tmpdir/linkpanel
 
 echo -e "$(date "+%F %T") $user.conf" | tee -a $BACKUP/$user.log
-cp -r $USER_DATA/user.conf $tmpdir/hestia/
-cp -r $USER_DATA/ssl $tmpdir/hestia/
+cp -r $USER_DATA/user.conf $tmpdir/linkpanel/
+cp -r $USER_DATA/ssl $tmpdir/linkpanel/
 
 if [ -e "$USER_DATA/stats.log" ]; then
 	echo -e "$(date "+%F %T") stats.log" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/stats.log $tmpdir/hestia/
+	cp -r $USER_DATA/stats.log $tmpdir/linkpanel/
 fi
 
 if [ -e "$USER_DATA/history.log" ]; then
 	echo -e "$(date "+%F %T") history.log" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/history.log $tmpdir/hestia/
+	cp -r $USER_DATA/history.log $tmpdir/linkpanel/
 fi
 
 if [ -e "$USER_DATA/backup-excludes.conf" ]; then
 	echo -e "$(date "+%F %T") backup-excludes.conf" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/backup-excludes.conf $tmpdir/hestia/
+	cp -r $USER_DATA/backup-excludes.conf $tmpdir/linkpanel/
 fi
 
 # Backup PAM
@@ -263,7 +263,7 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		((i++))
 		echo -e "$(date "+%F %T") $domain" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/web/$domain/conf
-		mkdir -p $tmpdir/web/$domain/hestia
+		mkdir -p $tmpdir/web/$domain/linkpanel
 
 		# Get domain variables
 		domain_idn=$domain
@@ -273,7 +273,7 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		# Backup web.conf
 		cd $tmpdir/web/$domain/
 		conf="$USER_DATA/web.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/web.conf
+		grep "DOMAIN='$domain'" $conf > linkpanel/web.conf
 
 		# Backup vhost config
 		if [ -e "$HOMEDIR/$user/conf/web/$domain/$WEB_SYSTEM.conf" ]; then
@@ -340,23 +340,23 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		mkdir template/php-fpm/
 
 		if [ $WEB_BACKEND == 'php-fpm' ]; then
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.tpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.stpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/php-fpm/$BACKEND.tpl template/php-fpm/
+			cp $LINKPANEL/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.tpl template/$WEB_SYSTEM/
+			cp $LINKPANEL/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.stpl template/$WEB_SYSTEM/
+			cp $LINKPANEL/data/templates/web/php-fpm/$BACKEND.tpl template/php-fpm/
 		else
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/$TPL.tpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/$TPL.stpl template/$WEB_SYSTEM/
+			cp $LINKPANEL/data/templates/web/$WEB_SYSTEM/$TPL.tpl template/$WEB_SYSTEM/
+			cp $LINKPANEL/data/templates/web/$WEB_SYSTEM/$TPL.stpl template/$WEB_SYSTEM/
 		fi
 		if [ -n "$PROXY_SYSTEM" ] && [ -n "$PROXY" ]; then
 			mkdir template/$PROXY_SYSTEM
-			cp $HESTIA/data/templates/web/$PROXY_SYSTEM/$PROXY.tpl template/$PROXY_SYSTEM/
-			cp $HESTIA/data/templates/web/$PROXY_SYSTEM/$PROXY.stpl template/$PROXY_SYSTEM/
+			cp $LINKPANEL/data/templates/web/$PROXY_SYSTEM/$PROXY.tpl template/$PROXY_SYSTEM/
+			cp $LINKPANEL/data/templates/web/$PROXY_SYSTEM/$PROXY.stpl template/$PROXY_SYSTEM/
 		fi
 
 		# Backup ssl certificates
 		if [ "$SSL" = 'yes' ]; then
 			cp $HOMEDIR/$user/conf/web/$domain/ssl/$domain.* conf/
-			cp $USER_DATA/ssl/$domain.* hestia/
+			cp $USER_DATA/ssl/$domain.* linkpanel/
 		fi
 
 		# Changin dir to documentroot
@@ -429,15 +429,15 @@ if [ -n "$DNS_SYSTEM" ] && [ "$DNS" != '*' ]; then
 		# Building directory tree
 		mkdir -p $tmpdir/dns/$domain/conf
 		mkdir -p $tmpdir/dns/$domain/conf/keys
-		mkdir -p $tmpdir/dns/$domain/hestia
+		mkdir -p $tmpdir/dns/$domain/linkpanel
 
 		# Backup dns.conf
 		cd $tmpdir/dns/$domain/
 		conf="$USER_DATA/dns.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/dns.conf
+		grep "DOMAIN='$domain'" $conf > linkpanel/dns.conf
 
 		# Backup dns recods
-		cp $USER_DATA/dns/$domain.conf hestia/$domain.conf
+		cp $USER_DATA/dns/$domain.conf linkpanel/$domain.conf
 		if [ "$DNS_SYSTEM" != 'remote' ]; then
 			cp $HOMEDIR/$user/conf/dns/$domain.db conf/$domain.db
 		fi
@@ -480,7 +480,7 @@ if [ -n "$MAIL_SYSTEM" ] && [ "$MAIL" != '*' ]; then
 		((i++))
 		echo -e "$(date "+%F %T") $domain" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/mail/$domain/conf
-		mkdir -p $tmpdir/mail/$domain/hestia
+		mkdir -p $tmpdir/mail/$domain/linkpanel
 		domain_idn=$domain
 		format_domain_idn
 
@@ -492,10 +492,10 @@ if [ -n "$MAIL_SYSTEM" ] && [ "$MAIL" != '*' ]; then
 
 		# Backup mail.conf
 		conf="$USER_DATA/mail.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/mail.conf
-		cp $USER_DATA/mail/$domain.* hestia/
+		grep "DOMAIN='$domain'" $conf > linkpanel/mail.conf
+		cp $USER_DATA/mail/$domain.* linkpanel/
 		if [ -n "$(ls $USER_DATA/mail/ | grep *@$domain)" ]; then
-			cp $USER_DATA/mail/*@$domain.* hestia/
+			cp $USER_DATA/mail/*@$domain.* linkpanel/
 		fi
 
 		# Backup emails
@@ -557,10 +557,10 @@ if [ -n "$DB_SYSTEM" ] && [ "$DB" != '*' ]; then
 
 		echo -e "$(date "+%F %T") $database ($TYPE)" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/db/$database/conf
-		mkdir -p $tmpdir/db/$database/hestia
+		mkdir -p $tmpdir/db/$database/linkpanel
 
 		cd $tmpdir/db/$database/
-		grep "DB='$database'" $conf > hestia/db.conf
+		grep "DB='$database'" $conf > linkpanel/db.conf
 
 		dump="$tmpdir/db/$database/$database.$TYPE.sql"
 		if [ "$BACKUP_MODE" = 'zstd' ]; then
@@ -752,7 +752,7 @@ echo "$(date "+%F %T") Size: $size MB" | tee -a $BACKUP/$user.log
 echo "$(date "+%F %T") Runtime: $run_time $min" | tee -a $BACKUP/$user.log
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Removing duplicate
@@ -778,7 +778,7 @@ chmod 660 $USER_DATA/backup.conf
 chmod 660 $BACKUP/$user.log
 
 # Deleting task from queue
-sed -i "/v-backup-user $user /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-backup-user $user /d" $LINKPANEL/data/queue/backup.pipe
 
 U_BACKUPS=$(grep BACKUP $USER_DATA/backup.conf | wc -l)
 update_user_value "$user" '$U_BACKUPS' "$U_BACKUPS"

@@ -38,8 +38,8 @@ server {
 	server_name         _;
 	access_log          off;
 	error_log           /dev/null;
-	ssl_certificate     /usr/local/hestia/ssl/certificate.crt;
-	ssl_certificate_key /usr/local/hestia/ssl/certificate.key;
+	ssl_certificate     /usr/local/linkpanel/ssl/certificate.crt;
+	ssl_certificate_key /usr/local/linkpanel/ssl/certificate.key;
 	return              301 http://$host$request_uri;
 
 	location / {

@@ -22,17 +22,17 @@ protocol=$(echo "$protocol" | tr '[:lower:]' '[:upper:]')
 iptables="/sbin/iptables"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source "$HESTIA/func/main.sh"
-# shellcheck source=/usr/local/hestia/func/firewall.sh
-source "$HESTIA/func/firewall.sh"
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source "$LINKPANEL/func/main.sh"
+# shellcheck source=/usr/local/linkpanel/func/firewall.sh
+source "$LINKPANEL/func/firewall.sh"
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
-# Get hestia port by reading nginx.conf
-hestiaport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$HESTIA/nginx/conf/nginx.conf")
+# Get linkpanel port by reading nginx.conf
+hestiaport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$LINKPANEL/nginx/conf/nginx.conf")
 if [ -z "$hestiaport" ]; then
 	hestiaport=8083
 fi
@@ -85,7 +85,7 @@ case $chain in
 		port='3306,5432'
 		protocol=TCP
 		;;
-	HESTIA)
+	LINKPANEL)
 		port=$hestiaport
 		protocol=TCP
 		;;
@@ -111,7 +111,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Preserving chain
-chains="$HESTIA/data/firewall/chains.conf"
+chains="$LINKPANEL/data/firewall/chains.conf"
 check_chain=""
 [ -f "$chains" ] && check_chain=$(grep "CHAIN='$chain'" "$chains")
 if [ -z "$check_chain" ]; then
@@ -122,7 +122,7 @@ fi
 [ -f "$chains" ] && chmod 660 "$chains"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -96,7 +96,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Hestiacp/quoteshellarg/quoteshellarg.php"
+                    "src/LinkPanelCp/quoteshellarg/quoteshellarg.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",

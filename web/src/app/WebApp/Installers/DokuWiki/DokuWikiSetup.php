@@ -1,9 +1,9 @@
 <?php
 
-namespace Hestia\WebApp\Installers\DokuWiki;
+namespace LinkPanel\WebApp\Installers\DokuWiki;
 
-use Hestia\System\Util;
-use Hestia\WebApp\Installers\BaseSetup as BaseSetup;
+use LinkPanel\System\Util;
+use LinkPanel\WebApp\Installers\BaseSetup as BaseSetup;
 
 class DokuWikiSetup extends BaseSetup {
 	protected $appInfo = [

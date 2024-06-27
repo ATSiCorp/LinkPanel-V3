@@ -1,24 +1,24 @@
 %define debug_package %{nil}
 %global _hardened_build 1
 
-Name:           hestia
+Name:           linkpanel
 Version:        1.9.0~alpha
 Release:        1%{dist}
-Summary:        Hestia Control Panel
+Summary:        LinkPanel Control Panel
 Group:          System Environment/Base
 License:        GPLv3
 URL:            https://www.hestiacp.com
-Source0:        hestia-%{version}.tar.gz
-Source1:        hestia.service
+Source0:        linkpanel-%{version}.tar.gz
+Source1:        linkpanel.service
 Vendor:         hestiacp.com
 Requires:       redhat-release >= 8
 Requires:       bash, chkconfig, gawk, sed, acl, sysstat, (setpriv or util-linux), zstd, jq, jailkit
 Conflicts:      vesta
-Provides:       hestia = %{version}
+Provides:       linkpanel = %{version}
 BuildRequires:  systemd
 
 %description
-This package contains the Hestia Control Panel.
+This package contains the LinkPanel Control Panel.
 
 %prep
 %autosetup -p1 -n hestiacp
@@ -27,49 +27,49 @@ This package contains the Hestia Control Panel.
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-mkdir -p %{buildroot}%{_unitdir} %{buildroot}/usr/local/hestia
-cp -R %{_builddir}/hestiacp/* %{buildroot}/usr/local/hestia/
-%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/hestia.service
+mkdir -p %{buildroot}%{_unitdir} %{buildroot}/usr/local/linkpanel
+cp -R %{_builddir}/hestiacp/* %{buildroot}/usr/local/linkpanel/
+%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/linkpanel.service
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
 %pre
 # Run triggers only on updates
-if [ -e "/usr/local/hestia/data/users/" ]; then
+if [ -e "/usr/local/linkpanel/data/users/" ]; then
     # Validate version number and replace if different
-    HESTIA_V=$(rpm --queryformat="%{VERSION}" -q hestia)
+    HESTIA_V=$(rpm --queryformat="%{VERSION}" -q linkpanel)
     if [ ! "$HESTIA_V" = "%{version}" ]; then
-        sed -i "s/VERSION=.*/VERSION='$HESTIA_V'/g" /usr/local/hestia/conf/hestia.conf
+        sed -i "s/VERSION=.*/VERSION='$HESTIA_V'/g" /usr/local/linkpanel/conf/linkpanel.conf
     fi
 fi
 
 %post
-%systemd_post hestia.service
+%systemd_post linkpanel.service
 
-if [ ! -e /etc/profile.d/hestia.sh ]; then
-    HESTIA='/usr/local/hestia'
-    echo "export HESTIA='$HESTIA'" > /etc/profile.d/hestia.sh
-    echo 'PATH=$PATH:'$HESTIA'/bin' >> /etc/profile.d/hestia.sh
-    echo 'export PATH' >> /etc/profile.d/hestia.sh
-    chmod 755 /etc/profile.d/hestia.sh
-    source /etc/profile.d/hestia.sh
+if [ ! -e /etc/profile.d/linkpanel.sh ]; then
+    LINKPANEL='/usr/local/linkpanel'
+    echo "export LINKPANEL='$LINKPANEL'" > /etc/profile.d/linkpanel.sh
+    echo 'PATH=$PATH:'$LINKPANEL'/bin' >> /etc/profile.d/linkpanel.sh
+    echo 'export PATH' >> /etc/profile.d/linkpanel.sh
+    chmod 755 /etc/profile.d/linkpanel.sh
+    source /etc/profile.d/linkpanel.sh
 fi
 
-if [ -e "/usr/local/hestia/data/users/" ]; then
+if [ -e "/usr/local/linkpanel/data/users/" ]; then
     ###############################################################
     #                Initialize functions/variables               #
     ###############################################################
 
     # Load upgrade functions and refresh variables/configuration
-    source /usr/local/hestia/func/upgrade.sh
+    source /usr/local/linkpanel/func/upgrade.sh
     upgrade_refresh_config
 
     ###############################################################
     #             Set new version numbers for packages            #
     ###############################################################
-    # Hestia Control Panel
-    new_version=$(rpm --queryformat="%{VERSION}" -q hestia)
+    # LinkPanel Control Panel
+    new_version=$(rpm --queryformat="%{VERSION}" -q linkpanel)
 
     # phpMyAdmin
     pma_v='5.0.2'
@@ -123,7 +123,7 @@ if [ -e "/usr/local/hestia/data/users/" ]; then
 	# update whitelabel logo's
 	update_whitelabel_logo | tee -a $LOG
 
-    # Set new version number in hestia.conf
+    # Set new version number in linkpanel.conf
     upgrade_set_version
 
     # Perform account and domain rebuild to ensure configuration files are correct
@@ -137,19 +137,19 @@ if [ -e "/usr/local/hestia/data/users/" ]; then
 fi
 
 %preun
-%systemd_preun hestia.service
+%systemd_preun linkpanel.service
 
 %postun
-%systemd_postun_with_restart hestia.service
+%systemd_postun_with_restart linkpanel.service
 
 %files
 %defattr(-,root,root)
-%attr(755,root,root) /usr/local/hestia
-%{_unitdir}/hestia.service
+%attr(755,root,root) /usr/local/linkpanel
+%{_unitdir}/linkpanel.service
 
 %changelog
 * Sun May 14 2023 Istiak Ferdous <hello@istiak.com> - 1.8.0-1
-- HestiaCP RHEL 9 support
+- LinkPanelCP RHEL 9 support
 
 * Thu Jun 25 2020 Ernesto Nicolás Carrea <equistango@gmail.com> - 1.2.0
-- HestiaCP CentOS 8 support
+- LinkPanelCP CentOS 8 support

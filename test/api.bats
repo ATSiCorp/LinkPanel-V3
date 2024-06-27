@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+if [ "${PATH#*/usr/local/linkpanel/bin*}" = "$PATH" ]; then
+    . /etc/profile.d/linkpanel.sh
 fi
 
 load 'test_helper/bats-support/load'
@@ -14,10 +14,10 @@ function random() {
 }
 
 function setup() {
-    source /tmp/hestia-api-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
-    source $HESTIA/func/ip.sh
+    source /tmp/linkpanel-api-env.sh
+    source $LINKPANEL/func/main.sh
+    source $LINKPANEL/conf/linkpanel.conf
+    source $LINKPANEL/func/ip.sh
 }
 
 @test "[Success][ Admin/password ] List users" {

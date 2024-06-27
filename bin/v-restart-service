@@ -15,11 +15,11 @@ service=$1
 restart=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-source_conf "$HESTIA/conf/hestia.conf"
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -35,7 +35,7 @@ is_format_valid 'service' 'restart'
 log="/dev/null"
 if [ "$DEBUG_MODE" = "true" ]; then
 
-	log="/var/log/hestia/debug.log"
+	log="/var/log/linkpanel/debug.log"
 fi
 
 # Multi-instance service restart request handling
@@ -94,7 +94,7 @@ for service in $service_list; do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 include $_SERVER["DOCUMENT_ROOT"] . "/inc/main.php";
 

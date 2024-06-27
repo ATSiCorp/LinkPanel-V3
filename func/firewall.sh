@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Firewall Function Library                          #
+# LinkPanel Control Panel - Firewall Function Library                          #
 #                                                                           #
 #===========================================================================#
 

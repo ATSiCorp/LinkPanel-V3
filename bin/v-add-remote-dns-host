@@ -32,14 +32,14 @@ dns_user=${6-dns-cluster}
 DNS_USER=$dns_user
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
-source $HESTIA/func/remote.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/remote.sh
+source $LINKPANEL/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -89,14 +89,14 @@ else
 fi
 
 # Adding host to dns-cluster.conf
-echo "$str" >> $HESTIA/conf/dns-cluster.conf
-chmod 660 $HESTIA/conf/dns-cluster.conf
+echo "$str" >> $LINKPANEL/conf/dns-cluster.conf
+chmod 660 $LINKPANEL/conf/dns-cluster.conf
 
 # Enabling DNS_CLUSTER
-if [ -z "$(grep DNS_CLUSTER= $HESTIA/conf/hestia.conf)" ]; then
-	sed -i "s/^STATS_/DNS_CLUSTER='yes'\nSTATS_/g" $HESTIA/conf/hestia.conf
+if [ -z "$(grep DNS_CLUSTER= $LINKPANEL/conf/linkpanel.conf)" ]; then
+	sed -i "s/^STATS_/DNS_CLUSTER='yes'\nSTATS_/g" $LINKPANEL/conf/linkpanel.conf
 else
-	sed -i "s/DNS_CLUSTER=.*/DNS_CLUSTER='yes'/g" $HESTIA/conf/hestia.conf
+	sed -i "s/DNS_CLUSTER=.*/DNS_CLUSTER='yes'/g" $LINKPANEL/conf/linkpanel.conf
 fi
 
 # Enabling remote dns-cluster queue
@@ -115,7 +115,7 @@ $BIN/v-sync-dns-cluster
 check_result $? "$HOST sync failed" "$E_CONNECT"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Adding local  dns-cluster cron job
@@ -127,7 +127,7 @@ if [ -z "$check_cron" ] && [ ! -z "$CRON_SYSTEM" ]; then
 	day='*'
 	month='*'
 	wday='*'
-	echo "$min $hour * * * sudo /usr/local/hestia/bin/$cmd" > "/var/spool/cron/crontabs/hestiaweb"
+	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/$cmd" > "/var/spool/cron/crontabs/hestiaweb"
 fi
 
 # Logging

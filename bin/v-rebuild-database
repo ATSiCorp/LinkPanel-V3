@@ -15,18 +15,18 @@ user=$1
 database=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
-source $HESTIA/func/db.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/db.sh
+source $LINKPANEL/func/db.sh
+# shellcheck source=/usr/local/linkpanel/func/rebuild.sh
+source $LINKPANEL/func/rebuild.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source $LINKPANEL/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -65,7 +65,7 @@ update_user_value "$user" '$U_DATABASES' "$U_DATABASES"
 update_user_value "$user" '$U_DISK_DB' "$U_DISK_DB"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

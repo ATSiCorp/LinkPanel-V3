@@ -4,19 +4,19 @@
 #
 # example: v-generate-api-key
 #
-# This function creates a key file in $HESTIA/data/keys/
+# This function creates a key file in $LINKPANEL/data/keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 keygen() {
 	tr < /dev/urandom -dc _A-Z-a-z-0-9 | head -c 32
@@ -31,23 +31,23 @@ check_hestia_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/keys/" ]; then
-	mkdir -p $HESTIA/data/keys/
-	chown hestiaweb:root $HESTIA/data/keys/
-	chmod 750 $HESTIA/data/keys/
+if [ ! -d "$LINKPANEL/data/keys/" ]; then
+	mkdir -p $LINKPANEL/data/keys/
+	chown hestiaweb:root $LINKPANEL/data/keys/
+	chmod 750 $LINKPANEL/data/keys/
 fi
 
-if [[ -e "$HESTIA/data/keys/$HASH" ]]; then
-	while [[ -e "$HESTIA/data/keys/$HASH" ]]; do
+if [[ -e "$LINKPANEL/data/keys/$HASH" ]]; then
+	while [[ -e "$LINKPANEL/data/keys/$HASH" ]]; do
 		HASH=$(keygen)
 	done
 fi
 
-touch $HESTIA/data/keys/$HASH
+touch $LINKPANEL/data/keys/$HASH
 echo "$HASH"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

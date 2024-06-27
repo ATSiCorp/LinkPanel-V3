@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # set -e
-# Autocompile Script for HestiaCP package Files.
+# Autocompile Script for LinkPanelCP package Files.
 # For building from local source folder use "~localsrc" keyword as hesia branch name,
 #   and the script will not try to download the arhive from github, since '~' char is
 #   not accepted in branch name.
-# Compile but dont install -> ./hst_autocompile.sh --hestia --noinstall --keepbuild '~localsrc'
-# Compile and install -> ./hst_autocompile.sh --hestia --install '~localsrc'
+# Compile but dont install -> ./hst_autocompile.sh --linkpanel --noinstall --keepbuild '~localsrc'
+# Compile and install -> ./hst_autocompile.sh --linkpanel --install '~localsrc'
 
 # Clear previous screen output
 clear
@@ -85,32 +85,32 @@ get_branch_file() {
 
 usage() {
 	echo "Usage:"
-	echo "    $0 (--all|--hestia|--nginx|--php|--web-terminal) [options] [branch] [Y]"
+	echo "    $0 (--all|--linkpanel|--nginx|--php|--web-terminal) [options] [branch] [Y]"
 	echo ""
-	echo "    --all           Build all hestia packages."
-	echo "    --hestia        Build only the Control Panel package."
+	echo "    --all           Build all linkpanel packages."
+	echo "    --linkpanel        Build only the Control Panel package."
 	echo "    --nginx         Build only the backend nginx engine package."
 	echo "    --php           Build only the backend php engine package"
 	echo "    --web-terminal  Build only the backend web terminal websocket package"
 	echo "  Options:"
 	echo "    --install       Install generated packages"
 	echo "    --keepbuild     Don't delete downloaded source and build folders"
-	echo "    --cross         Compile hestia package for both AMD64 and ARM64"
+	echo "    --cross         Compile linkpanel package for both AMD64 and ARM64"
 	echo "    --debug         Debug mode"
 	echo ""
 	echo "For automated builds and installations, you may specify the branch"
 	echo "after one of the above flags. To install the packages, specify 'Y'"
 	echo "following the branch name."
 	echo ""
-	echo "Example: bash hst_autocompile.sh --hestia develop Y"
-	echo "This would install a Hestia Control Panel package compiled with the"
+	echo "Example: bash hst_autocompile.sh --linkpanel develop Y"
+	echo "This would install a LinkPanel Control Panel package compiled with the"
 	echo "develop branch code."
 }
 
 # Set compiling directory
 REPO='hestiacp/hestiacp'
 BUILD_DIR='/tmp/hestiacp-src'
-INSTALL_DIR='/usr/local/hestia'
+INSTALL_DIR='/usr/local/linkpanel'
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ARCHIVE_DIR="$SRC_DIR/src/archive/"
 architecture="$(arch)"
@@ -149,7 +149,7 @@ for i in $*; do
 		--web-terminal)
 			WEB_TERMINAL_B='true'
 			;;
-		--hestia)
+		--linkpanel)
 			HESTIA_B='true'
 			;;
 		--debug)
@@ -207,13 +207,13 @@ if [ -z $install ]; then
 fi
 
 # Set Version for compiling
-if [ -f "$SRC_DIR/src/deb/hestia/control" ] && [ "$use_src_folder" == 'true' ]; then
-	BUILD_VER=$(cat $SRC_DIR/src/deb/hestia/control | grep "Version:" | cut -d' ' -f2)
+if [ -f "$SRC_DIR/src/deb/linkpanel/control" ] && [ "$use_src_folder" == 'true' ]; then
+	BUILD_VER=$(cat $SRC_DIR/src/deb/linkpanel/control | grep "Version:" | cut -d' ' -f2)
 	NGINX_V=$(cat $SRC_DIR/src/deb/nginx/control | grep "Version:" | cut -d' ' -f2)
 	PHP_V=$(cat $SRC_DIR/src/deb/php/control | grep "Version:" | cut -d' ' -f2)
 	WEB_TERMINAL_V=$(cat $SRC_DIR/src/deb/web-terminal/control | grep "Version:" | cut -d' ' -f2)
 else
-	BUILD_VER=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/hestia/control | grep "Version:" | cut -d' ' -f2)
+	BUILD_VER=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/linkpanel/control | grep "Version:" | cut -d' ' -f2)
 	NGINX_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/nginx/control | grep "Version:" | cut -d' ' -f2)
 	PHP_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/php/control | grep "Version:" | cut -d' ' -f2)
 	WEB_TERMINAL_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/web-terminal/control | grep "Version:" | cut -d' ' -f2)
@@ -321,7 +321,7 @@ if [ "$HESTIA_DEBUG" ]; then
 	echo "Install          : $install"
 	echo "Build RPM        : $BUILD_RPM"
 	echo "Build DEB        : $BUILD_DEB"
-	echo "Hestia version   : $BUILD_VER"
+	echo "LinkPanel version   : $BUILD_VER"
 	echo "Nginx version    : $NGINX_V"
 	echo "PHP version      : $PHP_V"
 	echo "Web Term version : $WEB_TERMINAL_V"
@@ -353,14 +353,14 @@ branch_dash=$(echo "$branch" | sed 's/\//-/g')
 
 #################################################################################
 #
-# Building hestia-nginx
+# Building linkpanel-nginx
 #
 #################################################################################
 
 if [ "$NGINX_B" = true ]; then
-	echo "Building hestia-nginx package..."
+	echo "Building linkpanel-nginx package..."
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for linkpanel-nginx, linkpanel-php or linkpanel-web-terminal"
 		exit 1
 	fi
 
@@ -368,7 +368,7 @@ if [ "$NGINX_B" = true ]; then
 		# Change to build directory
 		cd $BUILD_DIR
 
-		BUILD_DIR_HESTIANGINX=$BUILD_DIR/hestia-nginx_$NGINX_V
+		BUILD_DIR_HESTIANGINX=$BUILD_DIR/linkpanel-nginx_$NGINX_V
 		if [[ $NGINX_V =~ - ]]; then
 			BUILD_DIR_NGINX=$BUILD_DIR/nginx-$(echo $NGINX_V | cut -d"-" -f1)
 		else
@@ -378,7 +378,7 @@ if [ "$NGINX_B" = true ]; then
 		if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIANGINX" ]; then
 			# Check if target directory exist
 			if [ -d "$BUILD_DIR_HESTIANGINX" ]; then
-				#mv $BUILD_DIR/hestia-nginx_$NGINX_V $BUILD_DIR/hestia-nginx_$NGINX_V-$(timestamp)
+				#mv $BUILD_DIR/linkpanel-nginx_$NGINX_V $BUILD_DIR/linkpanel-nginx_$NGINX_V-$(timestamp)
 				rm -r "$BUILD_DIR_HESTIANGINX"
 			fi
 
@@ -395,7 +395,7 @@ if [ "$NGINX_B" = true ]; then
 			cd $BUILD_DIR_NGINX
 
 			# configure nginx
-			./configure --prefix=/usr/local/hestia/nginx \
+			./configure --prefix=/usr/local/linkpanel/nginx \
 				--with-http_v2_module \
 				--with-http_ssl_module \
 				--with-openssl=../openssl-$OPENSSL_V \
@@ -416,7 +416,7 @@ if [ "$NGINX_B" = true ]; then
 			rm -r "$BUILD_DIR$INSTALL_DIR"
 		fi
 
-		# Copy local hestia source files
+		# Copy local linkpanel source files
 		if [ "$use_src_folder" == 'true' ] && [ -d $SRC_DIR ]; then
 			cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
 		fi
@@ -431,15 +431,15 @@ if [ "$NGINX_B" = true ]; then
 		cd $BUILD_DIR_HESTIANGINX
 
 		# Move nginx directory
-		mkdir -p $BUILD_DIR_HESTIANGINX/usr/local/hestia
-		rm -rf $BUILD_DIR_HESTIANGINX/usr/local/hestia/nginx
-		mv $BUILD_DIR/usr/local/hestia/nginx $BUILD_DIR_HESTIANGINX/usr/local/hestia/
+		mkdir -p $BUILD_DIR_HESTIANGINX/usr/local/linkpanel
+		rm -rf $BUILD_DIR_HESTIANGINX/usr/local/linkpanel/nginx
+		mv $BUILD_DIR/usr/local/linkpanel/nginx $BUILD_DIR_HESTIANGINX/usr/local/linkpanel/
 
 		# Remove original nginx.conf (will use custom)
-		rm -f $BUILD_DIR_HESTIANGINX/usr/local/hestia/nginx/conf/nginx.conf
+		rm -f $BUILD_DIR_HESTIANGINX/usr/local/linkpanel/nginx/conf/nginx.conf
 
 		# copy binary
-		mv $BUILD_DIR_HESTIANGINX/usr/local/hestia/nginx/sbin/nginx $BUILD_DIR_HESTIANGINX/usr/local/hestia/nginx/sbin/hestia-nginx
+		mv $BUILD_DIR_HESTIANGINX/usr/local/linkpanel/nginx/sbin/nginx $BUILD_DIR_HESTIANGINX/usr/local/linkpanel/nginx/sbin/linkpanel-nginx
 
 		# change permission and build the package
 		cd $BUILD_DIR
@@ -458,11 +458,11 @@ if [ "$NGINX_B" = true ]; then
 
 		# Init file
 		mkdir -p $BUILD_DIR_HESTIANGINX/etc/init.d
-		get_branch_file 'src/deb/nginx/hestia' "$BUILD_DIR_HESTIANGINX/etc/init.d/hestia"
-		chmod +x "$BUILD_DIR_HESTIANGINX/etc/init.d/hestia"
+		get_branch_file 'src/deb/nginx/linkpanel' "$BUILD_DIR_HESTIANGINX/etc/init.d/linkpanel"
+		chmod +x "$BUILD_DIR_HESTIANGINX/etc/init.d/linkpanel"
 
 		# Custom config
-		get_branch_file 'src/deb/nginx/nginx.conf' "${BUILD_DIR_HESTIANGINX}/usr/local/hestia/nginx/conf/nginx.conf"
+		get_branch_file 'src/deb/nginx/nginx.conf' "${BUILD_DIR_HESTIANGINX}/usr/local/linkpanel/nginx/conf/nginx.conf"
 
 		# Build the package
 		echo Building Nginx DEB
@@ -472,7 +472,7 @@ if [ "$NGINX_B" = true ]; then
 
 		if [ "$KEEPBUILD" != 'true' ]; then
 			# Clean up the source folder
-			rm -r hestia- nginx_$NGINX_V
+			rm -r linkpanel- nginx_$NGINX_V
 			rm -rf $BUILD_DIR/rpmbuild
 			if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/hestiacp-$branch_dash ]; then
 				rm -r $BUILD_DIR/hestiacp-$branch_dash
@@ -483,16 +483,16 @@ if [ "$NGINX_B" = true ]; then
 	if [ "$BUILD_RPM" = true ]; then
 		# Get RHEL package files
 		get_branch_file 'src/rpm/nginx/nginx.conf' "$HOME/rpmbuild/SOURCES/nginx.conf"
-		get_branch_file 'src/rpm/nginx/hestia-nginx.spec' "$HOME/rpmbuild/SPECS/hestia-nginx.spec"
-		get_branch_file 'src/rpm/nginx/hestia-nginx.service' "$HOME/rpmbuild/SOURCES/hestia-nginx.service"
+		get_branch_file 'src/rpm/nginx/linkpanel-nginx.spec' "$HOME/rpmbuild/SPECS/linkpanel-nginx.spec"
+		get_branch_file 'src/rpm/nginx/linkpanel-nginx.service' "$HOME/rpmbuild/SOURCES/linkpanel-nginx.service"
 
 		# Download source files
 		download_file $NGINX "$HOME/rpmbuild/SOURCES/"
 
 		# Build the package
 		echo Building Nginx RPM
-		rpmbuild -bs ~/rpmbuild/SPECS/hestia-nginx.spec
-		mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/hestia-nginx-$NGINX_V-1.el9.src.rpm
+		rpmbuild -bs ~/rpmbuild/SPECS/linkpanel-nginx.spec
+		mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/linkpanel-nginx-$NGINX_V-1.el9.src.rpm
 		cp /var/lib/mock/rocky+epel-9-$(arch)/result/*.rpm $RPM_DIR
 		rm -rf ~/rpmbuild/SPECS/* ~/rpmbuild/SOURCES/* ~/rpmbuild/SRPMS/*
 	fi
@@ -500,20 +500,20 @@ fi
 
 #################################################################################
 #
-# Building hestia-php
+# Building linkpanel-php
 #
 #################################################################################
 
 if [ "$PHP_B" = true ]; then
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for linkpanel-nginx, linkpanel-php or linkpanel-web-terminal"
 		exit 1
 	fi
 
-	echo "Building hestia-php package..."
+	echo "Building linkpanel-php package..."
 
 	if [ "$BUILD_DEB" = true ]; then
-		BUILD_DIR_HESTIAPHP=$BUILD_DIR/hestia-php_$PHP_V
+		BUILD_DIR_HESTIAPHP=$BUILD_DIR/linkpanel-php_$PHP_V
 
 		BUILD_DIR_PHP=$BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
 
@@ -540,7 +540,7 @@ if [ "$PHP_B" = true ]; then
 			cd $BUILD_DIR_PHP
 
 			# Configure PHP
-			./configure --prefix=/usr/local/hestia/php \
+			./configure --prefix=/usr/local/linkpanel/php \
 				--with-libdir=lib/$(arch)-linux-gnu \
 				--enable-fpm --with-fpm-user=admin --with-fpm-group=admin \
 				--with-openssl \
@@ -557,26 +557,26 @@ if [ "$PHP_B" = true ]; then
 		# Create the files and install them
 		make -j $NUM_CPUS && make INSTALL_ROOT=$BUILD_DIR install
 
-		# Copy local hestia source files
+		# Copy local linkpanel source files
 		if [ "$use_src_folder" == 'true' ] && [ -d $SRC_DIR ]; then
 			[ "$HESTIA_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
 			cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
 		fi
 		# Move php directory
-		[ "$HESTIA_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/hestia
-		mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/hestia
+		[ "$HESTIA_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/linkpanel
+		mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/linkpanel
 
-		[ "$HESTIA_DEBUG" ] && echo DEBUG: rm -r $BUILD_DIR_HESTIAPHP/usr/local/hestia/php
-		if [ -d $BUILD_DIR_HESTIAPHP/usr/local/hestia/php ]; then
-			rm -r $BUILD_DIR_HESTIAPHP/usr/local/hestia/php
+		[ "$HESTIA_DEBUG" ] && echo DEBUG: rm -r $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php
+		if [ -d $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php ]; then
+			rm -r $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php
 		fi
 
-		[ "$HESTIA_DEBUG" ] && echo DEBUG: mv ${BUILD_DIR}/usr/local/hestia/php ${BUILD_DIR_HESTIAPHP}/usr/local/hestia/
-		mv ${BUILD_DIR}/usr/local/hestia/php ${BUILD_DIR_HESTIAPHP}/usr/local/hestia/
+		[ "$HESTIA_DEBUG" ] && echo DEBUG: mv ${BUILD_DIR}/usr/local/linkpanel/php ${BUILD_DIR_HESTIAPHP}/usr/local/linkpanel/
+		mv ${BUILD_DIR}/usr/local/linkpanel/php ${BUILD_DIR_HESTIAPHP}/usr/local/linkpanel/
 
 		# copy binary
-		[ "$HESTIA_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_HESTIAPHP/usr/local/hestia/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/hestia/php/sbin/hestia-php
-		cp $BUILD_DIR_HESTIAPHP/usr/local/hestia/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/hestia/php/sbin/hestia-php
+		[ "$HESTIA_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php/sbin/linkpanel-php
+		cp $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/linkpanel/php/sbin/linkpanel-php
 
 		# Change permissions and build the package
 		chown -R root:root $BUILD_DIR_HESTIAPHP
@@ -599,8 +599,8 @@ if [ "$PHP_B" = true ]; then
 		get_branch_file 'src/deb/php/postinst' "$BUILD_DIR_HESTIAPHP/DEBIAN/postinst"
 		chmod +x $BUILD_DIR_HESTIAPHP/DEBIAN/postinst
 		# Get custom config
-		get_branch_file 'src/deb/php/php-fpm.conf' "${BUILD_DIR_HESTIAPHP}/usr/local/hestia/php/etc/php-fpm.conf"
-		get_branch_file 'src/deb/php/php.ini' "${BUILD_DIR_HESTIAPHP}/usr/local/hestia/php/lib/php.ini"
+		get_branch_file 'src/deb/php/php-fpm.conf' "${BUILD_DIR_HESTIAPHP}/usr/local/linkpanel/php/etc/php-fpm.conf"
+		get_branch_file 'src/deb/php/php.ini' "${BUILD_DIR_HESTIAPHP}/usr/local/linkpanel/php/lib/php.ini"
 
 		# Build the package
 		echo Building PHP DEB
@@ -623,16 +623,16 @@ if [ "$PHP_B" = true ]; then
 		# Get RHEL package files
 		get_branch_file 'src/rpm/php/php-fpm.conf' "$HOME/rpmbuild/SOURCES/php-fpm.conf"
 		get_branch_file 'src/rpm/php/php.ini' "$HOME/rpmbuild/SOURCES/php.ini"
-		get_branch_file 'src/rpm/php/hestia-php.spec' "$HOME/rpmbuild/SPECS/hestia-php.spec"
-		get_branch_file 'src/rpm/php/hestia-php.service' "$HOME/rpmbuild/SOURCES/hestia-php.service"
+		get_branch_file 'src/rpm/php/linkpanel-php.spec' "$HOME/rpmbuild/SPECS/linkpanel-php.spec"
+		get_branch_file 'src/rpm/php/linkpanel-php.service' "$HOME/rpmbuild/SOURCES/linkpanel-php.service"
 
 		# Download source files
 		download_file $PHP "$HOME/rpmbuild/SOURCES/"
 
 		# Build RPM package
 		echo Building PHP RPM
-		rpmbuild -bs ~/rpmbuild/SPECS/hestia-php.spec
-		mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/hestia-php-$PHP_V-1.el9.src.rpm
+		rpmbuild -bs ~/rpmbuild/SPECS/linkpanel-php.spec
+		mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/linkpanel-php-$PHP_V-1.el9.src.rpm
 		cp /var/lib/mock/rocky+epel-9-$(arch)/result/*.rpm $RPM_DIR
 		rm -rf ~/rpmbuild/SPECS/* ~/rpmbuild/SOURCES/* ~/rpmbuild/SRPMS/*
 	fi
@@ -640,20 +640,20 @@ fi
 
 #################################################################################
 #
-# Building hestia-web-terminal
+# Building linkpanel-web-terminal
 #
 #################################################################################
 
 if [ "$WEB_TERMINAL_B" = true ]; then
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for linkpanel-nginx, linkpanel-php or linkpanel-web-terminal"
 		exit 1
 	fi
 
-	echo "Building hestia-web-terminal package..."
+	echo "Building linkpanel-web-terminal package..."
 
 	if [ "$BUILD_DEB" = true ]; then
-		BUILD_DIR_HESTIA_TERMINAL=$BUILD_DIR/hestia-web-terminal_$WEB_TERMINAL_V
+		BUILD_DIR_HESTIA_TERMINAL=$BUILD_DIR/linkpanel-web-terminal_$WEB_TERMINAL_V
 
 		# Check if target directory exist
 		if [ -d $BUILD_DIR_HESTIA_TERMINAL ]; then
@@ -677,20 +677,20 @@ if [ "$WEB_TERMINAL_B" = true ]; then
 		chmod +x $BUILD_DIR_HESTIA_TERMINAL/DEBIAN/postinst
 
 		# Get server files
-		[ "$HESTIA_DEBUG" ] && echo DEBUG: mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal"
-		mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal"
-		get_branch_file 'src/deb/web-terminal/package.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal/package.json"
-		get_branch_file 'src/deb/web-terminal/package-lock.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal/package-lock.json"
-		get_branch_file 'src/deb/web-terminal/server.js' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal/server.js"
-		chmod +x "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/hestia/web-terminal/server.js"
+		[ "$HESTIA_DEBUG" ] && echo DEBUG: mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal"
+		mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal"
+		get_branch_file 'src/deb/web-terminal/package.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal/package.json"
+		get_branch_file 'src/deb/web-terminal/package-lock.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal/package-lock.json"
+		get_branch_file 'src/deb/web-terminal/server.js' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal/server.js"
+		chmod +x "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/linkpanel/web-terminal/server.js"
 
-		cd $BUILD_DIR_HESTIA_TERMINAL/usr/local/hestia/web-terminal
+		cd $BUILD_DIR_HESTIA_TERMINAL/usr/local/linkpanel/web-terminal
 		npm ci --omit=dev
 
 		# Systemd service
 		[ "$HESTIA_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
 		mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
-		get_branch_file 'src/deb/web-terminal/hestia-web-terminal.service' "$BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system/hestia-web-terminal.service"
+		get_branch_file 'src/deb/web-terminal/linkpanel-web-terminal.service' "$BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system/linkpanel-web-terminal.service"
 
 		# Build the package
 		echo Building Web Terminal DEB
@@ -709,7 +709,7 @@ fi
 
 #################################################################################
 #
-# Building hestia
+# Building linkpanel
 #
 #################################################################################
 
@@ -720,7 +720,7 @@ if [ "$HESTIA_B" = true ]; then
 		arch="amd64 arm64"
 	fi
 	for BUILD_ARCH in $arch; do
-		echo "Building Hestia Control Panel package..."
+		echo "Building LinkPanel Control Panel package..."
 
 		if [ "$BUILD_DEB" = true ]; then
 			BUILD_DIR_HESTIA=$BUILD_DIR/hestia_$HESTIA_V
@@ -748,37 +748,37 @@ if [ "$HESTIA_B" = true ]; then
 				download_file $HESTIA_ARCHIVE_LINK '-' 'fresh' | tar xz
 			fi
 
-			mkdir -p $BUILD_DIR_HESTIA/usr/local/hestia
+			mkdir -p $BUILD_DIR_HESTIA/usr/local/linkpanel
 
 			# Build web and move needed directories
 			cd $BUILD_DIR/hestiacp-$branch_dash
 			npm ci --ignore-scripts
 			npm run build
-			cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/hestia/
+			cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/linkpanel/
 
 			# Set permissions
-			find $BUILD_DIR_HESTIA/usr/local/hestia/ -type f -exec chmod -x {} \;
+			find $BUILD_DIR_HESTIA/usr/local/linkpanel/ -type f -exec chmod -x {} \;
 
-			# Allow send email via /usr/local/hestia/web/inc/mail-wrapper.php via cli
-			chmod +x $BUILD_DIR_HESTIA/usr/local/hestia/web/inc/mail-wrapper.php
+			# Allow send email via /usr/local/linkpanel/web/inc/mail-wrapper.php via cli
+			chmod +x $BUILD_DIR_HESTIA/usr/local/linkpanel/web/inc/mail-wrapper.php
 			# Allow the executable to be executed
-			chmod +x $BUILD_DIR_HESTIA/usr/local/hestia/bin/*
-			find $BUILD_DIR_HESTIA/usr/local/hestia/install/ \( -name '*.sh' \) -exec chmod +x {} \;
-			chmod -x $BUILD_DIR_HESTIA/usr/local/hestia/install/*.sh
+			chmod +x $BUILD_DIR_HESTIA/usr/local/linkpanel/bin/*
+			find $BUILD_DIR_HESTIA/usr/local/linkpanel/install/ \( -name '*.sh' \) -exec chmod +x {} \;
+			chmod -x $BUILD_DIR_HESTIA/usr/local/linkpanel/install/*.sh
 			chown -R root:root $BUILD_DIR_HESTIA
 			# Get Debian package files
 			mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-			get_branch_file 'src/deb/hestia/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+			get_branch_file 'src/deb/linkpanel/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
 			if [ "$BUILD_ARCH" != "amd64" ]; then
 				sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
 			fi
-			get_branch_file 'src/deb/hestia/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-			get_branch_file 'src/deb/hestia/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-			get_branch_file 'src/deb/hestia/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
+			get_branch_file 'src/deb/linkpanel/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
+			get_branch_file 'src/deb/linkpanel/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
+			get_branch_file 'src/deb/linkpanel/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
 			chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
 			chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
 
-			echo Building Hestia DEB
+			echo Building LinkPanel DEB
 			dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
 
 			# clear up the source folder
@@ -794,16 +794,16 @@ if [ "$HESTIA_B" = true ]; then
 			rm -rf ~/rpmbuild/SOURCES/*
 
 			# Get RHEL package files
-			get_branch_file 'src/rpm/hestia/hestia.spec' "$HOME/rpmbuild/SPECS/hestia.spec"
-			get_branch_file 'src/rpm/hestia/hestia.service' "$HOME/rpmbuild/SOURCES/hestia.service"
+			get_branch_file 'src/rpm/linkpanel/linkpanel.spec' "$HOME/rpmbuild/SPECS/linkpanel.spec"
+			get_branch_file 'src/rpm/linkpanel/linkpanel.service' "$HOME/rpmbuild/SOURCES/linkpanel.service"
 
 			# Generate source tar.gz
-			tar -czf $HOME/rpmbuild/SOURCES/hestia-$BUILD_VER.tar.gz -C $SRC_DIR/.. hestiacp
+			tar -czf $HOME/rpmbuild/SOURCES/linkpanel-$BUILD_VER.tar.gz -C $SRC_DIR/.. hestiacp
 
 			# Build RPM package
-			echo Building Hestia RPM
-			rpmbuild -bs ~/rpmbuild/SPECS/hestia.spec
-			mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/hestia-$BUILD_VER-1.el9.src.rpm
+			echo Building LinkPanel RPM
+			rpmbuild -bs ~/rpmbuild/SPECS/linkpanel.spec
+			mock -r rocky+epel-9-$(arch) ~/rpmbuild/SRPMS/linkpanel-$BUILD_VER-1.el9.src.rpm
 			cp /var/lib/mock/rocky+epel-9-$(arch)/result/*.rpm $RPM_DIR
 			rm -rf ~/rpmbuild/SPECS/* ~/rpmbuild/SOURCES/* ~/rpmbuild/SRPMS/*
 		fi

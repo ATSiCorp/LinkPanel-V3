@@ -13,7 +13,7 @@
 
 # Argument definition
 
-# Includes - Call any necessary libraries from $HESTIA/func/
+# Includes - Call any necessary libraries from $LINKPANEL/func/
 #            Remember to add shellcheck headers!
 
 #----------------------------------------------------------#
@@ -32,7 +32,7 @@
 # Insert action steps here
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Insert logging or last stage service restarts here

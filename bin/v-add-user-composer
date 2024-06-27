@@ -16,17 +16,17 @@ user=$1
 version=${2-2}
 update=$3
 
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+if [ -z "$LINKPANEL" ]; then
+	LINKPANEL="/usr/local/linkpanel"
 fi
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -38,7 +38,7 @@ is_number_format_valid "$version" "version"
 is_object_valid 'user' 'USER' "$user"
 is_object_unsuspended 'user' 'USER' "$user"
 
-[ -z "$HOMEDIR" ] && check_result "$E_NOTEXIST" "Hestia environment vars not present"
+[ -z "$HOMEDIR" ] && check_result "$E_NOTEXIST" "LinkPanel environment vars not present"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -90,7 +90,7 @@ check_result $? "Composer install failed"
 [ -f "$COMPOSER_SETUP_FILE" ] && rm -f "$COMPOSER_SETUP_FILE"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

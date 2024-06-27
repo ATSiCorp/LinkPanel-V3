@@ -2,13 +2,13 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Upgrade Function Library                           #
+# LinkPanel Control Panel - Upgrade Function Library                           #
 #                                                                           #
 #===========================================================================#
 
 # Import system health check and repair library
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source $LINKPANEL/func/syshealth.sh
 
 #####################################################################
 #######                Functions & Initialization             #######
@@ -36,14 +36,14 @@ upgrade_health_check() {
 
 	echo "============================================================================="
 	echo "[ ! ] Performing system health check before proceeding with installation...  "
-	# Perform basic health check against hestia.conf to ensure that
+	# Perform basic health check against linkpanel.conf to ensure that
 	# system variables exist and are set to expected defaults.
 
 	if [ -z "$VERSION" ]; then
 		export VERSION="1.1.0"
 		$BIN/v-change-sys-config-value 'VERSION' "$VERSION"
 		echo
-		echo "[ ! ] Unable to detect installed version of Hestia Control Panel."
+		echo "[ ! ] Unable to detect installed version of LinkPanel Control Panel."
 		echo "      Setting default version to $VERSION and processing upgrade steps."
 		echo
 	fi
@@ -62,7 +62,7 @@ upgrade_welcome_message() {
 	echo '                 |  _  |  __/\__ \ |_| | (_| | |___|  __/                     '
 	echo '                 |_| |_|\___||___/\__|_|\__,_|\____|_|                        '
 	echo "                                                                              "
-	echo "                    Hestia Control Panel Software Update                      "
+	echo "                    LinkPanel Control Panel Software Update                      "
 	echo "                               Version: ${DISPLAY_VER}"
 	if [[ "$new_version" =~ "beta" ]]; then
 		echo "                                BETA RELEASE                                 "
@@ -86,7 +86,7 @@ upgrade_welcome_message() {
 
 upgrade_welcome_message_log() {
 	echo "============================================================================="
-	echo "Hestia Control Panel Software Update Log"
+	echo "LinkPanel Control Panel Software Update Log"
 	echo "============================================================================="
 	echo
 	echo "OPERATING SYSTEM:      $OS_TYPE ($OS_VERSION)"
@@ -124,18 +124,18 @@ upgrade_complete_message() {
 	echo "Read the release notes to learn about new fixes and features:                "
 	echo "https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md               "
 	echo
-	echo "We hope that you enjoy using this version of Hestia Control Panel,           "
+	echo "We hope that you enjoy using this version of LinkPanel Control Panel,           "
 	echo "have a wonderful day!                                                        "
 	echo
 	echo "Sincerely,                                                                   "
-	echo "The Hestia Control Panel development team                                    "
+	echo "The LinkPanel Control Panel development team                                    "
 	echo
 	echo "Web:      https://www.hestiacp.com/                                          "
 	echo "Docs:     https://docs.hestiacp.com/										   "
 	echo "Forum:    https://forum.hestiacp.com/                                        "
 	echo "GitHub:   https://github.com/hestiacp/hestiacp/                              "
 	echo
-	echo "Help support the Hestia Control Panel project by donating via PayPal:        "
+	echo "Help support the LinkPanel Control Panel project by donating via PayPal:        "
 	echo "https://www.hestiacp.com/donate                                              "
 	echo
 	echo "Made with love & pride by the open-source community around the world.        "
@@ -162,17 +162,17 @@ upgrade_cleanup_message() {
 }
 
 upgrade_get_version() {
-	# Retrieve new version number for Hestia Control Panel from .deb package
-	new_version=$(dpkg -l | awk '$2=="hestia" { print $3 }')
+	# Retrieve new version number for LinkPanel Control Panel from .deb package
+	new_version=$(dpkg -l | awk '$2=="linkpanel" { print $3 }')
 }
 
 upgrade_set_version() {
-	# Set new version number in hestia.conf
+	# Set new version number in linkpanel.conf
 	$BIN/v-change-sys-config-value "VERSION" "$@"
 }
 
 upgrade_set_branch() {
-	# Set branch in hestia.conf
+	# Set branch in linkpanel.conf
 	DISPLAY_VER=$(echo "$1" | sed "s|~alpha||g" | sed "s|~beta||g")
 	if [ "$DISPLAY_VER" = "$1" ]; then
 		$BIN/v-change-sys-config-value "RELEASE_BRANCH" "release"
@@ -187,13 +187,13 @@ upgrade_send_notification_to_panel() {
 	# Add notification to panel if variable is set to true or is not set
 	if [[ "$new_version" =~ "alpha" ]]; then
 		# Send notifications for development releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The LinkPanel Control Panel development team</p>'
 	elif [[ "$new_version" =~ "beta" ]]; then
 		# Send feedback notification for beta releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing LinkPanel Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The LinkPanel Control Panel development team</p>'
 	else
 		# Send normal upgrade complete notification for stable releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>LinkPanel Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The LinkPanel Control Panel development team</p>'
 	fi
 }
 
@@ -205,14 +205,14 @@ upgrade_send_notification_to_email() {
 	if [ "$UPGRADE_SEND_EMAIL" = "true" ]; then
 		# Retrieve admin email address, sendmail path, and message temp file path
 		admin_email=$($BIN/v-list-user "$ROOT_USER" json | grep "CONTACT" | cut -d'"' -f4)
-		send_mail="$HESTIA/web/inc/mail-wrapper.php"
-		message_tmp_file="/tmp/hestia-upgrade-complete.txt"
+		send_mail="$LINKPANEL/web/inc/mail-wrapper.php"
+		message_tmp_file="/tmp/linkpanel-upgrade-complete.txt"
 
 		# Create temporary file
 		touch $message_tmp_file
 
 		# Write message to file
-		echo "$HOSTNAME has been upgraded from Hestia Control Panel v$VERSION to v${new_version}." >> $message_tmp_file
+		echo "$HOSTNAME has been upgraded from LinkPanel Control Panel v$VERSION to v${new_version}." >> $message_tmp_file
 		echo "Installation log: $LOG" >> $message_tmp_file
 		echo "" >> $message_tmp_file
 
@@ -233,10 +233,10 @@ upgrade_send_notification_to_email() {
 		echo "- Check our forums for possible solutions: https://forum.hestiacp.com" >> $message_tmp_file
 		echo "- File an issue report on GitHub: https://github.com/hestiacp/hestiacp/issues" >> $message_tmp_file
 		echo "" >> $message_tmp_file
-		echo "Help support the Hestia Control Panel project by donating via PayPal: https://www.hestiacp.com/donate" >> $message_tmp_file
+		echo "Help support the LinkPanel Control Panel project by donating via PayPal: https://www.hestiacp.com/donate" >> $message_tmp_file
 		echo "===================================================" >> $message_tmp_file
 		echo "Have a wonderful day," >> $message_tmp_file
-		echo "The Hestia Control Panel development team" >> $message_tmp_file
+		echo "The LinkPanel Control Panel development team" >> $message_tmp_file
 
 		# Read back message from file and pass through to sendmail
 		cat $message_tmp_file | $send_mail -s "Update Installed - v${new_version}" $admin_email
@@ -247,7 +247,7 @@ upgrade_send_notification_to_email() {
 upgrade_send_log_to_email() {
 	if [ "$UPGRADE_SEND_EMAIL_LOG" = "true" ]; then
 		admin_email=$($BIN/v-list-user $ROOT_USER json | grep "CONTACT" | cut -d'"' -f4)
-		send_mail="$HESTIA/web/inc/mail-wrapper.php"
+		send_mail="$LINKPANEL/web/inc/mail-wrapper.php"
 		cat $LOG | $send_mail -s "Update Installation Log - v${new_version}" $admin_email
 	fi
 }
@@ -271,13 +271,13 @@ prepare_upgrade_config() {
 			rhs="${rhs#\'*}"   # Del closing string quotes
 			echo "$lhs='$rhs'" >> $HESTIA_BACKUP/upgrade.conf
 		fi
-	done < "$HESTIA/install/upgrade/upgrade.conf"
+	done < "$LINKPANEL/install/upgrade/upgrade.conf"
 }
 
 upgrade_init_backup() {
 	# Ensure that backup directories are created
-	# Hestia Control Panel configuration files
-	mkdir -p $HESTIA_BACKUP/conf/hestia/
+	# LinkPanel Control Panel configuration files
+	mkdir -p $HESTIA_BACKUP/conf/linkpanel/
 
 	# OpenSSL configuration files
 	mkdir -p $HESTIA_BACKUP/conf/openssl/
@@ -363,22 +363,22 @@ upgrade_start_backup() {
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Packages"
 	fi
-	cp -fr $HESTIA/data/packages/* $HESTIA_BACKUP/packages/
+	cp -fr $LINKPANEL/data/packages/* $HESTIA_BACKUP/packages/
 
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Templates"
 	fi
-	cp -fr $HESTIA/data/templates/* $HESTIA_BACKUP/templates/
+	cp -fr $LINKPANEL/data/templates/* $HESTIA_BACKUP/templates/
 
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Configuration files:"
 	fi
 
-	# Hestia Control Panel configuration files
+	# LinkPanel Control Panel configuration files
 	if [ "$DEBUG_MODE" = "true" ]; then
-		echo "      ---- hestia"
+		echo "      ---- linkpanel"
 	fi
-	cp -fr $HESTIA/conf/* $HESTIA_BACKUP/conf/hestia/
+	cp -fr $LINKPANEL/conf/* $HESTIA_BACKUP/conf/linkpanel/
 
 	# OpenSSL configuration files
 	if [ "$DEBUG_MODE" = "true" ]; then
@@ -492,7 +492,7 @@ upgrade_start_backup() {
 }
 
 upgrade_refresh_config() {
-	source_conf "/usr/local/hestia/conf/hestia.conf"
+	source_conf "/usr/local/linkpanel/conf/linkpanel.conf"
 }
 
 upgrade_start_routine() {
@@ -503,10 +503,10 @@ upgrade_start_routine() {
 	VERSION=$(echo "$VERSION" | sed "s/~\([a-zA-Z0-9].*\)//g")
 
 	# Get list of all available version steps and create array
-	upgrade_steps=$(ls -v $HESTIA/install/upgrade/versions/*.sh)
+	upgrade_steps=$(ls -v $LINKPANEL/install/upgrade/versions/*.sh)
 	for script in $upgrade_steps; do
 		declare -a available_versions
-		available_versions+=($(echo $script | sed "s|/usr/local/hestia/install/upgrade/versions/||g" | sed "s|.sh||g"))
+		available_versions+=($(echo $script | sed "s|/usr/local/linkpanel/install/upgrade/versions/||g" | sed "s|.sh||g"))
 	done
 
 	# Define variables for accessing supported versions
@@ -520,18 +520,18 @@ upgrade_start_routine() {
 		for version_step in "${available_versions[@]}"; do
 			if [ $(check_version $VERSION) -lt $(check_version "$version_step") ]; then
 				upgrade_step_message
-				source $HESTIA/install/upgrade/versions/$version_step.sh
+				source $LINKPANEL/install/upgrade/versions/$version_step.sh
 			fi
 		done
 		upgrade_set_version "$VERSION"
 		upgrade_refresh_config
 	else
 		echo ""
-		echo "[ ! ] The latest version of Hestia Control Panel is already installed."
+		echo "[ ! ] The latest version of LinkPanel Control Panel is already installed."
 		echo "      Verifying configuration..."
 		echo ""
-		if [ -e "$HESTIA/install/upgrade/versions/$VERSION.sh" ]; then
-			source $HESTIA/install/upgrade/versions/$VERSION.sh
+		if [ -e "$LINKPANEL/install/upgrade/versions/$VERSION.sh" ]; then
+			source $LINKPANEL/install/upgrade/versions/$VERSION.sh
 		fi
 		VERSION="$new_version"
 		upgrade_set_version "$VERSION"
@@ -667,10 +667,10 @@ upgrade_phpmyadmin() {
 }
 
 upgrade_filemanager() {
-	FILE_MANAGER_CHECK=$(cat $HESTIA/conf/hestia.conf | grep "FILE_MANAGER='false'")
+	FILE_MANAGER_CHECK=$(cat $LINKPANEL/conf/linkpanel.conf | grep "FILE_MANAGER='false'")
 	if [ -z "$FILE_MANAGER_CHECK" ]; then
-		if [ -f "$HESTIA/web/fm/version" ]; then
-			fm_version=$(cat $HESTIA/web/fm/version)
+		if [ -f "$LINKPANEL/web/fm/version" ]; then
+			fm_version=$(cat $LINKPANEL/web/fm/version)
 		else
 			fm_version="1.0.0"
 		fi
@@ -683,10 +683,10 @@ upgrade_filemanager() {
 			echo "[ * ] File Manager is up to date ($fm_v)..."
 
 			if [ "$UPGRADE_UPDATE_FILEMANAGER_CONFIG" = "true" ]; then
-				if [ -e "$HESTIA/web/fm/configuration.php" ]; then
+				if [ -e "$LINKPANEL/web/fm/configuration.php" ]; then
 					echo "[ ! ] Updating File Manager configuration..."
 					# Update configuration.php
-					cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $HESTIA/web/fm/configuration.php
+					cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
 					# Set environment variable for interface
 					$BIN/v-change-sys-config-value 'FILE_MANAGER' 'true'
 				fi
@@ -699,7 +699,7 @@ upgrade_roundcube() {
 	if [ -n "$(echo "$WEBMAIL_SYSTEM" | grep -w 'roundcube')" ]; then
 		if [ -d "/usr/share/roundcube" ]; then
 			echo "[ ! ] Roundcube: Updates are currently managed using the apt package manager"
-			echo "      To upgrade to the latest version of Roundcube directly from upstream, from please run the command migrate_roundcube.sh located in: /usr/local/hestia/install/upgrade/manual/"
+			echo "      To upgrade to the latest version of Roundcube directly from upstream, from please run the command migrate_roundcube.sh located in: /usr/local/linkpanel/install/upgrade/manual/"
 		else
 			rc_version=$(cat /var/lib/roundcube/index.php | grep -o -E '[0-9].[0-9].[0-9]+' | head -1)
 			if ! version_ge "$rc_version" "$rc_v"; then
@@ -725,7 +725,7 @@ upgrade_snappymail() {
 }
 
 upgrade_dependencies() {
-	echo "[ ! ] Update Hestia PHP dependencies..."
+	echo "[ ! ] Update LinkPanel PHP dependencies..."
 	$BIN/v-add-sys-dependencies
 }
 
@@ -868,9 +868,9 @@ upgrade_restart_services() {
 		fi
 		if [ "$WEB_TERMINAL" = "true" ]; then
 			if [ "$DEBUG_MODE" = "true" ]; then
-				echo "      - hestia-web-terminal"
+				echo "      - linkpanel-web-terminal"
 			fi
-			$BIN/v-restart-service "hestia-web-terminal"
+			$BIN/v-restart-service "linkpanel-web-terminal"
 		fi
 		# Restart SSH daemon service
 		if [ "$DEBUG_MODE" = "true" ]; then
@@ -879,9 +879,9 @@ upgrade_restart_services() {
 		$BIN/v-restart-service ssh
 	fi
 
-	# Always restart the Hestia Control Panel service
+	# Always restart the LinkPanel Control Panel service
 	if [ "$DEBUG_MODE" = "true" ]; then
-		echo "      - hestia"
+		echo "      - linkpanel"
 	fi
-	$BIN/v-restart-service hestia
+	$BIN/v-restart-service linkpanel
 }

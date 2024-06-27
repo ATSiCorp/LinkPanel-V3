@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 define("NO_AUTH_REQUIRED", true);
 $TAB = "RESET PASSWORD";

@@ -4,7 +4,7 @@
 #
 # example: v-list-sys-info
 #
-# This function checks available updates for hestia packages.
+# This function checks available updates for linkpanel packages.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,16 +14,16 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
-# Retrieve Hestia Control Panel version number
-HESTIA_VERSION=$(grep VERSION $HESTIA/conf/hestia.conf | cut -d '=' -f2 | sed "s|'||g")
-HESTIA_RELEASE=$(grep RELEASE_BRANCH $HESTIA/conf/hestia.conf | cut -d '=' -f2 | sed "s|'||g")
+# Retrieve LinkPanel Control Panel version number
+HESTIA_VERSION=$(grep VERSION $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
+HESTIA_RELEASE=$(grep RELEASE_BRANCH $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
 
 # JSON list function
 json_list() {
@@ -33,7 +33,7 @@ json_list() {
         "OS": "'$OS'",
         "VERSION": "'$VERSION'",
         "ARCH": "'$ARCH'",
-        "HESTIA": "'$HESTIA_VERSION'",
+        "LINKPANEL": "'$HESTIA_VERSION'",
         "RELEASE": "'$HESTIA_RELEASE'",
         "UPTIME": "'$UPTIME'",
         "LOADAVERAGE": "'$LOADAVERAGE'"
@@ -43,7 +43,7 @@ json_list() {
 
 # SHELL list function
 shell_list() {
-	echo "HOSTNAME   OS   VER   ARCH  HESTIA  RELEASE  UPTIME   LA"
+	echo "HOSTNAME   OS   VER   ARCH  LINKPANEL  RELEASE  UPTIME   LA"
 	echo "--------   --   ---   ----  ------  -------  ------   --"
 	echo "$HOSTNAME $OS $VERSION $ARCH $HESTIA_VERSION $HESTIA_RELEASE $UPTIME $LOADAVERAGE"
 }
@@ -55,7 +55,7 @@ plain_list() {
 
 # CSV list function
 csv_list() {
-	echo "HOSTNAME,OS,VERSION,ARCH,HESTIA,RELEASE,UPTIME,LOADAVERAGE"
+	echo "HOSTNAME,OS,VERSION,ARCH,LINKPANEL,RELEASE,UPTIME,LOADAVERAGE"
 	echo "$HOSTNAME,$OS,$VERSION,$ARCH,$HESTIA_VERSION,$HESTIA_RELEASE,$UPTIME,$LOADAVERAGE"
 }
 
@@ -110,7 +110,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

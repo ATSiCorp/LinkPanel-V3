@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: change hestia ssl certificate
+# info: change linkpanel ssl certificate
 # options: SSL_DIR [RESTART]
 #
-# example: v-change-sys-hestia-ssl /home/new/dir/path yes
+# example: v-change-sys-linkpanel-ssl /home/new/dir/path yes
 #
-# This function changes hestia SSL certificate and the key.
+# This function changes linkpanel SSL certificate and the key.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -16,14 +16,14 @@ ssl_dir=$1
 restart=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -57,16 +57,16 @@ else
 fi
 
 # Adding new certificate
-cp -f $ssl_dir/certificate.crt $HESTIA/ssl/certificate.crt
-cp -f $ssl_dir/certificate.key $HESTIA/ssl/certificate.key
+cp -f $ssl_dir/certificate.crt $LINKPANEL/ssl/certificate.crt
+cp -f $ssl_dir/certificate.key $LINKPANEL/ssl/certificate.key
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restarting web server
 if [ "$restart" != 'no' ]; then
-	kill -HUP $(cat /run/hestia-nginx.pid)
+	kill -HUP $(cat /run/linkpanel-nginx.pid)
 	$BIN/v-restart-mail "$restart"
 fi
 

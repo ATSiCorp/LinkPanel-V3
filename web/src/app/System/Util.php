@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hestia\System;
+namespace LinkPanel\System;
 
 class Util {
 	/*

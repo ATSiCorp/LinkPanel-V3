@@ -16,16 +16,16 @@ database=$2
 dump=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
-source $HESTIA/func/db.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/db.sh
+source $LINKPANEL/func/db.sh
+# shellcheck source=/usr/local/linkpanel/func/rebuild.sh
+source $LINKPANEL/func/rebuild.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -45,7 +45,7 @@ if [ ! -f "$dump" ]; then
 fi
 
 # Check db existence
-db_data=$(grep "DB='$database'" $HESTIA/data/users/$user/db.conf)
+db_data=$(grep "DB='$database'" $LINKPANEL/data/users/$user/db.conf)
 
 parse_object_kv_list "$db_data"
 #Fix issue #1084 with "Upper case not allowed with PGSQL"
@@ -69,7 +69,7 @@ case $TYPE in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

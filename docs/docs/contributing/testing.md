@@ -21,10 +21,10 @@ case $(arch) in x86_64) ARCH="amd64" ;; aarch64) ARCH="arm64" ;; esac
 codename="$(lsb_release -s -c)"
 apt="/etc/apt/sources.list.d"
 
-# Add the beta repo to hestia.list
-sed -i 's/^/#/' $apt/hestia.list
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/hestia-beta-keyring.gpg] https://beta-apt.hestiacp.com/ $codename main" >> $apt/hestia.list
-curl -s "https://beta-apt.hestiacp.com/pubkey.gpg" | gpg --dearmor | tee /usr/share/keyrings/hestia-beta-keyring.gpg > /dev/null 2>&1
+# Add the beta repo to linkpanel.list
+sed -i 's/^/#/' $apt/linkpanel.list
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/linkpanel-beta-keyring.gpg] https://beta-apt.hestiacp.com/ $codename main" >> $apt/linkpanel.list
+curl -s "https://beta-apt.hestiacp.com/pubkey.gpg" | gpg --dearmor | tee /usr/share/keyrings/linkpanel-beta-keyring.gpg > /dev/null 2>&1
 
 # Update to the beta version
 apt update && apt upgrade
@@ -32,7 +32,7 @@ apt update && apt upgrade
 
 ## Install from beta repo
 
-If you want to install a new Hestia installation form the beta server.
+If you want to install a new LinkPanel installation form the beta server.
 
 ```bash
 # Debian
@@ -45,7 +45,7 @@ Then install via bash hst-install-debian.sh or bash hst-install-ubuntu.sh
 
 ## Disabling the beta repo
 
-Edit `/etc/apt/sources.list.d/hestia.list` and remove the `#` in front of `apt.hestiacp.com`, and add a `#` in front of `beta-apt.hestiacp.com`.
+Edit `/etc/apt/sources.list.d/linkpanel.list` and remove the `#` in front of `apt.hestiacp.com`, and add a `#` in front of `beta-apt.hestiacp.com`.
 
 Once that’s done, run `apt update && apt upgrade` to rollback to the regular release.
 

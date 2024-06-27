@@ -1,8 +1,8 @@
 <?php
 
-namespace Hestia\WebApp\Installers\Nextcloud;
+namespace LinkPanel\WebApp\Installers\Nextcloud;
 
-use Hestia\WebApp\Installers\BaseSetup as BaseSetup;
+use LinkPanel\WebApp\Installers\BaseSetup as BaseSetup;
 
 class NextcloudSetup extends BaseSetup {
 	protected $appInfo = [

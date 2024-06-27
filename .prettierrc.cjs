@@ -18,9 +18,9 @@ module.exports = {
 				singleQuote: true,
 			},
 		},
-		// Hestia CLI
+		// LinkPanel CLI
 		{
-			files: ['bin/v-*', 'src/deb/*/{postinst,preinst,hestia,postrm}', 'install/common/api/*'],
+			files: ['bin/v-*', 'src/deb/*/{postinst,preinst,linkpanel,postrm}', 'install/common/api/*'],
 			options: {
 				parser: 'sh',
 			},

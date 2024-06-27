@@ -14,12 +14,12 @@
 period=${1-daily}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -56,7 +56,7 @@ if [ ! -d "$RRD/db" ]; then
 fi
 
 # Parsing db hosts
-conf="$HESTIA/conf/pgsql.conf"
+conf="$LINKPANEL/conf/pgsql.conf"
 hosts=$(grep HOST $conf | awk '{print $1}' | cut -f 2 -d \')
 check_row=$(echo "$hosts" | wc -l)
 if [ 0 -eq "$check_row" ]; then
@@ -158,7 +158,7 @@ for host in $hosts; do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

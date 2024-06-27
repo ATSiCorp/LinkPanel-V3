@@ -18,7 +18,7 @@
 #
 
 /*
-# Nginx reverse proxy config: /etc/nginx/conf.d/lxc-hestia.conf
+# Nginx reverse proxy config: /etc/nginx/conf.d/lxc-linkpanel.conf
 server {
     listen 80;
     server_name ~(?<lxcname>hst-.+)\.hst\.domain\.tld$;
@@ -253,13 +253,13 @@ function lxc_run($args, &$rc) {
 	return json_decode(implode(PHP_EOL, $cmdout), true);
 }
 
-function getHestiaVersion($branch) {
+function getLinkPanelVersion($branch) {
 	$control_file = "";
 	if ($branch === "~localsrc") {
-		$control_file = file_get_contents(SHARED_HOST_FOLDER . "/hestiacp/src/deb/hestia/control");
+		$control_file = file_get_contents(SHARED_HOST_FOLDER . "/hestiacp/src/deb/linkpanel/control");
 	} else {
 		$control_file = file_get_contents(
-			"https://raw.githubusercontent.com/hestiacp/hestiacp/${branch}/src/deb/hestia/control",
+			"https://raw.githubusercontent.com/hestiacp/hestiacp/${branch}/src/deb/linkpanel/control",
 		);
 	}
 
@@ -274,7 +274,7 @@ function getHestiaVersion($branch) {
 		}
 	}
 
-	throw new Exception("Error reading Hestia version for branch: [${branch}]", 1);
+	throw new Exception("Error reading LinkPanel version for branch: [${branch}]", 1);
 }
 
 function get_lxc_ip($name) {
@@ -354,13 +354,13 @@ function hst_installer_worker($container) {
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "/home/ubuntu/source/hestiacp/src/hst_autocompile.sh --hestia \"' .
+			' -- bash -c "/home/ubuntu/source/hestiacp/src/hst_autocompile.sh --linkpanel \"' .
 			HST_BRANCH .
 			'\" no"',
 	);
 
-	$hver = getHestiaVersion(HST_BRANCH);
-	echo "Install Hestia ${hver} on " . $container["lxc_name"] . PHP_EOL;
+	$hver = getLinkPanelVersion(HST_BRANCH);
+	echo "Install LinkPanel ${hver} on " . $container["lxc_name"] . PHP_EOL;
 	echo "Args: " . $container["hst_args"] . PHP_EOL;
 
 	system(
@@ -397,10 +397,10 @@ while (count($worker_pool)) {
 	}
 }
 
-// Install Hestia
+// Install LinkPanel
 $worker_pool = [];
 foreach ($containers as $container) {
-	# Is hestia installed?
+	# Is linkpanel installed?
 	lxc_run("exec " . $container["lxc_name"] . ' -- sudo --login "v-list-sys-config"', $rc);
 	if (isset($rc) && $rc === 0) {
 		continue;
@@ -427,11 +427,11 @@ while (count($worker_pool)) {
 foreach ($containers as $container) {
 	echo "Apply custom config on: " . $container["lxc_name"] . PHP_EOL;
 
-	# Allow running a reverse proxy in front of Hestia
+	# Allow running a reverse proxy in front of LinkPanel
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "sed -i \'s/session.cookie_secure] = on\$/session.cookie_secure] = off/\' /usr/local/hestia/php/etc/php-fpm.conf"',
+			' -- bash -c "sed -i \'s/session.cookie_secure] = on\$/session.cookie_secure] = off/\' /usr/local/linkpanel/php/etc/php-fpm.conf"',
 	);
 
 	# get rid off "mesg: ttyname failed: No such device" error
@@ -445,16 +445,16 @@ foreach ($containers as $container) {
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "sed -i \'/LE_STAGING/d\' /usr/local/hestia/conf/hestia.conf"',
+			' -- bash -c "sed -i \'/LE_STAGING/d\' /usr/local/linkpanel/conf/linkpanel.conf"',
 	);
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "echo \'LE_STAGING=\"yes\"\' >> /usr/local/hestia/conf/hestia.conf"',
+			' -- bash -c "echo \'LE_STAGING=\"yes\"\' >> /usr/local/linkpanel/conf/linkpanel.conf"',
 	);
 
-	system("lxc exec " . $container["lxc_name"] . ' -- bash -c "service hestia restart"');
+	system("lxc exec " . $container["lxc_name"] . ' -- bash -c "service linkpanel restart"');
 }
 
-echo "Hestia containers configured" . PHP_EOL;
+echo "LinkPanel containers configured" . PHP_EOL;
 

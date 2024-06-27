@@ -16,14 +16,14 @@ package=$1
 new_package=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/conf/linkpanel.conf
+source $LINKPANEL/conf/linkpanel.conf
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -38,16 +38,16 @@ is_object_format_valid "$package" "Package"
 is_object_format_valid "$new_package" "New package"
 
 if [ -n "$1" ]; then
-	if [ ! -f "$HESTIA/data/packages/$package.pkg" ]; then
+	if [ ! -f "$LINKPANEL/data/packages/$package.pkg" ]; then
 		echo "Error: package does not exist."
 		exit "$E_NOTEXIST"
 	fi
 	if [ -n "$2" ]; then
 		# Copy package
-		cp -f "$HESTIA/data/packages/$package.pkg" "$HESTIA/data/packages/$new_package.pkg"
+		cp -f "$LINKPANEL/data/packages/$package.pkg" "$LINKPANEL/data/packages/$new_package.pkg"
 		# Don't leave the .sh file behind
-		if [ -f "$HESTIA/data/packages/$package.sh" ]; then
-			cp $HESTIA/data/packages/$package.sh $HESTIA/data/packages/$new_package.sh
+		if [ -f "$LINKPANEL/data/packages/$package.sh" ]; then
+			cp $LINKPANEL/data/packages/$package.sh $LINKPANEL/data/packages/$new_package.sh
 		fi
 	else
 		echo "Error: new package name not specified."
@@ -59,7 +59,7 @@ else
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "System" "Package copied (Package: $package, New Package: $new_package)."

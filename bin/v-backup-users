@@ -11,12 +11,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -32,14 +32,14 @@ if [ -z "$BACKUP_SYSTEM" ]; then
 	exit
 fi
 for user in $("$BIN/v-list-users" list); do
-	check_suspend=$(grep "SUSPENDED='no'" $HESTIA/data/users/$user/user.conf)
-	log=$HESTIA/log/backup.log
-	if [ ! -f "$HESTIA/data/users/$user/user.conf" ]; then
+	check_suspend=$(grep "SUSPENDED='no'" $LINKPANEL/data/users/$user/user.conf)
+	log=$LINKPANEL/log/backup.log
+	if [ ! -f "$LINKPANEL/data/users/$user/user.conf" ]; then
 		continue
 	fi
 	check_backup_conditions
-	check_suspend=$(grep "SUSPENDED='no'" $HESTIA/data/users/$user/user.conf)
-	log=$HESTIA/log/backup.log
+	check_suspend=$(grep "SUSPENDED='no'" $LINKPANEL/data/users/$user/user.conf)
+	log=$LINKPANEL/log/backup.log
 	if [ -n "$check_suspend" ]; then
 		echo -e "================================" >> $log
 		echo -e "$user" >> $log
@@ -50,7 +50,7 @@ for user in $("$BIN/v-list-users" list); do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

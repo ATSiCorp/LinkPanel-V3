@@ -7,12 +7,12 @@
 version=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -45,7 +45,7 @@ check_hestia_demo_mode
 php_fpm="/etc/init.d/php$version-fpm"
 
 rm -f /etc/php/*/fpm/pool.d/www.conf
-cp -f $HESTIA/install/deb/php-fpm/www.conf /etc/php/$version/fpm/pool.d/www.conf
+cp -f $LINKPANEL/install/deb/php-fpm/www.conf /etc/php/$version/fpm/pool.d/www.conf
 
 for user in $("$BIN/v-list-users" list); do
 	$BIN/v-rebuild-web-domains "$user" 'no' > /dev/null 2>&1
@@ -61,7 +61,7 @@ $BIN/v-restart-proxy
 update-alternatives --set php /usr/bin/php$version
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 log_event "$OK" "$ARGUMENTS"

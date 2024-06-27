@@ -18,14 +18,14 @@ restart="$3"
 quiet=$4
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -73,14 +73,14 @@ if [ -n "$WEBMAIL_ALIAS" ]; then
 		fi
 	fi
 else
-	echo "Error: WEBMAIL_ALIAS is not defined in hestia.conf."
+	echo "Error: WEBMAIL_ALIAS is not defined in linkpanel.conf."
 fi
 
 # Set SSL as enabled in configuration
 update_object_value 'mail' 'DOMAIN' "$domain" '$WEBMAIL' ""
 
 #----------------------------------------------------------#
-#                       Hestia                              #
+#                       LinkPanel                              #
 #----------------------------------------------------------#
 
 if [ -n "$restart" ]; then

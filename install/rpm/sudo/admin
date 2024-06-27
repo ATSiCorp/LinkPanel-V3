@@ -1,10 +1,10 @@
-# Created by hestia installer
+# Created by linkpanel installer
 Defaults env_keep="VESTA"
-Defaults env_keep+="HESTIA"
+Defaults env_keep+="LINKPANEL"
 Defaults:admin !syslog
 Defaults:admin !requiretty
 Defaults:root !requiretty
 
-# sudo is limited to hestia scripts
+# sudo is limited to linkpanel scripts
 admin   ALL=NOPASSWD:/usr/local/vesta/bin/*
-admin   ALL=NOPASSWD:/usr/local/hestia/bin/*
+admin   ALL=NOPASSWD:/usr/local/linkpanel/bin/*

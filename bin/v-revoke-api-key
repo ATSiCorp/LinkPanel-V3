@@ -4,19 +4,19 @@
 #
 # example: v-revoke-api-key mykey
 #
-# This function removes a key from in $HESTIA/data/keys/
+# This function removes a key from in $LINKPANEL/data/keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -35,18 +35,18 @@ check_hestia_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/keys/" ]; then
+if [ ! -d "$LINKPANEL/data/keys/" ]; then
 	exit "$E_NOTEXIST"
 fi
 
-if [[ -e "$HESTIA/data/keys/$hash" ]]; then
-	rm $HESTIA/data/keys/$hash
+if [[ -e "$LINKPANEL/data/keys/$hash" ]]; then
+	rm $LINKPANEL/data/keys/$hash
 else
 	exit "$E_NOTEXIST"
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

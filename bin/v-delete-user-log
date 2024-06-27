@@ -14,12 +14,12 @@
 user=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -40,9 +40,9 @@ fi
 
 # Set correct path for log file (system or user)
 if [ "$user" = "system" ]; then
-	log_file="$HESTIA/log/activity.log"
+	log_file="$LINKPANEL/log/activity.log"
 else
-	log_file="$HESTIA/data/users/$user/history.log"
+	log_file="$LINKPANEL/data/users/$user/history.log"
 fi
 
 # Verify log file exists before deleting to prevent errors

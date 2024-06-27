@@ -14,16 +14,16 @@
 user=$1
 update=$2
 
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+if [ -z "$LINKPANEL" ]; then
+	LINKPANEL="/usr/local/linkpanel"
 fi
 
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -64,7 +64,7 @@ user_exec chmod +x "$WPCLI_BIN"
 echo "alias wp=/home/"$user"/.wp-cli/wp" >> /home/$user/.bash_aliases
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

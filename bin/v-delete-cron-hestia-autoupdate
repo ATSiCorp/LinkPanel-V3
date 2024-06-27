@@ -1,20 +1,20 @@
 #!/bin/bash
-# info: delete hestia autoupdate cron job
+# info: delete linkpanel autoupdate cron job
 # options: NONE
 #
-# This function deletes hestia autoupdate cron job.
+# This function deletes linkpanel autoupdate cron job.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -29,11 +29,11 @@ check_hestia_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-sed -i "/v-update-sys-hestia-all/d" "/var/spool/cron/crontabs/hestiaweb"
-sed -i "/v-update-sys-hestia-git/d" "/var/spool/cron/crontabs/hestiaweb"
+sed -i "/v-update-sys-linkpanel-all/d" "/var/spool/cron/crontabs/hestiaweb"
+sed -i "/v-update-sys-linkpanel-git/d" "/var/spool/cron/crontabs/hestiaweb"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restarting crond

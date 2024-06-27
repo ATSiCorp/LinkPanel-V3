@@ -2,7 +2,7 @@
 # info: add cron job
 # options: USER MIN HOUR DAY MONTH WDAY COMMAND [JOB] [RESTART]
 #
-# example: v-add-cron-job admin * * * * * sudo /usr/local/hestia/bin/v-backup-users
+# example: v-add-cron-job admin * * * * * sudo /usr/local/linkpanel/bin/v-backup-users
 #
 # This function adds a job to cron daemon. When executing commands, any output
 # is mailed to user's email if parameter REPORTS is set to 'yes'.
@@ -23,12 +23,12 @@ job=$8
 restart=$9
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 HIDE=7
 
@@ -64,10 +64,10 @@ str="JOB='$job' MIN='$min' HOUR='$hour' DAY='$day' MONTH='$month' WDAY='$wday'"
 str="$str CMD='$command' SUSPENDED='no' TIME='$time' DATE='$date'"
 
 # Adding to crontab
-echo "$str" >> $HESTIA/data/users/$user/cron.conf
+echo "$str" >> $LINKPANEL/data/users/$user/cron.conf
 
 # Changing permissions
-chmod 660 $HESTIA/data/users/$user/cron.conf
+chmod 660 $LINKPANEL/data/users/$user/cron.conf
 
 # Sort jobs by id number
 sort_cron_jobs
@@ -76,7 +76,7 @@ sort_cron_jobs
 sync_cron_jobs
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Increasing cron value

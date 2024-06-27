@@ -1,7 +1,7 @@
 # Operating system upgrades
 
 ::: danger
-Before upgrading your operating system make sure to make a backup! We do not provide support for broken operating system installations. We only provide this page for information about Hestia issues that may come up while upgrading.
+Before upgrading your operating system make sure to make a backup! We do not provide support for broken operating system installations. We only provide this page for information about LinkPanel issues that may come up while upgrading.
 :::
 
 ## General
@@ -10,7 +10,7 @@ Before upgrading your operating system make sure to make a backup! We do not pro
 Make sure to verify that MariaDB is running on a supported version for the new operating system. If that is not the case, update MariaDB version to a supported version before upgrading your OS!
 :::
 
-Once a backup has been made, update Hestia to the last supported version:
+Once a backup has been made, update LinkPanel to the last supported version:
 
 ```bash
 apt update && apt upgrade
@@ -30,7 +30,7 @@ sed -i "s/obscure yescrypt/obscure sha512/g" /etc/pam.d/common-password
 
 ```bash
 rm -f /etc/exim4/exim4.conf.template
-cp -f /usr/local/hestia/install/deb/exim/exim4.conf.4.94.template /etc/exim4/exim4.conf.template
+cp -f /usr/local/linkpanel/install/deb/exim/exim4.conf.4.94.template /etc/exim4/exim4.conf.template
 ```
 
 ### ProFTPD
@@ -57,7 +57,7 @@ sed -i "s/obscure yescrypt/obscure sha512/g" /etc/pam.d/common-password
 
 ```bash
 rm -f /etc/exim4/exim4.conf.template
-cp -f /usr/local/hestia/install/deb/exim/exim4.conf.4.94.template /etc/exim4/exim4.conf.template
+cp -f /usr/local/linkpanel/install/deb/exim/exim4.conf.4.94.template /etc/exim4/exim4.conf.template
 ```
 
 ### ProFTPD

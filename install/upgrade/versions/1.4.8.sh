@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.4.8
+# LinkPanel Control Panel upgrade script for target version 1.4.8
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
 #######################################################################################
 
 echo "[ * ] Configuring PHPMailer..."
-$HESTIA/bin/v-add-sys-phpmailer quiet
+$LINKPANEL/bin/v-add-sys-phpmailer quiet
 
-matches=$(grep -o 'ENFORCE_SUBDOMAIN_OWNERSHIP' $HESTIA/conf/hestia.conf | wc -l)
+matches=$(grep -o 'ENFORCE_SUBDOMAIN_OWNERSHIP' $LINKPANEL/conf/linkpanel.conf | wc -l)
 if [ "$matches" -gt 1 ]; then
 	echo "[ * ] Removing double matches ENFORCE_SUBDOMAIN_OWNERSHIP key"
-	source $HESTIA/conf/hestia.conf
-	sed -i "/ENFORCE_SUBDOMAIN_OWNERSHIP='$ENFORCE_SUBDOMAIN_OWNERSHIP'/d" $HESTIA/conf/hestia.conf
-	$HESTIA/bin/v-change-sys-config-value "ENFORCE_SUBDOMAIN_OWNERSHIP" "$ENFORCE_SUBDOMAIN_OWNERSHIP"
+	source $LINKPANEL/conf/linkpanel.conf
+	sed -i "/ENFORCE_SUBDOMAIN_OWNERSHIP='$ENFORCE_SUBDOMAIN_OWNERSHIP'/d" $LINKPANEL/conf/linkpanel.conf
+	$LINKPANEL/bin/v-change-sys-config-value "ENFORCE_SUBDOMAIN_OWNERSHIP" "$ENFORCE_SUBDOMAIN_OWNERSHIP"
 fi
 
 if [ "$IMAP_SYSTEM" = "dovecot" ]; then

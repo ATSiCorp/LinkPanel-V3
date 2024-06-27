@@ -13,13 +13,13 @@ os=$3
 wget https://raw.githubusercontent.com/$fork/hestiacp/$branch/install/hst-install-$os.sh
 wget https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/hst_autocompile.sh
 
-# Execute compiler and build hestia core package
+# Execute compiler and build linkpanel core package
 chmod +x hst_autocompile.sh
-./hst_autocompile.sh --hestia $branch no
+./hst_autocompile.sh --linkpanel $branch no
 
-# Execute Hestia Control Panel installer with default dummy options for testing
+# Execute LinkPanel Control Panel installer with default dummy options for testing
 if [ -f "/etc/redhat-release" ]; then
-	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s hestia-$branch-$os.test.local --with-rpms /tmp/hestiacp-src/rpms
+	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-rpms /tmp/hestiacp-src/rpms
 else
-	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s hestia-$branch-$os.test.local --with-debs /tmp/hestiacp-src/debs
+	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-debs /tmp/hestiacp-src/debs
 fi

@@ -17,16 +17,16 @@
 package=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Functions
 is_package_in_use() {
-	check_package=$(grep "PACKAGE='$package" $HESTIA/data/users/*/user.conf | cut -d'/' -f7)
+	check_package=$(grep "PACKAGE='$package" $LINKPANEL/data/users/*/user.conf | cut -d'/' -f7)
 	if [ -n "$check_package" ]; then
 		for user in $check_package; do
 			$BIN/v-change-user-package "$user" 'default'
@@ -51,10 +51,10 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Deleting user package
-rm -f "$HESTIA/data/packages/$package.pkg"
+rm -f "$LINKPANEL/data/packages/$package.pkg"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "System" "Deleted package (Name: $package)."

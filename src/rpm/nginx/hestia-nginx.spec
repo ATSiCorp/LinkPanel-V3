@@ -3,27 +3,27 @@
 %define WITH_CC_OPT $(echo %{optflags} $(pcre2-config --cflags)) -fPIC
 %define WITH_LD_OPT -Wl,-z,relro -Wl,-z,now -pie
 
-%define BASE_CONFIGURE_ARGS $(echo "--prefix=/usr/local/hestia/nginx --conf-path=/usr/local/hestia/nginx/conf/nginx.conf --error-log-path=%{_localstatedir}/log/hestia/nginx-error.log --http-log-path=%{_localstatedir}/log/hestia/access.log --pid-path=%{_rundir}/hestia-nginx.pid --lock-path=%{_rundir}/hestia-nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/hestia-nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/hestia-nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/hestia-nginx/fastcgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/hestia-nginx/scgi_temp --user=admin --group=admin --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module")
+%define BASE_CONFIGURE_ARGS $(echo "--prefix=/usr/local/linkpanel/nginx --conf-path=/usr/local/linkpanel/nginx/conf/nginx.conf --error-log-path=%{_localstatedir}/log/linkpanel/nginx-error.log --http-log-path=%{_localstatedir}/log/linkpanel/access.log --pid-path=%{_rundir}/linkpanel-nginx.pid --lock-path=%{_rundir}/linkpanel-nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/linkpanel-nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/linkpanel-nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/linkpanel-nginx/fastcgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/linkpanel-nginx/scgi_temp --user=admin --group=admin --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module")
 
 
-Name:           hestia-nginx
+Name:           linkpanel-nginx
 Version:        1.25.1-2
 Release:        1%{dist}
-Summary:        Hestia internal nginx web server
+Summary:        LinkPanel internal nginx web server
 Group:          System Environment/Base
 URL:            https://www.hestiacp.com
 Source0:        https://nginx.org/download/nginx-%{version}.tar.gz
-Source1:        hestia-nginx.service
+Source1:        linkpanel-nginx.service
 Source2:        nginx.conf
 License:        BSD
 Vendor:         hestiacp.com
 Requires:       redhat-release >= 8
-Requires:       hestia-php
-Provides:       hestia-nginx = %{version}
+Requires:       linkpanel-php
+Provides:       linkpanel-nginx = %{version}
 BuildRequires:  gcc, zlib-devel, pcre2-devel, openssl-devel, systemd
 
 %description
-This package contains internal nginx webserver for Hestia Control Panel web interface.
+This package contains internal nginx webserver for LinkPanel Control Panel web interface.
 
 %prep
 %autosetup -p1 -n nginx-%{version}
@@ -38,10 +38,10 @@ This package contains internal nginx webserver for Hestia Control Panel web inte
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__make} DESTDIR=$RPM_BUILD_ROOT INSTALLDIRS=vendor install
 mkdir -p %{buildroot}%{_unitdir}
-%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/hestia-nginx.service
-rm -f %{buildroot}/usr/local/hestia/nginx/conf/nginx.conf
-cp %{SOURCE2} %{buildroot}/usr/local/hestia/nginx/conf/nginx.conf
-mv %{buildroot}/usr/local/hestia/nginx/sbin/nginx %{buildroot}/usr/local/hestia/nginx/sbin/hestia-nginx
+%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/linkpanel-nginx.service
+rm -f %{buildroot}/usr/local/linkpanel/nginx/conf/nginx.conf
+cp %{SOURCE2} %{buildroot}/usr/local/linkpanel/nginx/conf/nginx.conf
+mv %{buildroot}/usr/local/linkpanel/nginx/sbin/nginx %{buildroot}/usr/local/linkpanel/nginx/sbin/linkpanel-nginx
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -49,19 +49,19 @@ mv %{buildroot}/usr/local/hestia/nginx/sbin/nginx %{buildroot}/usr/local/hestia/
 %pre
 
 %post
-%systemd_post hestia-nginx.service
+%systemd_post linkpanel-nginx.service
 
 %preun
-%systemd_preun hestia-nginx.service
+%systemd_preun linkpanel-nginx.service
 
 %postun
-%systemd_postun_with_restart hestia-nginx.service
+%systemd_postun_with_restart linkpanel-nginx.service
 
 %files
 %defattr(-,root,root)
-%attr(755,root,root) /usr/local/hestia/nginx
-%config(noreplace) /usr/local/hestia/nginx/conf/nginx.conf
-%{_unitdir}/hestia-nginx.service
+%attr(755,root,root) /usr/local/linkpanel/nginx
+%config(noreplace) /usr/local/linkpanel/nginx/conf/nginx.conf
+%{_unitdir}/linkpanel-nginx.service
 
 
 %changelog
@@ -73,7 +73,7 @@ mv %{buildroot}/usr/local/hestia/nginx/sbin/nginx %{buildroot}/usr/local/hestia/
 - 1.24.0-1
 
 * Wed Jun 24 2020 Ernesto Nicolás Carrea <equistango@gmail.com> - 1.17.8
-- HestiaCP CentOS 8 support
+- LinkPanelCP CentOS 8 support
 
 * Tue Jul 30 2013 Serghey Rodin <builder@vestacp.com> - 0.9.8-1
 - upgraded to nginx-1.4.2

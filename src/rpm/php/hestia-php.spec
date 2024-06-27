@@ -1,20 +1,20 @@
 %global _hardened_build 1
-%global _prefix         /usr/local/hestia/php
+%global _prefix         /usr/local/linkpanel/php
 
-Name:           hestia-php
+Name:           linkpanel-php
 Version:        8.2.8
 Release:        1%{dist}
-Summary:        Hestia internal PHP
+Summary:        LinkPanel internal PHP
 Group:          System Environment/Base
 URL:            https://www.hestiacp.com
 Source0:        https://www.php.net/distributions/php-%{version}.tar.gz
-Source1:        hestia-php.service
+Source1:        linkpanel-php.service
 Source2:        php-fpm.conf
 Source3:        php.ini
 License:        PHP and Zend and BSD and MIT and ASL 1.0 and NCSA
 Vendor:         hestiacp.com
 Requires:       redhat-release >= 8
-Provides:       hestia-php = %{version}
+Provides:       linkpanel-php = %{version}
 BuildRequires:  autoconf, automake, bison, bzip2-devel, gcc, gcc-c++, gnupg2, libtool, make, openssl-devel, re2c
 BuildRequires:  gmp-devel, oniguruma-devel, libzip-devel
 BuildRequires:  pkgconfig(libcurl)  >= 7.61.0
@@ -23,7 +23,7 @@ BuildRequires:  pkgconfig(sqlite3) >= 3.26.0
 BuildRequires:  systemd
 
 %description
-This package contains internal PHP for Hestia Control Panel web interface.
+This package contains internal PHP for LinkPanel Control Panel web interface.
 
 %prep
 %autosetup -p1 -n php-%{version}
@@ -61,11 +61,11 @@ rm -f TSRM/tsrm_win32.h \
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-mkdir -p %{buildroot}%{_unitdir} %{buildroot}/usr/local/hestia/php/{etc,lib}
-%make_install INSTALL_ROOT=$RPM_BUILD_ROOT/usr/local/hestia/php
-%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/hestia-php.service
-cp %{SOURCE2} %{buildroot}/usr/local/hestia/php/etc/
-cp %{SOURCE3} %{buildroot}/usr/local/hestia/php/lib/
+mkdir -p %{buildroot}%{_unitdir} %{buildroot}/usr/local/linkpanel/php/{etc,lib}
+%make_install INSTALL_ROOT=$RPM_BUILD_ROOT/usr/local/linkpanel/php
+%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/linkpanel-php.service
+cp %{SOURCE2} %{buildroot}/usr/local/linkpanel/php/etc/
+cp %{SOURCE3} %{buildroot}/usr/local/linkpanel/php/lib/
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -73,26 +73,26 @@ cp %{SOURCE3} %{buildroot}/usr/local/hestia/php/lib/
 %pre
 
 %post
-%systemd_post hestia-php.service
+%systemd_post linkpanel-php.service
 
 %preun
-%systemd_preun hestia-php.service
+%systemd_preun linkpanel-php.service
 
 %postun
-%systemd_postun_with_restart hestia-php.service
+%systemd_postun_with_restart linkpanel-php.service
 
 %files
 %defattr(-,root,root)
-%attr(755,root,root) /usr/local/hestia/php
-%attr(775,admin,admin) /usr/local/hestia/php/var/log
-%attr(775,admin,admin) /usr/local/hestia/php/var/run
-%config(noreplace) /usr/local/hestia/php/etc/php-fpm.conf
-%config(noreplace) /usr/local/hestia/php/lib/php.ini
-%{_unitdir}/hestia-php.service
+%attr(755,root,root) /usr/local/linkpanel/php
+%attr(775,admin,admin) /usr/local/linkpanel/php/var/log
+%attr(775,admin,admin) /usr/local/linkpanel/php/var/run
+%config(noreplace) /usr/local/linkpanel/php/etc/php-fpm.conf
+%config(noreplace) /usr/local/linkpanel/php/lib/php.ini
+%{_unitdir}/linkpanel-php.service
 
 %changelog
 * Sun May 14 2023 Istiak Ferdous <hello@istiak.com> - 8.2.6-1
-- HestiaCP RHEL 9 support
+- LinkPanelCP RHEL 9 support
 
 * Thu Jun 25 2020 Ernesto Nicolás Carrea <equistango@gmail.com> - 7.4.6
-- HestiaCP CentOS 8 support
+- LinkPanelCP CentOS 8 support

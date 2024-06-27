@@ -1,4 +1,4 @@
-/usr/local/hestia/log/*.log {
+/usr/local/linkpanel/log/*.log {
     rotate 12
     monthly
     missingok

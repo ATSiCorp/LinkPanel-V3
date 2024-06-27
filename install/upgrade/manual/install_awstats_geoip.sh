@@ -9,17 +9,17 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/conf/linkpanel.conf
+source $LINKPANEL/conf/linkpanel.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #
 #----------------------------------------------------------#
 
 #check if string already exists
-if grep "geoip" $HESTIA/data/templates/web/awstats/awstats.tpl; then
+if grep "geoip" $LINKPANEL/data/templates/web/awstats/awstats.tpl; then
 	echo "Plugin allready enabled"
 	exit 0
 fi
@@ -32,7 +32,7 @@ if [ -d /etc/awstats ]; then
 	perl -MCPAN -f -e "install Geo::IP::PurePerl"
 	perl -MCPAN -f -e "install Geo::IP"
 	sed -i '/LoadPlugin=\"geoip GEOIP_STANDARD \/usr\/share\/GeoIP\/GeoIP.dat\"/s/^#//g' /etc/awstats/awstats.conf
-	echo "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"" >> $HESTIA/data/templates/web/awstats/awstats.tpl
+	echo "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"" >> $LINKPANEL/data/templates/web/awstats/awstats.tpl
 
 	for user in $($BIN/v-list-sys-users plain); do
 		$BIN/v-rebuild-web-domains $user no
@@ -40,7 +40,7 @@ if [ -d /etc/awstats ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

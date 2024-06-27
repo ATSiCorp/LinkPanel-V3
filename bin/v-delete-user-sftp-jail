@@ -14,12 +14,12 @@
 user=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -33,7 +33,7 @@ if [ -z "$user_str" ]; then
 fi
 
 # Get current users and split into array
-ssh_users=$(grep -A1 "^# Hestia SFTP Chroot" /etc/ssh/sshd_config | sed -n 2p | sed 's/Match User //')
+ssh_users=$(grep -A1 "^# LinkPanel SFTP Chroot" /etc/ssh/sshd_config | sed -n 2p | sed 's/Match User //')
 IFS=',' read -r -a users <<< "$ssh_users"
 
 match_string="$ssh_users,"
@@ -72,7 +72,7 @@ fi
 # Deleting chroot jail for SFTP and FTP
 delete_chroot_jail $user
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restart ssh service

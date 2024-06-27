@@ -15,12 +15,12 @@ type=$1
 format=${2-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
@@ -120,12 +120,12 @@ is_common_format_valid $type "type"
 #----------------------------------------------------------#
 
 # Checking backup config
-if [ ! -e "$HESTIA/conf/$type.backup.conf" ]; then
+if [ ! -e "$LINKPANEL/conf/$type.backup.conf" ]; then
 	exit
 fi
 
 # Parsing backup config
-source_conf "$HESTIA/conf/$type.backup.conf"
+source_conf "$LINKPANEL/conf/$type.backup.conf"
 
 # Listing data
 case $format in
@@ -136,7 +136,7 @@ case $format in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

@@ -1,12 +1,12 @@
 # Building packages
 
 ::: info
-For building `hestia-nginx` or `hestia-php`, at least 2 GB of memory is required!
+For building `linkpanel-nginx` or `linkpanel-php`, at least 2 GB of memory is required!
 :::
 
 Here is more detailed information about the build scripts that are run from `src`:
 
-## Installing Hestia from a branch
+## Installing LinkPanel from a branch
 
 The following is useful for testing a Pull Request or a branch on a fork.
 
@@ -35,49 +35,49 @@ Any option can be appended to the installer command. [See the complete list](../
 ## Build packages only
 
 ```bash
-# Only Hestia
-./hst_autocompile.sh --hestia --noinstall --keepbuild '~localsrc'
+# Only LinkPanel
+./hst_autocompile.sh --linkpanel --noinstall --keepbuild '~localsrc'
 ```
 
 ```bash
-# Hestia + hestia-nginx and hestia-php
+# LinkPanel + linkpanel-nginx and linkpanel-php
 ./hst_autocompile.sh --all --noinstall --keepbuild '~localsrc'
 ```
 
 ## Build and install packages
 
 ::: info
-Use if you have Hestia already installed, for your changes to take effect.
+Use if you have LinkPanel already installed, for your changes to take effect.
 :::
 
 ```bash
-# Only Hestia
-./hst_autocompile.sh --hestia --install '~localsrc'
+# Only LinkPanel
+./hst_autocompile.sh --linkpanel --install '~localsrc'
 ```
 
 ```bash
-# Hestia + hestia-nginx and hestia-php
+# LinkPanel + linkpanel-nginx and linkpanel-php
 ./hst_autocompile.sh --all --install '~localsrc'
 ```
 
-## Updating Hestia from GitHub
+## Updating LinkPanel from GitHub
 
 The following is useful for pulling the latest staging/beta changes from GitHub and compiling the changes.
 
 ::: info
-The following method only supports building the `hestia` package. If you need to build `hestia-nginx` or `hestia-php`, use one of the previous commands.
+The following method only supports building the `linkpanel` package. If you need to build `linkpanel-nginx` or `linkpanel-php`, use one of the previous commands.
 :::
 
 1. Install Node.js [Download](https://nodejs.org/en/download) or use [Node Source APT](https://github.com/nodesource/distributions)
 
 ```bash
-v-update-sys-hestia-git [USERNAME] [BRANCH]
+v-update-sys-linkpanel-git [USERNAME] [BRANCH]
 ```
 
 **Note:** Sometimes dependencies will get added or removed when the packages are installed with `dpkg`. It is not possible to preload the dependencies. If this happens, you will see an error like this:
 
 ```bash
-dpkg: error processing package hestia (–install):
+dpkg: error processing package linkpanel (–install):
 dependency problems - leaving unconfigured
 ```
 

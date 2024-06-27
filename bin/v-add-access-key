@@ -5,7 +5,7 @@
 # example: v-add-access-key admin v-purge-nginx-cache,v-list-mail-accounts comment json
 #
 # The "PERMISSIONS" argument is optional for the admin user only.
-# This function creates a key file in $HESTIA/data/access-keys/
+# This function creates a key file in $LINKPANEL/data/access-keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -18,12 +18,12 @@ comment=$3
 format=${4-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 keygen() {
 	local LENGTH=${1:-20}
@@ -69,34 +69,34 @@ is_key_permissions_format_valid "$permissions" "$user"
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/access-keys/" ]; then
-	mkdir -p $HESTIA/data/access-keys/
-	chown root:root $HESTIA/data/access-keys/
-	chmod 750 $HESTIA/data/access-keys/
+if [ ! -d "$LINKPANEL/data/access-keys/" ]; then
+	mkdir -p $LINKPANEL/data/access-keys/
+	chown root:root $LINKPANEL/data/access-keys/
+	chmod 750 $LINKPANEL/data/access-keys/
 fi
 
-if [[ -e "$HESTIA/data/access-keys/${access_key_id}" ]]; then
-	while [[ -e "$HESTIA/data/access-keys/${access_key_id}" ]]; do
+if [[ -e "$LINKPANEL/data/access-keys/${access_key_id}" ]]; then
+	while [[ -e "$LINKPANEL/data/access-keys/${access_key_id}" ]]; do
 		access_key_id=$(keygen)
 	done
 fi
 
-echo "SECRET_ACCESS_KEY='$secret_access_key'" > "$HESTIA/data/access-keys/${access_key_id}"
-echo "USER='$user'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "PERMISSIONS='$permissions'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "COMMENT='$comment'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "TIME='$time'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "DATE='$date'" >> "$HESTIA/data/access-keys/${access_key_id}"
+echo "SECRET_ACCESS_KEY='$secret_access_key'" > "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "USER='$user'" >> "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "PERMISSIONS='$permissions'" >> "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "COMMENT='$comment'" >> "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "TIME='$time'" >> "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "DATE='$date'" >> "$LINKPANEL/data/access-keys/${access_key_id}"
 # TODO Index reserved for future implementation
-echo "EXPIRES_IN=''" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "IP=''" >> "$HESTIA/data/access-keys/${access_key_id}"
+echo "EXPIRES_IN=''" >> "$LINKPANEL/data/access-keys/${access_key_id}"
+echo "IP=''" >> "$LINKPANEL/data/access-keys/${access_key_id}"
 
-chmod 640 "$HESTIA/data/access-keys/${access_key_id}"
+chmod 640 "$LINKPANEL/data/access-keys/${access_key_id}"
 
 $BIN/v-list-access-key "$access_key_id" "$format"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

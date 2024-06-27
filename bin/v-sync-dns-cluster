@@ -12,14 +12,14 @@
 host=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
-source $HESTIA/func/remote.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/remote.sh
+source $LINKPANEL/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -40,9 +40,9 @@ check_hestia_demo_mode
 # Selecting remote hosts
 IFS=$'\n'
 if [ -z $host ]; then
-	hosts=$(cat $HESTIA/conf/dns-cluster.conf | grep "SUSPENDED='no'")
+	hosts=$(cat $LINKPANEL/conf/dns-cluster.conf | grep "SUSPENDED='no'")
 else
-	hosts=$(grep "HOST='$host'" $HESTIA/conf/dns-cluster.conf)
+	hosts=$(grep "HOST='$host'" $LINKPANEL/conf/dns-cluster.conf)
 fi
 
 # Starting cluster loop
@@ -59,16 +59,16 @@ for cluster in $hosts; do
 	check_result $? "$HOST connection failed" $E_CONNECT
 
 	# Syncing user domains
-	user_list=$(ls -d $HESTIA/data/users/*/ | sed "s#$HESTIA/data/users/##" | sed s"/.$//" | grep -v "dns-cluster")
+	user_list=$(ls -d $LINKPANEL/data/users/*/ | sed "s#$LINKPANEL/data/users/##" | sed s"/.$//" | grep -v "dns-cluster")
 	for user in $user_list; do
-		USER_DATA="$HESTIA/data/users/$user"
+		USER_DATA="$LINKPANEL/data/users/$user"
 		ROLE=$(get_user_value '$ROLE')
 		if [ "$ROLE" != "dns-cluster" ]; then
-			for str in $(cat $HESTIA/data/users/$user/dns.conf); do
+			for str in $(cat $LINKPANEL/data/users/$user/dns.conf); do
 				unset $SLAVE
 				parse_object_kv_list "$str"
 				if [ "$SLAVE" != "yes" ]; then
-					if [ "$DNS_CLUSTER_SYSTEM" != "hestia-zone" ]; then
+					if [ "$DNS_CLUSTER_SYSTEM" != "linkpanel-zone" ]; then
 						# Syncing domain index
 
 						cluster_cmd v-insert-dns-domain "$DNS_USER" "$str" "$HOSTNAME" ' ' "no"
@@ -76,18 +76,18 @@ for cluster in $hosts; do
 
 						# Syncing domain records
 						tmp_file="/tmp/vst-sync.$DOMAIN"
-						cluster_file "$HESTIA/data/users/$user/dns/$DOMAIN.conf" "$tmp_file"
+						cluster_file "$LINKPANEL/data/users/$user/dns/$DOMAIN.conf" "$tmp_file"
 						check_result $? "$HOST connection failed" "$E_CONNECT"
 
 						cluster_cmd v-insert-dns-records "$DNS_USER" "$DOMAIN" "$tmp_file" 'no'
 						check_result $? "$HOST connection failed" "$E_CONNECT"
 					fi
-					if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
+					if [ "$DNS_CLUSTER_SYSTEM" = "linkpanel-zone" ]; then
 						str=$(echo "$str" | sed "s/SLAVE='no'/SLAVE='yes'/g")
 						str=$(echo "$str" | sed "s/SLAVE=''/SLAVE='yes'/g")
 
 						ip=$(ip addr | grep 'inet ' | grep global | head -n1 | awk '{print $2}' | cut -f1 -d/)
-						source_conf $HESTIA/data/ips/$ip
+						source_conf $LINKPANEL/data/ips/$ip
 						if [ -z $NAT ]; then
 							str=$(echo "$str" | sed "s/MASTER=''/MASTER='$ip'/g")
 						else
@@ -105,7 +105,7 @@ for cluster in $hosts; do
 			done
 		fi
 	done
-	if [ "$DNS_CLUSTER_SYSTEM" != "hestia-zone" ]; then
+	if [ "$DNS_CLUSTER_SYSTEM" != "linkpanel-zone" ]; then
 		# Rebuilding dns zones
 		cluster_cmd v-rebuild-dns-domains "$DNS_USER" "yes" "no"
 		check_result $? "$TYPE connection to $HOST failed" "$E_CONNECT"
@@ -113,12 +113,12 @@ for cluster in $hosts; do
 done
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Flushing dns-cluster queue
-rm -f $HESTIA/data/queue/dns-cluster.pipe
-touch $HESTIA/data/queue/dns-cluster.pipe
-chmod 660 $HESTIA/data/queue/dns-cluster.pipe
+rm -f $LINKPANEL/data/queue/dns-cluster.pipe
+touch $LINKPANEL/data/queue/dns-cluster.pipe
+chmod 660 $LINKPANEL/data/queue/dns-cluster.pipe
 
 exit

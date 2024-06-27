@@ -14,12 +14,12 @@
 version=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,7 +42,7 @@ if [[ ! $version =~ ^[0-9]\.[0-9]+ ]]; then
 fi
 
 # Remove backend template
-[ -f $HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl ] && rm -f $HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
+[ -f $LINKPANEL/data/templates/web/php-fpm/PHP-${version/\./_}.tpl ] && rm -f $LINKPANEL/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
 
 # Check if php version exists
 version_check=$($BIN/v-list-sys-php plain | grep "$version")
@@ -109,13 +109,13 @@ if [ "$WEB_BACKEND" = "php-fpm" ]; then
 	if [ -z "$conf" ]; then
 		# If not grab the "last php version
 		last=$($BIN/v-list-sys-php "shell" | tail -n1)
-		cp -f $HESTIA/install/deb/php-fpm/www.conf /etc/php/$last/fpm/pool.d/www.conf
+		cp -f $LINKPANEL/install/deb/php-fpm/www.conf /etc/php/$last/fpm/pool.d/www.conf
 		$BIN/v-restart-web-backend
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

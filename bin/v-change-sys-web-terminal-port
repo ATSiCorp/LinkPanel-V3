@@ -12,15 +12,15 @@
 
 # Argument definition
 PORT=$1
-NGINX_CONFIG="$HESTIA/nginx/conf/nginx.conf"
+NGINX_CONFIG="$LINKPANEL/nginx/conf/nginx.conf"
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Functions
 is_port_valid() {
@@ -34,7 +34,7 @@ is_port_valid() {
 	# Check if PORT is already used
 	BUSY_PORT=$(lsof -i:"$PORT")
 	if [ -n "$BUSY_PORT" ] && [ "$PORT" != "$BACKEND_PORT" ]; then
-		echo "Port is already used by Hestia, please set another one!"
+		echo "Port is already used by LinkPanel, please set another one!"
 		log_event "$E_INUSE" "$ARGUMENTS"
 		exit "$E_INUSE"
 	fi
@@ -68,22 +68,22 @@ else
 	sed -i "s/\(proxy_pass http:\/\/localhost:\)[0-9][0-9]*\([^0-9]*\;$\)/\1$PORT\2/" ${NGINX_CONFIG}
 
 	# Check if the web terminal backend is running
-	if [[ $(ps -eaf | grep -i hestia/web-terminal | sed '/^$/d' | wc -l) -gt 1 ]]; then
-		$BIN/v-restart-service hestia-web-terminal
+	if [[ $(ps -eaf | grep -i linkpanel/web-terminal | sed '/^$/d' | wc -l) -gt 1 ]]; then
+		$BIN/v-restart-service linkpanel-web-terminal
 	fi
 
-	# Check if Hestia is running
-	if [[ $(ps -eaf | grep -i hestia | sed '/^$/d' | wc -l) -gt 1 ]]; then
-		$BIN/v-restart-service hestia
+	# Check if LinkPanel is running
+	if [[ $(ps -eaf | grep -i linkpanel | sed '/^$/d' | wc -l) -gt 1 ]]; then
+		$BIN/v-restart-service linkpanel
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging
-$BIN/v-log-action "system" "Warning" "System" "Hestia Control Panel web terminal port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
+$BIN/v-log-action "system" "Warning" "System" "LinkPanel Control Panel web terminal port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
 log_event "$OK" "$ARGUMENTS"
 
 exit

@@ -15,12 +15,12 @@ domain=$1
 type=${2-any}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -39,10 +39,10 @@ check_hestia_demo_mode
 
 # Define conf
 case $type in
-	web) conf="$HESTIA/data/users/*/web.conf" ;;
-	dns) conf="$HESTIA/data/users/*/dns.conf" ;;
-	mail) conf="$HESTIA/data/users/*/mail.conf" ;;
-	*) conf="$HESTIA/data/users/*/*.conf" ;;
+	web) conf="$LINKPANEL/data/users/*/web.conf" ;;
+	dns) conf="$LINKPANEL/data/users/*/dns.conf" ;;
+	mail) conf="$LINKPANEL/data/users/*/mail.conf" ;;
+	*) conf="$LINKPANEL/data/users/*/*.conf" ;;
 esac
 
 owner=$(grep -H "DOMAIN='$domain'" $conf | head -n 1 | cut -f7 -d '/')
@@ -53,7 +53,7 @@ fi
 echo "$owner"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

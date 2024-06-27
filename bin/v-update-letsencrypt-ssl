@@ -11,14 +11,14 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/syshealth.sh
+source $LINKPANEL/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -38,7 +38,7 @@ fi
 
 # Checking user certificates
 for user in $("$BIN/v-list-users" list); do
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$LINKPANEL/data/users/$user
 
 	for domain in $(search_objects 'web' 'LETSENCRYPT' 'yes' 'DOMAIN'); do
 		# Clear any keys related to web domains
@@ -167,7 +167,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 #----------------------------------------------------------#
-#                        Hestia                            #
+#                        LinkPanel                            #
 #----------------------------------------------------------#
 
 log_event "$OK" "$EVENT"

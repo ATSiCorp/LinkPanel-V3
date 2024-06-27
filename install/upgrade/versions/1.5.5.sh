@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.5.5
+# LinkPanel Control Panel upgrade script for target version 1.5.5
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -81,11 +81,11 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 		echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/mariadb-keyring.gpg] https://mirror.mva-n.net/mariadb/repo/$mariadb_v/$os $codename main" > $apt/mariadb.list
 		curl -s https://mariadb.org/mariadb_release_signing_key.asc | gpg --dearmor | tee /usr/share/keyrings/mariadb-keyring.gpg > /dev/null 2>&1
 	fi
-	if [ -f "$apt/hestia.list" ]; then
-		rm $apt/hestia.list
-		echo "   [ * ] Hestia"
-		echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/hestia-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
-		gpg --no-default-keyring --keyring /usr/share/keyrings/hestia-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
+	if [ -f "$apt/linkpanel.list" ]; then
+		rm $apt/linkpanel.list
+		echo "   [ * ] LinkPanel"
+		echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/linkpanel-keyring.gpg] https://$RHOST/ $codename main" > $apt/linkpanel.list
+		gpg --no-default-keyring --keyring /usr/share/keyrings/linkpanel-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
 		apt-key del A189E93654F0B0E5 > /dev/null 2>&1
 	fi
 	if [ -f "$apt/postgresql.list" ]; then
@@ -97,7 +97,7 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 
 fi
 
-if [ ! -f "$HESTIA/data/packages/system.pkg" ]; then
+if [ ! -f "$LINKPANEL/data/packages/system.pkg" ]; then
 	echo "[ * ] Install default system package."
-	cp -f $HESTIA/install/deb/packages/system.pkg $HESTIA/data/packages/system.pkg
+	cp -f $LINKPANEL/install/deb/packages/system.pkg $LINKPANEL/data/packages/system.pkg
 fi

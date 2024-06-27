@@ -12,7 +12,7 @@ $loader = require_once __DIR__ .
 # Dev-debugging: Html error handler
 # https://github.com/filp/whoops
 # install:
-# cd $HESTIA/web/src; composer require filp/whoops
+# cd $LINKPANEL/web/src; composer require filp/whoops
 #
 # $whoops = new \Whoops\Run;
 # $whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);

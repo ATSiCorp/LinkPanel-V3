@@ -4,7 +4,7 @@
 #
 # example: v-update-dns-templates
 #
-# This function for obtaining updated dns templates from Hestia package.
+# This function for obtaining updated dns templates from LinkPanel package.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,12 +14,12 @@
 restart=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Perform verification if read-only mode is enabled
 check_hestia_demo_mode
@@ -29,10 +29,10 @@ check_hestia_demo_mode
 #----------------------------------------------------------#
 
 # Update templates
-cp -rf $HESTIA_COMMON_DIR/templates/dns $HESTIA/data/templates/
+cp -rf $HESTIA_COMMON_DIR/templates/dns $LINKPANEL/data/templates/
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "Updates" "Default DNS zone templates updated."

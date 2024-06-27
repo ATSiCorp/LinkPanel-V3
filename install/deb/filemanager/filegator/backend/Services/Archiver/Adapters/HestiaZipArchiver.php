@@ -7,9 +7,9 @@ use Filegator\Services\Archiver\ArchiverInterface;
 use Filegator\Services\Service;
 use Filegator\Services\Storage\Filesystem as Storage;
 use Filegator\Services\Tmpfs\TmpfsInterface;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
-class HestiaZipArchiver extends ZipArchiver implements Service, ArchiverInterface {
+class LinkPanelZipArchiver extends ZipArchiver implements Service, ArchiverInterface {
 	protected $container;
 
 	public function __construct(TmpfsInterface $tmpfs, Container $container) {
@@ -35,7 +35,7 @@ class HestiaZipArchiver extends ZipArchiver implements Service, ArchiverInterfac
 		}
 
 		exec(
-			"sudo /usr/local/hestia/bin/v-extract-fs-archive " .
+			"sudo /usr/local/linkpanel/bin/v-extract-fs-archive " .
 				quoteshellarg($v_user) .
 				" " .
 				quoteshellarg($source) .

@@ -11,15 +11,15 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 send_email_report() {
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf")
+	email=$(grep CONTACT "$LINKPANEL/data/users/$ROOT_USER/user.conf")
 	email=$(echo "$email" | cut -f 2 -d "'")
 	tmpfile=$(mktemp)
 	subj="$(hostname): $CRON_SYSTEM restart failed"
@@ -40,8 +40,8 @@ fi
 
 # Schedule restart
 if [ "$1" = 'scheduled' ] || [ -z "$1" ] && [ "$SCHEDULED_RESTART" = 'yes' ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
-	echo "$BIN/$SCRIPT now" >> $HESTIA/data/queue/restart.pipe
+	sed -i "/\/$SCRIPT now/d" $LINKPANEL/data/queue/restart.pipe
+	echo "$BIN/$SCRIPT now" >> $LINKPANEL/data/queue/restart.pipe
 	exit
 fi
 
@@ -57,12 +57,12 @@ if [ $? -ne 0 ]; then
 fi
 
 # Update restart queue
-if [ -e "$HESTIA/data/queue/restart.pipe" ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
+if [ -e "$LINKPANEL/data/queue/restart.pipe" ]; then
+	sed -i "/\/$SCRIPT now/d" $LINKPANEL/data/queue/restart.pipe
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

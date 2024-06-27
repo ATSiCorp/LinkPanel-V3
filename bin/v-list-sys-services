@@ -14,12 +14,12 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # JSON list function
 json_list() {
@@ -97,8 +97,8 @@ get_srv_state() {
 		used_pgrep=1
 	fi
 
-	# Correctly handle hestia-web-terminal service
-	if [ "$name" == 'hestia-web-terminal' ] && [ "$(systemctl show $name.service | grep 'SubState=' | cut -f2 -d=)" == "running" ]; then
+	# Correctly handle linkpanel-web-terminal service
+	if [ "$name" == 'linkpanel-web-terminal' ] && [ "$(systemctl show $name.service | grep 'SubState=' | cut -f2 -d=)" == "running" ]; then
 		pids=$(systemctl show $name.service | grep '^MainPID=' | cut -f2 -d=)
 	fi
 
@@ -337,7 +337,7 @@ fi
 
 # Checking WEB_TERMINAL
 if [ -n "$WEB_TERMINAL" ] && [ "$WEB_TERMINAL" != 'false' ]; then
-	get_srv_state hestia-web-terminal
+	get_srv_state linkpanel-web-terminal
 	data="$data\nNAME='web-terminal' SYSTEM='web terminal backend'"
 	data="$data STATE='$state' CPU='$cpu' MEM='$mem' RTIME='$rtime'"
 fi
@@ -355,7 +355,7 @@ if [ -f "$tmp_file" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 exit

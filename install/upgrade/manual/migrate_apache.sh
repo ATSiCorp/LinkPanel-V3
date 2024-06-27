@@ -8,10 +8,10 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/conf/linkpanel.conf
+source $LINKPANEL/conf/linkpanel.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,13 +42,13 @@ if [ ! -z "$WEB_SYSTEM" ]; then
 	cp -rf "${HESTIA_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
 fi
 
-sed -i "/^WEB_BACKEND=/d" $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
-echo "WEB_BACKEND='php-fpm'" >> $HESTIA/conf/hestia.conf
-echo "WEB_BACKEND='php-fpm'" >> $HESTIA/conf/defaults/hestia.conf
+sed -i "/^WEB_BACKEND=/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf
+echo "WEB_BACKEND='php-fpm'" >> $LINKPANEL/conf/linkpanel.conf
+echo "WEB_BACKEND='php-fpm'" >> $LINKPANEL/conf/defaults/linkpanel.conf
 
 for user in $($BIN/v-list-sys-users plain); do
 	# Define user data and get suspended status
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$LINKPANEL/data/users/$user
 	SUSPENDED=$(get_user_value '$SUSPENDED')
 
 	# Check if user is suspended
@@ -90,7 +90,7 @@ $BIN/v-restart-web-backend "yes"
 check_result $? "Backend restart" > /dev/null 2>&1
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

@@ -1,5 +1,5 @@
 #!/bin/bash
-# info: remove file manager functionality from Hestia Control Panel
+# info: remove file manager functionality from LinkPanel Control Panel
 # options: [MODE]
 #
 # example: v-delete-sys-filemanager
@@ -14,14 +14,14 @@ MODE=$1
 FORCE=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
-FM_INSTALL_DIR="$HESTIA/web/fm"
+FM_INSTALL_DIR="$LINKPANEL/web/fm"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -33,13 +33,13 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/hestia/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+# Ensure that $LINKPANEL (/usr/local/linkpanel/) and other variables are valid.
+if [ -z "$LINKPANEL" ]; then
+	LINKPANEL="/usr/local/linkpanel"
 fi
 
 if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
-	echo "Error: Hestia environment vars not present"
+	echo "Error: LinkPanel environment vars not present"
 	exit 2
 fi
 

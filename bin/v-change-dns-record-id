@@ -19,16 +19,16 @@ newid=$4
 restart=$5
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
+# shellcheck source=/usr/local/linkpanel/func/rebuild.sh
+source $LINKPANEL/func/rebuild.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -72,15 +72,15 @@ fi
 # Updating dns-cluster queue
 if [ "$DNS_CLUSTER" = "yes" ]; then
 	# Check for first sync
-	dlock=$(grep "domain $user $domain" $HESTIA/data/queue/dns-cluster.pipe)
+	dlock=$(grep "domain $user $domain" $LINKPANEL/data/queue/dns-cluster.pipe)
 	if [ -z "$dlock" ]; then
 		cmd="$BIN/v-add-remote-dns-domain $user $domain records"
-		echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+		echo "$cmd" >> $LINKPANEL/data/queue/dns-cluster.pipe
 	fi
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restarting named

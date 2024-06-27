@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 # Return codes
 const E_ARGS = 1;
@@ -122,7 +122,7 @@ function get_real_user_ip() {
  * @param string $message The message for log.
  * @param string $category A category for log. Ex: Auth, Firewall, API...
  * @param string $level Info|Warning|Error.
- * @param string $user A username for save in the user history ou 'system' to save in Hestia history.
+ * @param string $user A username for save in the user history ou 'system' to save in LinkPanel history.
  * @return int The script result code.
  */
 function hst_add_history_log($message, $category = "System", $level = "Info", $user = "system") {

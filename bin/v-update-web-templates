@@ -4,7 +4,7 @@
 #
 # example: v-update-web-templates
 #
-# This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Hestia package.
+# This function for obtaining updated web (Nginx/Apache2/PHP) templates from the LinkPanel package.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,19 +15,19 @@ restart=$1
 skip=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                       Action                             #
 #----------------------------------------------------------#
 
 # Check if /install/upgrade/manual/install_awstats_geoip.sh has been applied
-awstats_patch=$(cat $HESTIA/data/templates/web/awstats/awstats.tpl | grep "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"")
+awstats_patch=$(cat $LINKPANEL/data/templates/web/awstats/awstats.tpl | grep "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"")
 
 # Skeleton, Unassinged and Suspended
 if [ "$POLICY_SYNC_SKELETON" != "no" ]; then
@@ -59,7 +59,7 @@ done
 
 if [ -n "$awstats_patch" ]; then
 	# restore LoadPlugin variable
-	echo "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"" >> $HESTIA/data/templates/web/awstats/awstats.tpl
+	echo "LoadPlugin=\"geoip GEOIP_STANDARD /usr/share/GeoIP/GeoIP.dat\"" >> $LINKPANEL/data/templates/web/awstats/awstats.tpl
 fi
 
 # Rebuilding web domains
@@ -70,7 +70,7 @@ if [ -z "$skip" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Restarting web server

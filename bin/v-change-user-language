@@ -15,12 +15,12 @@ user=$1
 language=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 is_language_valid() {
 	# English is always allowed
@@ -30,7 +30,7 @@ is_language_valid() {
 			log_event "$E_INVALID" "$ARGUMENTS"
 			exit $E_INVALID
 		fi
-		if [ ! -d "$HESTIA/web/locale/$1" ]; then
+		if [ ! -d "$LINKPANEL/web/locale/$1" ]; then
 			echo "Error: language $1 doesn't exist"
 			log_event "$E_NOTEXIST" "$ARGUMENTS"
 			exit $E_NOTEXIST
@@ -63,7 +63,7 @@ else
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

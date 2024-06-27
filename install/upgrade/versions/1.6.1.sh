@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.6.1
+# LinkPanel Control Panel upgrade script for target version 1.6.1
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -38,14 +38,14 @@ if [ "$MAIL_SYSTEM" = "exim4" ]; then
 fi
 
 # With setup from installer
-if [ -f "/etc/apt/sources.list.d/hestia-beta.list" ]; then
+if [ -f "/etc/apt/sources.list.d/linkpanel-beta.list" ]; then
 	echo "[ ! ] Change to stable release!"
-	rm /etc/apt/sources.list.d/hestia-beta.list
-	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
+	rm /etc/apt/sources.list.d/linkpanel-beta.list
+	sed -i 's/#//g' /etc/apt/sources.list.d/linkpanel.list
 fi
-check=$(cat /etc/apt/sources.list.d/hestia.list | grep "beta.hestiacp.com")
+check=$(cat /etc/apt/sources.list.d/linkpanel.list | grep "beta.hestiacp.com")
 if [ ! -z "$check" ]; then
 	echo "[ ! ] Change to stable release!"
-	sed -i '/beta.hestiacp.com/d' /etc/apt/sources.list.d/hestia.list
-	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
+	sed -i '/beta.hestiacp.com/d' /etc/apt/sources.list.d/linkpanel.list
+	sed -i 's/#//g' /etc/apt/sources.list.d/linkpanel.list
 fi

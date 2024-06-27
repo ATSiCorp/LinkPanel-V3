@@ -11,12 +11,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -47,18 +47,18 @@ if [ ! -z $(which "node") ]; then
 	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | tee /usr/share/keyrings/nodesource.gpg > /dev/null 2>&1
 fi
 
-if [ ! -f "$HESTIA/web-terminal/server.js" ]; then
-	# Install hestia-web-terminal package + nodejs
+if [ ! -f "$LINKPANEL/web-terminal/server.js" ]; then
+	# Install linkpanel-web-terminal package + nodejs
 	apt-get -qq update
-	apt-get -qq install nodejs hestia-web-terminal -y
+	apt-get -qq install nodejs linkpanel-web-terminal -y
 else
 	# Starting web terminal websocket server
-	$BIN/v-start-service "hestia-web-terminal"
-	systemctl enable hestia-web-terminal
+	$BIN/v-start-service "linkpanel-web-terminal"
+	systemctl enable linkpanel-web-terminal
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Logging

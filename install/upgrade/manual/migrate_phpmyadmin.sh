@@ -6,16 +6,16 @@
 #----------------------------------------------------------#
 
 # Includes
-source $HESTIA/func/main.sh
+source $LINKPANEL/func/main.sh
 # get current phpmyadmin version
-source $HESTIA/install/upgrade/upgrade.conf
-source $HESTIA/conf/hestia.conf
+source $LINKPANEL/install/upgrade/upgrade.conf
+source $LINKPANEL/conf/linkpanel.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #
 #----------------------------------------------------------#
 
-echo "To remove phpMyAdmin you will need use the root password. Password can be found in /usr/local/hestia/conf/mysql.conf"
+echo "To remove phpMyAdmin you will need use the root password. Password can be found in /usr/local/linkpanel/conf/mysql.conf"
 read -p 'Would you like to continue? [y/n]'
 
 #----------------------------------------------------------#
@@ -93,7 +93,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	rm -f phpMyAdmin-$pma_v-all-languages.tar.gz
 
 	if [ -z "$DB_PMA_ALIAS" ]; then
-		echo "DB_PMA_ALIAS='phpmyadmin'" >> $HESTIA/conf/hestia.conf
+		echo "DB_PMA_ALIAS='phpmyadmin'" >> $LINKPANEL/conf/linkpanel.conf
 	fi
 	$BIN/v-change-sys-db-alias 'pma' "phpmyadmin"
 

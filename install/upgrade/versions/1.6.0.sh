@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.6.0
+# LinkPanel Control Panel upgrade script for target version 1.6.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -64,7 +64,7 @@ if [ -f "/etc/default/spamassassin" ]; then
 fi
 
 # Adding LE autorenew cronjob if there are none
-if [ -z "$(grep v-update-lets $HESTIA/data/users/admin/cron.conf)" ]; then
+if [ -z "$(grep v-update-lets $LINKPANEL/data/users/admin/cron.conf)" ]; then
 	min=$(generate_password '012345' '2')
 	hour=$(generate_password '1234567' '1')
 	command="sudo $BIN/v-update-letsencrypt-ssl"
@@ -73,7 +73,7 @@ fi
 
 # Add apis if they don't exist
 # Changes have been made make sure to overwrite them to prevent issues in the future
-cp -rf $HESTIA_INSTALL_DIR/api $HESTIA/data/
+cp -rf $HESTIA_INSTALL_DIR/api $LINKPANEL/data/
 
 # Update Cloudflare address
 if [ -f /etc/nginx/nginx.conf ] && [ "$(grep 'set_real_ip_from 2405:8100::/32' /etc/nginx/nginx.conf)" = "" ]; then
@@ -109,17 +109,17 @@ if [ "$release" = "22.04" ]; then
 fi
 
 # Mute output v-add-sys-sftp-jail out put then enabling sftp on boot
-if [ -f "/etc/cron.d/hestia-sftp" ]; then
-	rm /etc/cron.d/hestia-sftp
-	echo "@reboot root sleep 60 && /usr/local/hestia/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/hestia-sftp
+if [ -f "/etc/cron.d/linkpanel-sftp" ]; then
+	rm /etc/cron.d/linkpanel-sftp
+	echo "@reboot root sleep 60 && /usr/local/linkpanel/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/linkpanel-sftp
 fi
 
-ips=$(ls /usr/local/hestia/data/ips/ | wc -l)
+ips=$(ls /usr/local/linkpanel/data/ips/ | wc -l)
 release=$(lsb_release -s -i)
 if [ $release = 'Ubuntu' ]; then
 	if [ $ips -gt 1 ]; then
 		add_upgrade_message "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. See https://github.com/hestiacp/hestiacp/pull/2612#issuecomment-1135571835 for more info regarding this issue!"
-		$HESTIA/bin/v-add-user-notification admin "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. <a href='https://github.com/hestiacp/hestiacp/pull/2612#issuecomment-1135571835'>More info</a>"
+		$LINKPANEL/bin/v-add-user-notification admin "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. <a href='https://github.com/hestiacp/hestiacp/pull/2612#issuecomment-1135571835'>More info</a>"
 	fi
 fi
 

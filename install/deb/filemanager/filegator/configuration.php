@@ -1,10 +1,10 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 $dist_config = require __DIR__ . "/configuration_sample.php";
 
 $dist_config["public_path"] = "/fm/";
-$dist_config["frontend_config"]["app_name"] = "File Manager - Hestia Control Panel";
+$dist_config["frontend_config"]["app_name"] = "File Manager - LinkPanel Control Panel";
 $dist_config["frontend_config"]["logo"] = "../images/logo.svg";
 $dist_config["frontend_config"]["editable"] = [
 	".txt",
@@ -43,7 +43,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 			$v_user = quoteshellarg($_SESSION["user"]);
 			$v_session_id = quoteshellarg($_SESSION["token"]);
 			exec(
-				"/usr/local/hestia/bin/v-log-user-logout " . $v_user . " " . $v_session_id,
+				"/usr/local/linkpanel/bin/v-log-user-logout " . $v_user . " " . $v_session_id,
 				$output,
 				$return_var,
 			);
@@ -77,7 +77,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 	# Create filemanager sftp key if missing and trash it after 30 min
 	if (!file_exists("/home/" . basename($v_user) . "/.ssh/hst-filemanager-key")) {
 		exec(
-			"sudo /usr/local/hestia/bin/v-add-user-sftp-key " .
+			"sudo /usr/local/linkpanel/bin/v-add-user-sftp-key " .
 				quoteshellarg(basename($v_user)) .
 				" 30",
 			$output,
@@ -89,7 +89,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 	}
 
 	if (!isset($_SESSION["SFTP_PORT"])) {
-		exec("sudo /usr/local/hestia/bin/v-list-sys-sshd-port json", $output, $result);
+		exec("sudo /usr/local/linkpanel/bin/v-list-sys-sshd-port json", $output, $result);
 		$port = json_decode(implode("", $output));
 		if (is_numeric($port[0]) && $port[0] > 0) {
 			$_SESSION["SFTP_PORT"] = $port[0];
@@ -103,7 +103,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 	}
 
 	preg_match(
-		'/(Hestia SFTP Chroot\nMatch User)(.*)/i',
+		'/(LinkPanel SFTP Chroot\nMatch User)(.*)/i',
 		file_get_contents("/etc/ssh/sshd_config"),
 		$matches,
 	);
@@ -126,12 +126,12 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 };
 
 $dist_config["services"]["Filegator\Services\Archiver\ArchiverInterface"] = [
-	"handler" => "\Filegator\Services\Archiver\Adapters\HestiaZipArchiver",
+	"handler" => "\Filegator\Services\Archiver\Adapters\LinkPanelZipArchiver",
 	"config" => [],
 ];
 
 $dist_config["services"]["Filegator\Services\Auth\AuthInterface"] = [
-	"handler" => "\Filegator\Services\Auth\Adapters\HestiaAuth",
+	"handler" => "\Filegator\Services\Auth\Adapters\LinkPanelAuth",
 	"config" => [
 		"permissions" => ["read", "write", "upload", "download", "batchdownload", "zip"],
 		"private_repos" => false,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Hestia\WebApp\Installers\Wordpress;
+namespace LinkPanel\WebApp\Installers\Wordpress;
 
-use Hestia\System\Util;
-use Hestia\WebApp\Installers\BaseSetup as BaseSetup;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use LinkPanel\System\Util;
+use LinkPanel\WebApp\Installers\BaseSetup as BaseSetup;
+use function LinkPanelCp\quoteshellarg\quoteshellarg;
 
 class WordpressSetup extends BaseSetup {
 	protected $appInfo = [
@@ -63,7 +63,7 @@ class WordpressSetup extends BaseSetup {
 				"template" => "wordpress",
 			],
 			"php" => [
-				"supported" => ["7.4", "8.0", "8.1", "8.2"],
+				"supported" => ["7.4", "8.0", "8.1", "8.2", "8.3"],
 			],
 		],
 	];

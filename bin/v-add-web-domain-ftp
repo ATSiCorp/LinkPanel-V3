@@ -20,14 +20,14 @@ HIDE=4
 ftp_path=$5
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
-source $HESTIA/func/domain.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/domain.sh
+source $LINKPANEL/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Additional argument formatting
 format_domain
@@ -94,7 +94,7 @@ fi
 	-s $shell \
 	-o -u $(id -u $user) \
 	-g $(id -g $user) \
-	-G hestia-users \
+	-G linkpanel-users \
 	-M -d "$ftp_path_a" > /dev/null 2>&1
 
 # Set ftp user password
@@ -113,7 +113,7 @@ ftp_md5=$(awk -v user=$ftp_user -F : 'user == $1 {print $2}' /etc/shadow)
 $BIN/v-add-user-sftp-jail "$ftp_user"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Transforming absolute path to relative

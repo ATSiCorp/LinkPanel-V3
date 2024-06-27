@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+if [ "${PATH#*/usr/local/linkpanel/bin*}" = "$PATH" ]; then
+    . /etc/profile.d/linkpanel.sh
 fi
 
 load 'test_helper/bats-support/load'
@@ -14,10 +14,10 @@ function random() {
 }
 
 function setup() {
-    source /tmp/hestia-le-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
-    source $HESTIA/func/ip.sh
+    source /tmp/linkpanel-le-env.sh
+    source $LINKPANEL/func/main.sh
+    source $LINKPANEL/conf/linkpanel.conf
+    source $LINKPANEL/func/ip.sh
 }
 
 @test "[ User ] Create new user" {
@@ -39,7 +39,7 @@ function setup() {
 }
 
 @test "[ Web ] Create 2nd web domain" {
-    run v-add-web-domain $user "hestia.$domain" $ip yes
+    run v-add-web-domain $user "linkpanel.$domain" $ip yes
     assert_success
     refute_output
 }
@@ -51,7 +51,7 @@ function setup() {
 }
 
 @test "[ Web ] Request 2nd new certificate for web domain" {
-    run v-add-letsencrypt-domain $user "hestia.$domain"
+    run v-add-letsencrypt-domain $user "linkpanel.$domain"
     assert_success
     refute_output
 }

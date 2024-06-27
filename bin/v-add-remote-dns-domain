@@ -16,14 +16,14 @@ domain=$2
 flush=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
-source $HESTIA/func/remote.sh
+# shellcheck source=/etc/hestiacp/linkpanel.conf
+source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/usr/local/linkpanel/func/main.sh
+source $LINKPANEL/func/main.sh
+# shellcheck source=/usr/local/linkpanel/func/remote.sh
+source $LINKPANEL/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -48,18 +48,18 @@ check_hestia_demo_mode
 # Parsing domain record
 str=$(grep "DOMAIN='$domain'" $USER_DATA/dns.conf 2> /dev/null)
 if [ -z "$str" ]; then
-	pipe="$HESTIA/data/queue/dns-cluster.pipe"
+	pipe="$LINKPANEL/data/queue/dns-cluster.pipe"
 	queue_str=$(grep -n "$SCRIPT $1 $2 " $pipe | cut -f1 -d: | head -n1)
 	if [ -n "$queue_str" ]; then
 		sed -i "$queue_str d" $pipe
 	fi
 	exit
 fi
-if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
+if [ "$DNS_CLUSTER_SYSTEM" = "linkpanel-zone" ]; then
 	str=$(echo "$str" | sed "s/SLAVE='no'/SLAVE='yes'/g")
 	str=$(echo "$str" | sed "s/SLAVE=''/SLAVE='yes'/g")
 	ip=$(ip addr | grep 'inet ' | grep global | head -n1 | awk '{print $2}' | cut -f1 -d/)
-	source_conf $HESTIA/data/ips/$ip
+	source_conf $LINKPANEL/data/ips/$ip
 	if [ -z $NAT ]; then
 		str=$(echo "$str" | sed "s/MASTER=''/MASTER='$ip'/g")
 	else
@@ -68,7 +68,7 @@ if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
 fi
 
 IFS=$'\n'
-for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
+for cluster in $(grep "SUSPENDED='no'" $LINKPANEL/conf/dns-cluster.conf); do
 	# Reset user, password and hash vars
 	clear_dns_cluster_settings
 
@@ -78,7 +78,7 @@ for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
 	# Parsing domain parameters
 	parse_object_kv_list "$str"
 
-	if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
+	if [ "$DNS_CLUSTER_SYSTEM" = "linkpanel-zone" ]; then
 		# Syncing domain data
 		cluster_cmd v-insert-dns-domain $DNS_USER "$str" $HOSTNAME $flush 'no'
 		check_result $? "$HOST connection failed" "$E_CONNECT"
@@ -106,16 +106,16 @@ for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
 	fi
 done
 
-if [ "$DNS_CLUSTER_SYSTEM" = "hestia-zone" ]; then
+if [ "$DNS_CLUSTER_SYSTEM" = "linkpanel-zone" ]; then
 	rndc notify $domain > /dev/null 2>&1
 fi
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       LinkPanel                             #
 #----------------------------------------------------------#
 
 # Updating pipe
 rm -f $tmpfile
-pipe="$HESTIA/data/queue/dns-cluster.pipe"
+pipe="$LINKPANEL/data/queue/dns-cluster.pipe"
 str=$(grep -n "$SCRIPT $1 $2 " $pipe | cut -f1 -d: | head -n1)
 if [ -n "$str" ]; then
 	sed -i "$str d" $pipe
