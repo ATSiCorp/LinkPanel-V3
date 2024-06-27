@@ -21,7 +21,7 @@ upgrade_config_set_value 'UPGRADE_UPDATE_MAIL_TEMPLATES' 'false'
 upgrade_config_set_value 'UPGRADE_REBUILD_USERS' 'false'
 upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'true'
 
-RHOST='apt.linkpanelcp.com'
+RHOST='apt.linkpanel.atsi.cloud'
 codename="$(lsb_release -s -c)"
 if [ -z "$codename" ]; then
 	codename="$(cat /etc/os-release | grep VERSION= | cut -f 2 -d \( | cut -f 1 -d \))"

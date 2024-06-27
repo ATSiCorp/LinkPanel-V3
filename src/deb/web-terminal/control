@@ -6,7 +6,7 @@ Section: admin
 Maintainer: LinkPanelCP <info@linkpanelcp.com>
 Homepage: https://linkpanel.atsi.cloud
 Architecture: amd64
-Depends: linkpanel, nodejs (>= 18.0.0)
+Depends: linkpanel, nodejs (>= 20.0.0)
 Description: linkpanel web terminal
  linkpanel is an open source hosting control panel.
  linkpanel has a clean and focused interface without the clutter.
