@@ -15,8 +15,8 @@ PORT=$1
 NGINX_CONFIG="$LINKPANEL/nginx/conf/nginx.conf"
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source "$LINKPANEL/func/main.sh"
 # load config file
@@ -48,7 +48,7 @@ check_args '1' "$#" 'PORT'
 is_port_valid
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -68,10 +68,10 @@ else
 	# Replace port in config files.
 	sed -i "s/\(listen[ \t]*.*[: \t]\)[0-9][0-9]*\([^0-9]*ssl\;$\)/\1$PORT\2/" "$NGINX_CONFIG"
 	if [ -d /etc/roundcube/ ]; then
-		sed -i "/password_hestia_port/c\$rcmail_config['password_hestia_port'] = '$PORT';" /etc/roundcube/plugins/password/config.inc.php
+		sed -i "/password_linkpanel_port/c\$rcmail_config['password_linkpanel_port'] = '$PORT';" /etc/roundcube/plugins/password/config.inc.php
 	fi
 	if [ -d /etc/snappymail/ ]; then
-		sed -i "/\"hestia_port\":/c\\\"hestia_host\": $PORT" /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
+		sed -i "/\"linkpanel_port\":/c\\\"linkpanel_host\": $PORT" /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
 	fi
 
 	if [ -f "$LINKPANEL/data/firewall/rules.conf" ]; then

@@ -15,23 +15,23 @@ fi
 # Update Apache and Nginx configuration to support new file structure
 if [ -f /etc/apache2/apache.conf ]; then
 	echo "[ * ] Updating Apache configuration..."
-	mv /etc/apache2/apache.conf $HESTIA_BACKUP/conf/
-	cp -f $HESTIA_INSTALL_DIR/apache2/apache.conf /etc/apache2/apache.conf
+	mv /etc/apache2/apache.conf $LINKPANEL_BACKUP/conf/
+	cp -f $LINKPANEL_INSTALL_DIR/apache2/apache.conf /etc/apache2/apache.conf
 fi
 if [ -f /etc/nginx/nginx.conf ]; then
 	echo "[ * ] Updating NGINX configuration..."
-	mv /etc/nginx/nginx.conf $HESTIA_BACKUP/conf/
-	cp -f $HESTIA_INSTALL_DIR/nginx/nginx.conf /etc/nginx/nginx.conf
+	mv /etc/nginx/nginx.conf $LINKPANEL_BACKUP/conf/
+	cp -f $LINKPANEL_INSTALL_DIR/nginx/nginx.conf /etc/nginx/nginx.conf
 fi
 
 # Generate dhparam
 if [ ! -e /etc/ssl/dhparam.pem ]; then
 	echo "[ * ] Enabling HTTPS Strict Transport Security (HSTS) support..."
-	mv /etc/nginx/nginx.conf $HESTIA_BACKUP/conf/
-	cp -f $HESTIA_INSTALL_DIR/nginx/nginx.conf /etc/nginx/
+	mv /etc/nginx/nginx.conf $LINKPANEL_BACKUP/conf/
+	cp -f $LINKPANEL_INSTALL_DIR/nginx/nginx.conf /etc/nginx/
 
 	# Copy dhparam
-	cp -f $HESTIA_INSTALL_DIR/ssl/dhparam.pem /etc/ssl/
+	cp -f $LINKPANEL_INSTALL_DIR/ssl/dhparam.pem /etc/ssl/
 
 	# Update DNS servers in nginx.conf
 	dns_resolver=$(cat /etc/resolv.conf | grep -i '^nameserver' | cut -d ' ' -f2 | tr '\r\n' ' ' | xargs)
@@ -41,7 +41,7 @@ fi
 # Back up default package and install latest version
 if [ -d $LINKPANEL/data/packages/ ]; then
 	echo "[ * ] Replacing default packages..."
-	cp -f $LINKPANEL/data/packages/default.pkg $HESTIA_BACKUP/packages/
+	cp -f $LINKPANEL/data/packages/default.pkg $LINKPANEL_BACKUP/packages/
 fi
 
 # Remove old Office 365 template as there is a newer version with an updated name
@@ -51,7 +51,7 @@ fi
 
 # Back up and remove default index.html if it exists
 if [ -f /var/www/html/index.html ]; then
-	mv /var/www/html/index.html $HESTIA_BACKUP/templates/
+	mv /var/www/html/index.html $LINKPANEL_BACKUP/templates/
 fi
 
 # Configure default success page and set permissions on CSS, JavaScript, and Font dependencies for unassigned hosts
@@ -63,8 +63,8 @@ if [ ! -d /var/www/document_errors/ ]; then
 	mkdir -p /var/www/document_errors/
 fi
 
-cp -rf $HESTIA_INSTALL_DIR/templates/web/unassigned/* /var/www/html/
-cp -rf $HESTIA_INSTALL_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
+cp -rf $LINKPANEL_INSTALL_DIR/templates/web/unassigned/* /var/www/html/
+cp -rf $LINKPANEL_INSTALL_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
 chmod 644 /var/www/html/*
 chmod 644 /var/www/document_errors/*
 
@@ -128,7 +128,7 @@ for ipaddr in $($BIN/v-list-sys-ips plain | cut -f1); do
 			echo "NameVirtualHost $ipaddr:$WEB_PORT" > $web_conf
 		fi
 		echo "Listen $ipaddr:$WEB_PORT" >> $web_conf
-		cat $HESTIA_INSTALL_DIR/apache2/unassigned.conf >> $web_conf
+		cat $LINKPANEL_INSTALL_DIR/apache2/unassigned.conf >> $web_conf
 		sed -i 's/directIP/'$ipaddr'/g' $web_conf
 		sed -i 's/directPORT/'$WEB_PORT'/g' $web_conf
 
@@ -141,7 +141,7 @@ for ipaddr in $($BIN/v-list-sys-ips plain | cut -f1); do
 		fi
 
 	elif [ "$WEB_SYSTEM" = "nginx" ]; then
-		cp -f $HESTIA_INSTALL_DIR/nginx/unassigned.inc $web_conf
+		cp -f $LINKPANEL_INSTALL_DIR/nginx/unassigned.inc $web_conf
 		sed -i 's/directIP/'$ipaddr'/g' $web_conf
 	fi
 
@@ -171,7 +171,7 @@ if [ "$php_versions" -gt 1 ]; then
 		if [ ! -d "/etc/php/$v/fpm/pool.d/" ]; then
 			continue
 		fi
-		cp -f $HESTIA_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$v/fpm/pool.d/
+		cp -f $LINKPANEL_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$v/fpm/pool.d/
 		v1=$(echo "$v" | sed -e 's/[.]//')
 		sed -i "s/9999/99$v1/g" /etc/php/$v/fpm/pool.d/dummy.conf
 	done
@@ -202,12 +202,12 @@ fi
 # Fix Dovecot configuration
 echo "[ * ] Updating Dovecot IMAP/POP server configuration..."
 if [ -f /etc/dovecot/conf.d/15-mailboxes.conf ]; then
-	mv /etc/dovecot/conf.d/15-mailboxes.conf $HESTIA_BACKUP/conf/
+	mv /etc/dovecot/conf.d/15-mailboxes.conf $LINKPANEL_BACKUP/conf/
 fi
 if [ -f /etc/dovecot/dovecot.conf ]; then
 	# Update Dovecot configuration and restart Dovecot service
-	mv /etc/dovecot/dovecot.conf $HESTIA_BACKUP/conf/
-	cp -f $HESTIA_COMMON_DIR/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
+	mv /etc/dovecot/dovecot.conf $LINKPANEL_BACKUP/conf/
+	cp -f $LINKPANEL_COMMON_DIR/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
 	systemctl restart dovecot
 	sleep 0.5
 fi
@@ -215,8 +215,8 @@ fi
 # Fix Exim configuration
 if [ -f /etc/exim4/exim4.conf.template ]; then
 	echo "[ * ] Updating Exim SMTP server configuration..."
-	mv /etc/exim4/exim4.conf.template $HESTIA_BACKUP/conf/
-	cp -f $HESTIA_INSTALL_DIR/exim/exim4.conf.template /etc/exim4/exim4.conf.template
+	mv /etc/exim4/exim4.conf.template $LINKPANEL_BACKUP/conf/
+	cp -f $LINKPANEL_INSTALL_DIR/exim/exim4.conf.template /etc/exim4/exim4.conf.template
 	# Reconfigure spam filter and virus scanning
 	if [ ! -z "$ANTISPAM_SYSTEM" ]; then
 		sed -i "s/#SPAM/SPAM/g" /etc/exim4/exim4.conf.template

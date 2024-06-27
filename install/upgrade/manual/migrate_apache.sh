@@ -33,13 +33,13 @@ php_v="$(multiphp_default_version)"
 
 $BIN/v-add-web-php "$php_v"
 
-cp -f "${HESTIA_INSTALL_DIR}/php-fpm/www.conf" "/etc/php/${php_v}/fpm/pool.d/www.conf"
+cp -f "${LINKPANEL_INSTALL_DIR}/php-fpm/www.conf" "/etc/php/${php_v}/fpm/pool.d/www.conf"
 systemctl start php${php_v}-fpm
 check_result $? "php${php_v}-fpm start failed"
 update-alternatives --set php /usr/bin/php${php_v}
 
 if [ ! -z "$WEB_SYSTEM" ]; then
-	cp -rf "${HESTIA_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
+	cp -rf "${LINKPANEL_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
 fi
 
 sed -i "/^WEB_BACKEND=/d" $LINKPANEL/conf/linkpanel.conf $LINKPANEL/conf/defaults/linkpanel.conf

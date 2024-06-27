@@ -17,7 +17,7 @@ verify_csrf($_GET);
 if (!empty($_GET["listname"])) {
 	$v_listname = $_GET["listname"];
 	exec(
-		HESTIA_CMD . "v-delete-firewall-ipset " . quoteshellarg($v_listname),
+		LINKPANEL_CMD . "v-delete-firewall-ipset " . quoteshellarg($v_listname),
 		$output,
 		$return_var,
 	);

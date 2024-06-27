@@ -20,8 +20,8 @@ password=$5
 email=$6
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -38,7 +38,7 @@ format_no_quotes "$password" 'passowrd'
 is_common_format_valid "$smtp_security" "SMTP_SECURITY"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #

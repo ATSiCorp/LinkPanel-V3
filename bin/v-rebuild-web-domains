@@ -15,8 +15,8 @@ user=$1
 restart=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/domain.sh
@@ -44,7 +44,7 @@ if [ -n "$check_user" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -87,7 +87,7 @@ for php_folder in /etc/php/*; do
 
 	v_php="$(basename $php_folder)"
 	if [ ! -f "/etc/php/${v_php}/fpm/pool.d/dummy.conf" ]; then
-		cp -f "$HESTIA_INSTALL_DIR/php-fpm/dummy.conf" "/etc/php/${v_php}/fpm/pool.d/"
+		cp -f "$LINKPANEL_INSTALL_DIR/php-fpm/dummy.conf" "/etc/php/${v_php}/fpm/pool.d/"
 		sed -i "s/9999/99${v_php//./}/g" "/etc/php/${v_php}/fpm/pool.d/dummy.conf"
 	fi
 done

@@ -15,8 +15,8 @@
 ip="$1"
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/ip.sh
@@ -37,7 +37,7 @@ is_ip_key_empty '$U_WEB_DOMAINS'
 is_ip_key_empty '$U_SYS_USERS'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -139,8 +139,8 @@ fi
 
 if [ "$OWNER" = "$ROOT_USER" ]; then
 	if [ "$STATUS" = 'shared' ]; then
-		for hestia_user in $("$BIN/v-list-users" list); do
-			decrease_user_value "$hestia_user" '$IP_AVAIL'
+		for linkpanel_user in $("$BIN/v-list-users" list); do
+			decrease_user_value "$linkpanel_user" '$IP_AVAIL'
 		done
 	else
 		decrease_user_value "$OWNER" '$IP_AVAIL'

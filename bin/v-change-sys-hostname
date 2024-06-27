@@ -14,8 +14,8 @@
 domain=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -29,7 +29,7 @@ check_args '1' "$#" 'HOSTNAME'
 is_format_valid 'domain'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -59,13 +59,13 @@ fi
 
 # Update webmail's password plugin configuration
 if [ -d /etc/roundcube/ ]; then
-	sed -i "/password_hestia_host/c\$rcmail_config['password_hestia_host'] = '$domain';" /etc/roundcube/plugins/password/config.inc.php
+	sed -i "/password_linkpanel_host/c\$rcmail_config['password_linkpanel_host'] = '$domain';" /etc/roundcube/plugins/password/config.inc.php
 fi
 if [ -d /etc/rainloop/ ]; then
-	sed -i "/hestia_host/c\hestia_host = \"$domain\"" /etc/rainloop/data/_data_/_default_/configs/plugin-linkpanel-change-password.ini
+	sed -i "/linkpanel_host/c\linkpanel_host = \"$domain\"" /etc/rainloop/data/_data_/_default_/configs/plugin-linkpanel-change-password.ini
 fi
 if [ -d /etc/snappymail/ ]; then
-	sed -i "/\"hestia_host\":/c\\\"hestia_host\": \"$domain\"," /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
+	sed -i "/\"linkpanel_host\":/c\\\"linkpanel_host\": \"$domain\"," /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
 fi
 
 # Update /etc/hosts

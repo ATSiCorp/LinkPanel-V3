@@ -51,12 +51,12 @@ foreach ($key as $value) {
 	$v_key = quoteshellarg(trim($value));
 
 	// Key data
-	exec(HESTIA_CMD . "v-list-access-key " . $v_key . " json", $output, $return_var);
+	exec(LINKPANEL_CMD . "v-list-access-key " . $v_key . " json", $output, $return_var);
 	$key_data = json_decode(implode("", $output), true);
 	unset($output);
 
 	if (!empty($key_data) && $key_data["USER"] == $user_plain) {
-		exec(HESTIA_CMD . $cmd . " " . $v_key, $output, $return_var);
+		exec(LINKPANEL_CMD . $cmd . " " . $v_key, $output, $return_var);
 		unset($output);
 	}
 }

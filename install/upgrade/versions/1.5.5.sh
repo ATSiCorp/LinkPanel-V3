@@ -23,7 +23,7 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Update php-fpm.conf
 for version in $($BIN/v-list-sys-php plain); do
-	cp -f $HESTIA_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
+	cp -f $LINKPANEL_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
 	sed -i "s/fpm_v/$version/g" /etc/php/$version/fpm/php-fpm.conf
 done
 
@@ -51,7 +51,7 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 	codename="$(lsb_release -s -c)"
 	release="$(lsb_release -s -r)"
 	mariadb_v=$(mysql -V | awk 'NR==1{print $5}' | head -c 4)
-	RHOST='apt.hestiacp.com'
+	RHOST='apt.linkpanelcp.com'
 
 	apt="/etc/apt/sources.list.d"
 

@@ -11,12 +11,12 @@ Version:        1.25.1-2
 Release:        1%{dist}
 Summary:        LinkPanel internal nginx web server
 Group:          System Environment/Base
-URL:            https://www.hestiacp.com
+URL:            https://www.linkpanelcp.com
 Source0:        https://nginx.org/download/nginx-%{version}.tar.gz
 Source1:        linkpanel-nginx.service
 Source2:        nginx.conf
 License:        BSD
-Vendor:         hestiacp.com
+Vendor:         linkpanelcp.com
 Requires:       redhat-release >= 8
 Requires:       linkpanel-php
 Provides:       linkpanel-nginx = %{version}

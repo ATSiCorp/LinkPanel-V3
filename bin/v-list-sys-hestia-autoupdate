@@ -14,8 +14,8 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -66,7 +66,7 @@ csv_list() {
 #----------------------------------------------------------#
 
 # Check cron tab
-check_cron=$(grep 'v-update-sys-linkpanel-all' /var/spool/cron/crontabs/hestiaweb)
+check_cron=$(grep 'v-update-sys-linkpanel-all' /var/spool/cron/crontabs/linkpanelweb)
 
 # Listing data
 case $format in

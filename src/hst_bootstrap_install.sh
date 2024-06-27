@@ -2,7 +2,7 @@
 
 # Clean installation bootstrap for development purposes only
 # Usage:    ./hst_bootstrap_install.sh [fork] [branch] [os]
-# Example:  ./hst_bootstrap_install.sh hestiacp main ubuntu
+# Example:  ./hst_bootstrap_install.sh linkpanelcp main ubuntu
 
 # Define variables
 fork=$1
@@ -10,8 +10,8 @@ branch=$2
 os=$3
 
 # Download specified installer and compiler
-wget https://raw.githubusercontent.com/$fork/hestiacp/$branch/install/hst-install-$os.sh
-wget https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/hst_autocompile.sh
+wget https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/install/hst-install-$os.sh
+wget https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/src/hst_autocompile.sh
 
 # Execute compiler and build linkpanel core package
 chmod +x hst_autocompile.sh
@@ -19,7 +19,7 @@ chmod +x hst_autocompile.sh
 
 # Execute LinkPanel Control Panel installer with default dummy options for testing
 if [ -f "/etc/redhat-release" ]; then
-	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-rpms /tmp/hestiacp-src/rpms
+	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-rpms /tmp/linkpanelcp-src/rpms
 else
-	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-debs /tmp/hestiacp-src/debs
+	bash hst-install-$os.sh -f -y no -e admin@test.local -p P@ssw0rd -s linkpanel-$branch-$os.test.local --with-debs /tmp/linkpanelcp-src/debs
 fi

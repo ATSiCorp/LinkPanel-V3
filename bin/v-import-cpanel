@@ -14,8 +14,8 @@
 
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # load config file
 source_conf "$LINKPANEL/conf/linkpanel.conf"
 
@@ -107,11 +107,11 @@ fi
 # Extract cPanel package name
 cpanel_package_name=$(cat ./cp/$new_user | grep 'PLAN=' | cut -f2 -d'=')
 if /usr/local/linkpanel/bin/v-list-user-packages | grep -qw "$cpanel_package_name"; then
-	hestia_package="$cpanel_package_name"
-	echo "Package $hestia_package will be used for the user."
+	linkpanel_package="$cpanel_package_name"
+	echo "Package $linkpanel_package will be used for the user."
 else
-	hestia_package="default" # Replace "default" with your default LinkPanel package name
-	echo "Default package $hestia_package will be used for the user."
+	linkpanel_package="default" # Replace "default" with your default LinkPanel package name
+	echo "Default package $linkpanel_package will be used for the user."
 fi
 
 # Create a new user
@@ -121,7 +121,7 @@ if [ -z "$email" ]; then
 	# LinkPanel does not like email to be set to an empty string
 	email="info@"$(hostname)
 fi
-$BIN/v-add-user "$new_user" "$tmp_passwd" "$email" "$hestia_package"
+$BIN/v-add-user "$new_user" "$tmp_passwd" "$email" "$linkpanel_package"
 if [ "$?" -ne 0 ]; then
 	echo "Unable to create user"
 	exit 1
@@ -172,7 +172,7 @@ cat uni_u_db | while read db userdb; do
 		# default cpanel user has all database privileges
 		# if you use default user in your config files to connect with database
 		# you will need remove && [ "$userdb" != "$sk_cp_user" ] to restore main user, but
-		# this will cause database duplication in db.conf and will interfer with hestiacp backups
+		# this will cause database duplication in db.conf and will interfer with linkpanelcp backups
 		if [ "$userdb" == "$user" ] && [ "$userdb" != "$new_user" ] && [ "$userdb" != "$sk_real_cp_user" ]; then
 			echo "DB='$db' DBUSER='$userdb' MD5='$end_user_pass' HOST='localhost' TYPE='mysql' CHARSET='UTF8' U_DISK='0' SUSPENDED='no' TIME='$time' DATE='$data'" >> /usr/local/linkpanel/data/users/$new_user/db.conf
 		fi
@@ -258,21 +258,21 @@ PHP_VERSION_LINE=$(grep -r "phpversion:" userdata/$main_domain1)
 CPANEL_PHP_VERSION=${PHP_VERSION_LINE#*: }
 if [ -n "$CPANEL_PHP_VERSION" ]; then
 	CPANEL_PHP_VERSION=$(echo $CPANEL_PHP_VERSION | grep -oP '(?<=php)\d+')
-	HESTIA_PHP_VERSION="PHP-${CPANEL_PHP_VERSION:0:1}_${CPANEL_PHP_VERSION:1}"
+	LINKPANEL_PHP_VERSION="PHP-${CPANEL_PHP_VERSION:0:1}_${CPANEL_PHP_VERSION:1}"
 
-	if $BIN/v-list-web-templates-backend | grep -qw "$HESTIA_PHP_VERSION"; then
-		echo "Setting PHP version to $HESTIA_PHP_VERSION for $main_domain1 under user $new_user"
-		$BIN/v-change-web-domain-backend-tpl $new_user $main_domain1 $HESTIA_PHP_VERSION
+	if $BIN/v-list-web-templates-backend | grep -qw "$LINKPANEL_PHP_VERSION"; then
+		echo "Setting PHP version to $LINKPANEL_PHP_VERSION for $main_domain1 under user $new_user"
+		$BIN/v-change-web-domain-backend-tpl $new_user $main_domain1 $LINKPANEL_PHP_VERSION
 		if [ $? -ne 0 ]; then
 			tput setaf 1
 			echo "ERROR!! Failed to set same PHP version for $main_domain1 setting default, please check this to avoid errors."
 			tput sgr0
 		else
-			echo "PHP version for $main_domain1 set to $HESTIA_PHP_VERSION"
+			echo "PHP version for $main_domain1 set to $LINKPANEL_PHP_VERSION"
 		fi
 	else
 		tput setaf 1
-		echo "PHP version $HESTIA_PHP_VERSION is not installed on LinkPanelCP."
+		echo "PHP version $LINKPANEL_PHP_VERSION is not installed on LinkPanelCP."
 		echo "Please install and set it to avoid errors in website."
 		echo "The restoration will continue but the website may not work as expected"
 		tput sgr0

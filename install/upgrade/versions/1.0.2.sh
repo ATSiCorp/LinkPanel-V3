@@ -9,7 +9,7 @@
 # Replace dhparam 1024 with dhparam 4096
 echo "[ * ] Increasing Diffie-Hellman Parameter strength to 4096-bit..."
 if [ -e /etc/ssl/dhparam.pem ]; then
-	mv /etc/ssl/dhparam.pem $HESTIA_BACKUP/conf/
+	mv /etc/ssl/dhparam.pem $LINKPANEL_BACKUP/conf/
 fi
 cp -f $LINKPANEL/install/deb/ssl/dhparam.pem /etc/ssl/
 chmod 600 /etc/ssl/dhparam.pem
@@ -17,14 +17,14 @@ chmod 600 /etc/ssl/dhparam.pem
 # Enhance Vsftpd security
 if [ "$FTP_SYSTEM" = "vsftpd" ]; then
 	echo "[ * ] Hardening Vsftpd SSL configuration..."
-	cp -f /etc/vsftpd.conf $HESTIA_BACKUP/conf/
+	cp -f /etc/vsftpd.conf $LINKPANEL_BACKUP/conf/
 	sed -i "s|ssl_tlsv1=YES|ssl_tlsv1=NO|g" /etc/vsftpd.conf
 fi
 
 # Enhance Dovecot security
 if [ "$IMAP_SYSTEM" = "dovecot" ]; then
 	echo "[ * ] Hardening Dovecot SSL configuration..."
-	mv /etc/dovecot/conf.d/10-ssl.conf $HESTIA_BACKUP/conf/
+	mv /etc/dovecot/conf.d/10-ssl.conf $LINKPANEL_BACKUP/conf/
 	cp -f $LINKPANEL/install/deb/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/
 fi
 
@@ -65,6 +65,6 @@ fi
 
 # Enhance webmail security
 if [ -e "/etc/nginx/conf.d/webmail.inc" ]; then
-	cp -f /etc/nginx/conf.d/webmail.inc $HESTIA_BACKUP/conf/
+	cp -f /etc/nginx/conf.d/webmail.inc $LINKPANEL_BACKUP/conf/
 	sed -i "s/config|temp|logs/README.md|config|temp|logs|bin|SQL|INSTALL|LICENSE|CHANGELOG|UPGRADING/g" /etc/nginx/conf.d/webmail.inc
 fi

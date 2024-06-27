@@ -3,8 +3,8 @@ Package: linkpanel-nginx
 Priority: optional
 Version: 1.25.2-1
 Section: admin
-Maintainer: LinkPanelCP <info@hestiacp.com>
-Homepage: https://www.hestiacp.com
+Maintainer: LinkPanelCP <info@linkpanelcp.com>
+Homepage: https://www.linkpanelcp.com
 Architecture: amd64
 Depends: linkpanel
 Description: linkpanel Nginx

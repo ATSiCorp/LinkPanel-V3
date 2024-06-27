@@ -9,8 +9,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -23,7 +23,7 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 is_system_enabled "$CRON_SYSTEM" 'CRON_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -31,9 +31,9 @@ check_hestia_demo_mode
 
 # Add cron job
 cmd="bin/v-update-sys-queue letsencrypt"
-check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/hestiaweb" 2> /dev/null)
+check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/linkpanelweb" 2> /dev/null)
 if [ -z "$check_cron" ] && [ -n "$CRON_SYSTEM" ]; then
-	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue letsencrypt" >> "/var/spool/cron/crontabs/hestiaweb"
+	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue letsencrypt" >> "/var/spool/cron/crontabs/linkpanelweb"
 fi
 
 #----------------------------------------------------------#

@@ -33,7 +33,7 @@ function setup() {
 }
 
 @test "[Fail][ APIV2 ] Create new user" {
-    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$accesskey&returncode=yes&cmd=v-add-user&arg1=hestiatest&arg2=strongpassword&arg3=info@hestiacp.com" "https://$server:$port/api/index.php"
+    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$accesskey&returncode=yes&cmd=v-add-user&arg1=linkpaneltest&arg2=strongpassword&arg3=info@linkpanelcp.com" "https://$server:$port/api/index.php"
     assert_success
     assert_output --partial "don't have permission to run the command v-add-user"
 }
@@ -45,30 +45,30 @@ function setup() {
 }
 
 @test "[Success][ Hash ] Create new user" {
-    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-add-user&arg1=hestiatest&arg2=/tmp/clusterpassword&arg3=info@hestiacp.com&arg4=default" "https://$server:$port/api/index.php"
+    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-add-user&arg1=linkpaneltest&arg2=/tmp/clusterpassword&arg3=info@linkpanelcp.com&arg4=default" "https://$server:$port/api/index.php"
     assert_success
     assert_output --partial "OK"
 }
 
 @test "[Success][ Hash ] Check password" {
-    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-check-user-password&arg1=hestiatest&arg2=strongpassword" "https://$server:$port/api/index.php"
+    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-check-user-password&arg1=linkpaneltest&arg2=strongpassword" "https://$server:$port/api/index.php"
     assert_success
     assert_output --partial "OK"
 }
 
 
 @test "[Success][ Local ] Add user" {
-    run v-add-user hestiatest 1234BCD info@hestiacp.com
+    run v-add-user linkpaneltest 1234BCD info@linkpanelcp.com
     assert_success
 }
 
 @test "[Success][ Local ] Add DNS domain" {
-    run v-add-dns-domain hestiatest ilovehestiacp.com 127.0.0.1
+    run v-add-dns-domain linkpaneltest ilovelinkpanelcp.com 127.0.0.1
     assert_success
 }
 
 @test "[Success][ APIV2 ] Add remote DNS host" {
-    run v-add-remote-dns-host $server $port "$accesskey" '' api 'hestiatest'
+    run v-add-remote-dns-host $server $port "$accesskey" '' api 'linkpaneltest'
     assert_success
 }
 
@@ -77,28 +77,28 @@ function setup() {
     assert_success
 }
 
-@test "[Success][ Local ] nslookup ilovehestiacp.com" {
-    run nslookup ilovehestiacp.com $server
+@test "[Success][ Local ] nslookup ilovelinkpanelcp.com" {
+    run nslookup ilovelinkpanelcp.com $server
     assert_success
     assert_output --partial "127.0.0.1"
 }
 
 @test "[Success][ Local ] Add DNS domain 2" {
-    run v-add-dns-domain hestiatest ilovehestiacp.org 127.0.0.1
+    run v-add-dns-domain linkpaneltest ilovelinkpanelcp.org 127.0.0.1
     assert_success
 }
 
 @test "[Success][ Local ] Add DNS record" {
-    run v-add-dns-record hestiatest ilovehestiacp.org test A 127.0.0.1 yes 20
+    run v-add-dns-record linkpaneltest ilovelinkpanelcp.org test A 127.0.0.1 yes 20
     assert_success
 }
 
-@test "[Success][ Local ] nslookup test.ilovehestiacp.org" {
-    run nslookup test.ilovehestiacp.org $server
+@test "[Success][ Local ] nslookup test.ilovelinkpanelcp.org" {
+    run nslookup test.ilovelinkpanelcp.org $server
     assert_failure 1
     assert_output --partial "REFUSED"
 
-    run nslookup test.ilovehestiacp.org localhost
+    run nslookup test.ilovelinkpanelcp.org localhost
     assert_success
     assert_output --partial "127.0.0.1"
 }
@@ -107,22 +107,22 @@ function setup() {
     run v-sync-dns-cluster
     assert_success
 
-    run nslookup test.ilovehestiacp.org $server
+    run nslookup test.ilovelinkpanelcp.org $server
     assert_success
     assert_output --partial "127.0.0.1"
 }
 
 @test "[Success][ Local ] Delete DNS record" {
-    run v-delete-dns-record hestiatest ilovehestiacp.org 20
+    run v-delete-dns-record linkpaneltest ilovelinkpanelcp.org 20
     assert_success
 }
 
-@test "[Success][ Local ] nslookup test.ilovehestiacp.org 2" {
-    run nslookup test.ilovehestiacp.org $server
+@test "[Success][ Local ] nslookup test.ilovelinkpanelcp.org 2" {
+    run nslookup test.ilovelinkpanelcp.org $server
     assert_success
     assert_output --partial "127.0.0.1"
 
-    run nslookup test.ilovehestiacp.org localhost
+    run nslookup test.ilovelinkpanelcp.org localhost
     assert_failure
 }
 
@@ -130,7 +130,7 @@ function setup() {
     run v-sync-dns-cluster
     assert_success
 
-    run nslookup test.ilovehestiacp.org $server
+    run nslookup test.ilovelinkpanelcp.org $server
     assert_failure
 }
 
@@ -142,10 +142,10 @@ function setup() {
 
 
 @test "[Success][ Local ] Delete user" {
-    run v-delete-user hestiatest
+    run v-delete-user linkpaneltest
     assert_success
 }
 
 @test "[Success][ Hash ] Delete user" {
-    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-delete-user&arg1=hestiatest" "https://$server:$port/api/index.php"
+    run curl -k -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "hash=$apikey&cmd=v-delete-user&arg1=linkpaneltest" "https://$server:$port/api/index.php"
 }

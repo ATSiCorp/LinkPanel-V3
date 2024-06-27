@@ -14,8 +14,8 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -85,11 +85,11 @@ shell_list() {
 
 # Checking official latest version
 if [ -f '/etc/redhat-release' ]; then
-	hestia_v=$(dnf list linkpanel | grep linkpanel | awk '{print $2}' | cut -f 1 -d '-')
+	linkpanel_v=$(dnf list linkpanel | grep linkpanel | awk '{print $2}' | cut -f 1 -d '-')
 	nginx_v=$(dnf list linkpanel-nginx | grep linkpanel-nginx | awk '{print $2}' | cut -f 1 -d '-')
 	php_v=$(dnf list linkpanel-php | grep linkpanel-php | awk '{print $2}' | cut -f 1 -d '-')
 else
-	hestia_v=$(apt-cache policy linkpanel | grep Candidate | cut -d ':' -f 2 | xargs)
+	linkpanel_v=$(apt-cache policy linkpanel | grep Candidate | cut -d ':' -f 2 | xargs)
 	nginx_v=$(apt-cache policy linkpanel-nginx | grep Candidate | cut -d ':' -f 2 | xargs)
 	php_v=$(apt-cache policy linkpanel-php | grep Candidate | cut -d ':' -f 2 | xargs)
 fi
@@ -102,7 +102,7 @@ else
 fi
 
 UPDATED='yes'
-if [ -n "$hestia_v" ] && [ "$hestia_v" \> "$VERSION" ]; then
+if [ -n "$linkpanel_v" ] && [ "$linkpanel_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 

@@ -7,16 +7,16 @@
     "content-hash": "7baaf7f37456e01a8ec4aeab69083cad",
     "packages": [
         {
-            "name": "hestiacp/phpquoteshellarg",
+            "name": "linkpanelcp/phpquoteshellarg",
             "version": "v1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hestiacp/phpquoteshellarg.git",
+                "url": "https://github.com/linkpanelcp/phpquoteshellarg.git",
                 "reference": "7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hestiacp/phpquoteshellarg/zipball/7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
+                "url": "https://api.github.com/repos/linkpanelcp/phpquoteshellarg/zipball/7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
                 "reference": "7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
                 "shasum": ""
             },
@@ -34,13 +34,13 @@
                 "Unlicense"
             ],
             "description": "Improved escape shell arguments for support of special charactars",
-            "homepage": "https://github.com/hestiacp",
+            "homepage": "https://github.com/linkpanelcp",
             "keywords": [
                 "escapeshellarg",
                 "quoteshellarg"
             ],
             "support": {
-                "source": "https://github.com/hestiacp/phpquoteshellarg/tree/v1.0.2"
+                "source": "https://github.com/linkpanelcp/phpquoteshellarg/tree/v1.0.2"
             },
             "time": "2023-07-23T09:16:27+00:00"
         },

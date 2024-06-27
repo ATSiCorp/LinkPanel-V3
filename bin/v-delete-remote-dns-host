@@ -14,8 +14,8 @@
 host=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/remote.sh
@@ -33,7 +33,7 @@ is_system_enabled "$DNS_CLUSTER" 'DNS_CLUSTER'
 is_object_valid "../../conf/dns-cluster" 'HOST' "$host"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -53,9 +53,9 @@ if [ "$check_cluster" -eq '0' ]; then
 
 	# Delete cron job
 	cmd="v-update-sys-queue dns-cluster"
-	check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/hestiaweb" 2> /dev/null)
+	check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/linkpanelweb" 2> /dev/null)
 	if [ -n "$check_cron" ]; then
-		sed -i "/v-update-sys-queue dns-cluster/d" "/var/spool/cron/crontabs/hestiaweb"
+		sed -i "/v-update-sys-queue dns-cluster/d" "/var/spool/cron/crontabs/linkpanelweb"
 	fi
 fi
 

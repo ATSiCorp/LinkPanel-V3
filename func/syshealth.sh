@@ -572,28 +572,28 @@ function syshealth_repair_system_config() {
 }
 
 # Repair System Cron Jobs
-# Add default cron jobs to "hestiaweb" user account's cron tab
+# Add default cron jobs to "linkpanelweb" user account's cron tab
 function syshealth_repair_system_cronjobs() {
 	min=$(gen_pass '012345' '2')
 	hour=$(gen_pass '1234567' '1')
-	echo "MAILTO=$email" > /var/spool/cron/crontabs/hestiaweb
-	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
-	echo "*/2 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
-	echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
-	echo "15 02 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
-	echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
-	echo "30 03 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
-	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
-	echo "10 05 * * * sudo /usr/local/linkpanel/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
-	echo "20 00 * * * sudo /usr/local/linkpanel/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
-	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
-	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
-	echo "41 4 * * * sudo /usr/local/linkpanel/bin/v-update-sys-linkpanel-all" >> /var/spool/cron/crontabs/hestiaweb
+	echo "MAILTO=$email" > /var/spool/cron/crontabs/linkpanelweb
+	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "*/2 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "15 02 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "10 00 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "30 03 * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "10 05 * * * sudo /usr/local/linkpanel/bin/v-backup-users" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "20 00 * * * sudo /usr/local/linkpanel/bin/v-update-user-stats" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "*/5 * * * * sudo /usr/local/linkpanel/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/linkpanelweb
+	echo "41 4 * * * sudo /usr/local/linkpanel/bin/v-update-sys-linkpanel-all" >> /var/spool/cron/crontabs/linkpanelweb
 }
 
 # Adapt Port Listing in LINKPANEL NGINX Backend
 # Activates or deactivates port listing on IPV4 or/and IPV6 network interfaces
-function syshealth_adapt_hestia_nginx_listen_ports() {
+function syshealth_adapt_linkpanel_nginx_listen_ports() {
 	# Detect "physical" NICs only (virtual NICs created by Docker, WireGuard etc. are excluded)
 	physical_nics="$(ip -d -j link show | jq -r '.[] | if .link_type == "loopback" // .linkinfo.info_kind then empty else .ifname end')"
 	if [ -z "$physical_nics" ]; then

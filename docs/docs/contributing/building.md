@@ -13,9 +13,9 @@ The following is useful for testing a Pull Request or a branch on a fork.
 1. Install Node.js [Download](https://nodejs.org/en/download) or use [Node Source APT](https://github.com/nodesource/distributions)
 
 ```bash
-# Replace with https://github.com/username/hestiacp.git if you want to test a branch that you created yourself
-git clone https://github.com/hestiacp/hestiacp.git
-cd ./hestiacp/
+# Replace with https://github.com/username/linkpanelcp.git if you want to test a branch that you created yourself
+git clone https://github.com/linkpanelcp/linkpanelcp.git
+cd ./linkpanelcp/
 
 # Replace main with the branch you want to test
 git checkout main
@@ -27,7 +27,7 @@ cd ./src/
 
 cd ../install
 
-bash hst-install-{os}.sh --with-debs /tmp/hestiacp-src/deb/
+bash hst-install-{os}.sh --with-debs /tmp/linkpanelcp-src/deb/
 ```
 
 Any option can be appended to the installer command. [See the complete list](../introduction/getting-started#list-of-installation-options).

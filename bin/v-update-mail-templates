@@ -15,8 +15,8 @@ restart=$1
 skip=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -27,7 +27,7 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 #----------------------------------------------------------#
 
 # Update templates
-cp -rf $HESTIA_INSTALL_DIR/templates/mail $LINKPANEL/data/templates/
+cp -rf $LINKPANEL_INSTALL_DIR/templates/mail $LINKPANEL/data/templates/
 
 # Rebuild mail domains if mail services are enabled
 if [ -z "$skip" ]; then

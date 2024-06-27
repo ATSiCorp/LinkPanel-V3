@@ -1,6 +1,6 @@
-[hestiacp]
+[linkpanelcp]
 name=LinkPanelCP Repository for RHEL $releasever - $basearch
-baseurl=https://rpm.hestiacp.com/rhel/$releasever/$basearch/
-gpgkey=https://rpm.hestiacp.com/RPM-GPG-KEY-HESTIACP
+baseurl=https://rpm.linkpanelcp.com/rhel/$releasever/$basearch/
+gpgkey=https://rpm.linkpanelcp.com/RPM-GPG-KEY-LINKPANELCP
 gpgcheck=1
 enabled=1

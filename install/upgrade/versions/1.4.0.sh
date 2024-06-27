@@ -64,9 +64,9 @@ if [ "$MAIL_SYSTEM" == "exim4" ]; then
 			echo 'we were unable to safely modify your existing exim config file.'
 			echo 'If you would like to use the new SMTP Relay features,'
 			echo 'you will have to replace or modify your config with the one found'
-			echo 'on GitHub at https://github.com/hestiacp/hestiacp/blob/release/install/deb/exim/exim4.conf.template.'
+			echo 'on GitHub at https://github.com/ATSiCorp/LinkPanel-V3/blob/release/install/deb/exim/exim4.conf.template.'
 			echo 'Your exim config file will be found here: /etc/exim4/exim4.conf.template'
-			$LINKPANEL/bin/v-add-user-notification admin 'SMTP Relay upgrade failed' 'Because of the complexity of the SMTP Relay upgrade, we were unable to safely modify your existing exim config file.<br><br>If you would like to use the new SMTP Relay features, you will have to replace or modify your config with the one <a href="https://github.com/hestiacp/hestiacp/blob/release/install/deb/exim/exim4.conf.template" target="_blank">found on GitHub</a>.<br><br>Your exim config file will be found here:<br><br><code>/etc/exim4/exim4.conf.template</code>'
+			$LINKPANEL/bin/v-add-user-notification admin 'SMTP Relay upgrade failed' 'Because of the complexity of the SMTP Relay upgrade, we were unable to safely modify your existing exim config file.<br><br>If you would like to use the new SMTP Relay features, you will have to replace or modify your config with the one <a href="https://github.com/ATSiCorp/LinkPanel-V3/blob/release/install/deb/exim/exim4.conf.template" target="_blank">found on GitHub</a>.<br><br>Your exim config file will be found here:<br><br><code>/etc/exim4/exim4.conf.template</code>'
 		else
 			disable_smtp_relay=false
 		fi
@@ -183,7 +183,7 @@ fi
 
 # Update ClamAV configuration file
 if [ -f "/etc/clamav/clamd.conf" ]; then
-	cp -f $HESTIA_INSTALL_DIR/clamav/clamd.conf /etc/clamav/
+	cp -f $LINKPANEL_INSTALL_DIR/clamav/clamd.conf /etc/clamav/
 	$LINKPANEL/bin/v-add-user-notification admin 'ClamAV config has been overwritten' 'Warning: If you have manualy changed /etc/clamav/clamd.conf and any changes you made will be lost an backup has been created in the /root/hst_backups folder with the original config. If you have not changed the config file you can ignore this message'
 fi
 
@@ -194,5 +194,5 @@ if [ -d $LINKPANEL/data/packages/ ]; then
 	echo "[ * ] Migrating legacy default package for all users..."
 	$LINKPANEL/bin/v-rename-user-package default custom > /dev/null 2>&1
 	echo "[ * ] Replacing default package..."
-	cp -f $HESTIA_INSTALL_DIR/packages/default.pkg $LINKPANEL/data/packages/
+	cp -f $LINKPANEL_INSTALL_DIR/packages/default.pkg $LINKPANEL/data/packages/
 fi

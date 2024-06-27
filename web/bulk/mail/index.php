@@ -99,7 +99,7 @@ if (empty($_POST["account"])) {
 		foreach ($domain as $value) {
 			// Mail
 			$value = quoteshellarg($value);
-			exec(HESTIA_CMD . $cmd . " " . $user . " " . $value, $output, $return_var);
+			exec(LINKPANEL_CMD . $cmd . " " . $user . " " . $value, $output, $return_var);
 			$restart = "yes";
 		}
 	} else {
@@ -111,7 +111,7 @@ if (empty($_POST["account"])) {
 		// Mail Account
 		$value = quoteshellarg($value);
 		$dom = quoteshellarg($domain);
-		exec(HESTIA_CMD . $cmd . " " . $user . " " . $dom . " " . $value, $output, $return_var);
+		exec(LINKPANEL_CMD . $cmd . " " . $user . " " . $dom . " " . $value, $output, $return_var);
 		$restart = "yes";
 	}
 }

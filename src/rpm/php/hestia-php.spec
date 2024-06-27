@@ -6,13 +6,13 @@ Version:        8.2.8
 Release:        1%{dist}
 Summary:        LinkPanel internal PHP
 Group:          System Environment/Base
-URL:            https://www.hestiacp.com
+URL:            https://www.linkpanelcp.com
 Source0:        https://www.php.net/distributions/php-%{version}.tar.gz
 Source1:        linkpanel-php.service
 Source2:        php-fpm.conf
 Source3:        php.ini
 License:        PHP and Zend and BSD and MIT and ASL 1.0 and NCSA
-Vendor:         hestiacp.com
+Vendor:         linkpanelcp.com
 Requires:       redhat-release >= 8
 Provides:       linkpanel-php = %{version}
 BuildRequires:  autoconf, automake, bison, bzip2-devel, gcc, gcc-c++, gnupg2, libtool, make, openssl-devel, re2c

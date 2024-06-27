@@ -49,11 +49,11 @@ if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 
 	for php_ver in $(v-list-sys-php); do
 		[ ! -d "/etc/php/$php_ver/fpm/pool.d/" ] && continue
-		cp -f "$HESTIA_INSTALL_DIR/php-fpm/multiphp.tpl" ${WEBTPL}/php-fpm/PHP-${php_ver/\./_}.tpl
+		cp -f "$LINKPANEL_INSTALL_DIR/php-fpm/multiphp.tpl" ${WEBTPL}/php-fpm/PHP-${php_ver/\./_}.tpl
 	done
 
 	if [ ! -z "$WEB_SYSTEM" ]; then
-		cp -rf "${HESTIA_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
+		cp -rf "${LINKPANEL_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
 	fi
 
 	# Migrate domains

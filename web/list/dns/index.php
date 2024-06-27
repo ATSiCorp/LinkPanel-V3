@@ -8,7 +8,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/inc/main.php";
 // Data & Render page
 
 if (empty($_GET["domain"])) {
-	exec(HESTIA_CMD . "v-list-dns-domains " . $user . " 'json'", $output, $return_var);
+	exec(LINKPANEL_CMD . "v-list-dns-domains " . $user . " 'json'", $output, $return_var);
 	$data = json_decode(implode("", $output), true);
 	if ($_SESSION["userSortOrder"] == "name") {
 		ksort($data);
@@ -20,7 +20,7 @@ if (empty($_GET["domain"])) {
 	render_page($user, $TAB, "list_dns");
 } elseif (!empty($_GET["action"])) {
 	exec(
-		HESTIA_CMD .
+		LINKPANEL_CMD .
 			"v-list-dnssec-public-key " .
 			$user .
 			" " .
@@ -84,7 +84,7 @@ if (empty($_GET["domain"])) {
 	render_page($user, $TAB, "list_dns_public");
 } else {
 	exec(
-		HESTIA_CMD .
+		LINKPANEL_CMD .
 			"v-list-dns-records " .
 			$user .
 			" " .

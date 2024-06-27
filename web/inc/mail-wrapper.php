@@ -17,7 +17,7 @@ define("NO_AUTH_REQUIRED", true);
 include "/usr/local/linkpanel/web/inc/main.php";
 
 // Set system language
-exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
+exec(LINKPANEL_CMD . "v-list-sys-config json", $output, $return_var);
 $data = json_decode(implode("", $output), true);
 if (!empty($data["config"]["LANGUAGE"])) {
 	$_SESSION["language"] = $data["config"]["LANGUAGE"];

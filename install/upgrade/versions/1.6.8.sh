@@ -41,6 +41,6 @@ done
 if [ -d /etc/roundcube ]; then
 	if [ ! -f /etc/logrotate.d/roundcube ]; then
 		echo "[ * ] Create config roundcube logrotate file"
-		cp -f $HESTIA_INSTALL_DIR/logrotate/roundcube /etc/logrotate.d/
+		cp -f $LINKPANEL_INSTALL_DIR/logrotate/roundcube /etc/logrotate.d/
 	fi
 fi

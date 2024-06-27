@@ -14,8 +14,8 @@
 user=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -30,7 +30,7 @@ is_format_valid 'user' 'system'
 is_object_valid 'user' 'USER' "$user"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -46,7 +46,7 @@ if [ -n "$TWOFA" ]; then
 fi
 
 # Get secret and qr code from 2fa library
-data=$($HESTIA_PHP $LINKPANEL/web/inc/2fa/secret.php)
+data=$($LINKPANEL_PHP $LINKPANEL/web/inc/2fa/secret.php)
 
 # Split to secret and qrcode using delimiter
 IFS='-' read -r -a array <<< "$data"

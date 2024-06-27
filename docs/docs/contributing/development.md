@@ -1,11 +1,11 @@
 # Contributing to LinkPanel’s development
 
-LinkPanel is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md) for additional information.
+LinkPanel is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/ATSiCorp/LinkPanel-V3/blob/main/CONTRIBUTING.md) for additional information.
 
 LinkPanel is designed to be installed on a web server. To develop LinkPanel on your local machine, a virtual machine is recommend.
 
 ::: warning
-Development builds are unstable. If you encounter a bug please [report it via GitHub](https://github.com/hestiacp/hestiacp/issues/new/choose) or [submit a Pull Request](https://github.com/hestiacp/hestiacp/pulls).
+Development builds are unstable. If you encounter a bug please [report it via GitHub](https://github.com/ATSiCorp/LinkPanel-V3/issues/new/choose) or [submit a Pull Request](https://github.com/ATSiCorp/LinkPanel-V3/pulls).
 :::
 
 ## Creating a virtual machine for development
@@ -16,10 +16,10 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 
 1. [Install Multipass](https://multipass.run/install) for your OS
 
-1. [Fork LinkPanel](https://github.com/hestiacp/hestiacp/fork) and clone the repository to your local machine
+1. [Fork LinkPanel](https://github.com/ATSiCorp/LinkPanel-V3/fork) and clone the repository to your local machine
 
    ```bash
-   git clone https://github.com/YourUsername/hestiacp.git ~/projects
+   git clone https://github.com/YourUsername/linkpanelcp.git ~/projects
    ```
 
 1. Create an Ubuntu VM with at least 2GB of memory and 15GB of disk space
@@ -33,7 +33,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 1. Mount your cloned repository to the VM's home directory
 
    ```bash
-   multipass mount ~/projects/hestiacp linkpanel-dev:/home/ubuntu/hestiacp
+   multipass mount ~/projects/linkpanelcp linkpanel-dev:/home/ubuntu/linkpanelcp
    ```
 
 1. SSH into the VM as root then install some required packages
@@ -56,7 +56,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 
    ```bash
    cd ../install
-   bash hst-install-ubuntu.sh --hostname demo.hestiacp.com --email admin@example.com --username admin --password Password123 --with-debs /tmp/hestiacp-src/deb/ --interactive no --force
+   bash hst-install-ubuntu.sh --hostname demo.linkpanelcp.com --email admin@example.com --username admin --password Password123 --with-debs /tmp/linkpanelcp-src/deb/ --interactive no --force
    ```
 
 1. Reboot the VM (and exit SSH session)
@@ -86,14 +86,14 @@ Sometimes (with Multipass) the mapping between the source code directory on your
 
 ```bash
 multipass unmount linkpanel-dev
-multipass mount ~/projects/hestiacp linkpanel-dev:/home/ubuntu/hestiacp
+multipass mount ~/projects/linkpanelcp linkpanel-dev:/home/ubuntu/linkpanelcp
 ```
 
 :::
 
 ## Making changes to LinkPanel
 
-After setting up LinkPanel in a development VM you can now make changes to the source code at `~/projects/hestiacp` on your local machine (outside of the VM) using your editor of choice.
+After setting up LinkPanel in a development VM you can now make changes to the source code at `~/projects/linkpanelcp` on your local machine (outside of the VM) using your editor of choice.
 
 Below are some instructions for making a change to LinkPanel's UI, running the build script and testing the change locally.
 
@@ -116,7 +116,7 @@ Below are some instructions for making a change to LinkPanel's UI, running the b
 
 1. Reload the page in your browser to see the change
 
-Please refer to the [contributing guidelines](https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md#development-guidelines) for more details on submitting code changes for review.
+Please refer to the [contributing guidelines](https://github.com/ATSiCorp/LinkPanel-V3/blob/main/CONTRIBUTING.md#development-guidelines) for more details on submitting code changes for review.
 
 ::: info
 A backup is created each time the LinkPanel build script is run. If you run this often it can fill up your VM's disk space.
@@ -131,7 +131,7 @@ We currently use [Bats](https://github.com/bats-core/bats-core) to run our autom
 
 ```bash
 # Clone LinkPanel repo with testing submodules
-git clone --recurse-submodules https://github.com/hestiacp/hestiacp
+git clone --recurse-submodules https://github.com/linkpanelcp/linkpanelcp
 # Or, using an existing local repo with an up-to-date main branch
 git submodule update --init --recursive
 

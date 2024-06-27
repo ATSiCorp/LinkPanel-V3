@@ -13,8 +13,8 @@
 mode=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -25,14 +25,14 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 #----------------------------------------------------------#
 
 is_system_enabled "$CRON_SYSTEM" 'CRON_SYSTEM'
-check_cron_apt=$(grep 'v-update-sys-linkpanel-all' "/var/spool/cron/crontabs/hestiaweb")
-check_cron_git=$(grep 'v-update-sys-linkpanel-git' "/var/spool/cron/crontabs/hestiaweb")
+check_cron_apt=$(grep 'v-update-sys-linkpanel-all' "/var/spool/cron/crontabs/linkpanelweb")
+check_cron_git=$(grep 'v-update-sys-linkpanel-git' "/var/spool/cron/crontabs/linkpanelweb")
 if [ -n "$check_cron_apt" ] || [ -n "$check_cron_git" ]; then
 	exit
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -62,7 +62,7 @@ if [ "$mode" = "git" ]; then
 	command='v-update-sys-linkpanel-git'
 fi
 
-echo "$min $hour * * * sudo /usr/local/linkpanel/bin/$command" > "/var/spool/cron/crontabs/hestiaweb"
+echo "$min $hour * * * sudo /usr/local/linkpanel/bin/$command" > "/var/spool/cron/crontabs/linkpanelweb"
 
 #----------------------------------------------------------#
 #                       LinkPanel                             #

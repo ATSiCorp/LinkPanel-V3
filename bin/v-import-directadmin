@@ -14,8 +14,8 @@
 
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source "$LINKPANEL"/func/main.sh
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # load config file
 source_conf "$LINKPANEL/conf/linkpanel.conf"
 
@@ -33,7 +33,7 @@ if [ ! -e /usr/bin/rsync ] || [ ! -e /usr/bin/file ]; then
 fi
 # Put this to 0 if you want use bash -x to debug it
 debug=1
-hestia_package=default
+linkpanel_package=default
 letsencrypt_enable=0
 addusertext="IMPORTED"
 tmp_dir='tmp_dir_da_backup'
@@ -162,7 +162,7 @@ fi
 
 echo "Generate random password for $directadmin_user and create LinkPanelCp Account ..."
 new_password=$(generate_password)
-"$BIN"/v-add-user "$directadmin_user" "$new_password" "$directadmin_usermail" $hestia_package $addusertext
+"$BIN"/v-add-user "$directadmin_user" "$new_password" "$directadmin_usermail" $linkpanel_package $addusertext
 if [ "$?" -ne 0 ]; then
 	tput setaf 1
 	echo "Error: Unable to create user"

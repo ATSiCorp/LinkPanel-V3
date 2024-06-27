@@ -10,8 +10,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -42,7 +42,7 @@ if [ -z "$LINKPANEL" ]; then
 	LINKPANEL="/usr/local/linkpanel"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$LINKPANEL_INSTALL_DIR" ]; then
 	echo "ERROR: Environment variables not present, installation aborted."
 	exit 2
 fi
@@ -51,13 +51,13 @@ fi
 if [ ! -f "$COMPOSER_BIN" ]; then
 	$BIN/v-add-user-composer "$user"
 	if [ $? -ne 0 ]; then
-		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">The File Manager will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-filemanager</code></p><p>If this continues, <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a>.</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">The File Manager will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-filemanager</code></p><p>If this continues, <a href="https://github.com/ATSiCorp/LinkPanel-V3/issues" target="_blank">open an issue on GitHub</a>.</p>'
 		exit 1
 	fi
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -76,7 +76,7 @@ mv --force ${FM_INSTALL_DIR}/filegator/* "${FM_INSTALL_DIR}"
 rm --recursive --force ${FM_INSTALL_DIR}/${FM_FILE}
 [[ -f "${FM_INSTALL_DIR}/${FM_FILE}" ]] && rm "${FM_INSTALL_DIR}/${FM_FILE}"
 
-cp --recursive --force ${HESTIA_INSTALL_DIR}/filemanager/filegator/* "${FM_INSTALL_DIR}"
+cp --recursive --force ${LINKPANEL_INSTALL_DIR}/filemanager/filegator/* "${FM_INSTALL_DIR}"
 
 chown $user: -R "${FM_INSTALL_DIR}"
 
@@ -90,8 +90,8 @@ fi
 if [ $? -ne 0 ]; then
 	echo "ERROR: File Manager installation failed!"
 	echo "Please report this to our development team:"
-	echo "https://github.com/hestiacp/hestiacp/issues"
-	$BIN/v-add-user-notification "$ROOT_USER" 'File Manager installation failed!' '<p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
+	echo "https://github.com/ATSiCorp/LinkPanel-V3/issues"
+	$BIN/v-add-user-notification "$ROOT_USER" 'File Manager installation failed!' '<p>Please <a href="https://github.com/ATSiCorp/LinkPanel-V3/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
 	# Installation failed, clean up files
 	rm --recursive --force ${FM_INSTALL_DIR}
 	$BIN/v-change-sys-config-value 'FILE_MANAGER' 'false'
@@ -100,14 +100,14 @@ if [ $? -ne 0 ]; then
 fi
 
 # Add configuration file
-cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
+cp -f $LINKPANEL_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
 
 echo "$fm_v" > "${FM_INSTALL_DIR}/version"
 # Set permissions
 chown root: -R "${FM_INSTALL_DIR}"
-chown hestiaweb: "${FM_INSTALL_DIR}/private"
-chown hestiaweb: "${FM_INSTALL_DIR}/private/logs"
-chown hestiaweb: "${FM_INSTALL_DIR}/repository"
+chown linkpanelweb: "${FM_INSTALL_DIR}/private"
+chown linkpanelweb: "${FM_INSTALL_DIR}/private/logs"
+chown linkpanelweb: "${FM_INSTALL_DIR}/repository"
 
 $BIN/v-change-sys-config-value 'FILE_MANAGER' 'true'
 

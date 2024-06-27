@@ -17,8 +17,8 @@ sysctl="/sbin/sysctl"
 
 # Includes
 source /etc/profile.d/linkpanel.sh
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source "$LINKPANEL/func/main.sh"
 # shellcheck source=/usr/local/linkpanel/func/firewall.sh

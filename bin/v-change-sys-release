@@ -16,8 +16,8 @@
 branch=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -28,7 +28,7 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 #----------------------------------------------------------#
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -49,7 +49,7 @@ if [ -z "$branch" ]; then
 else
 	# Check that requested branch exists
 	echo "Checking for existence of $branch branch..."
-	branch_check=$(curl -s --head -w %{http_code} "https://raw.githubusercontent.com/hestiacp/hestiacp/$branch/src/deb/linkpanel/control" -o /dev/null)
+	branch_check=$(curl -s --head -w %{http_code} "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/$branch/src/deb/linkpanel/control" -o /dev/null)
 	if [ "$branch_check" -ne "200" ]; then
 		echo "Error: invalid branch name specified."
 		exit 1

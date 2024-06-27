@@ -3,8 +3,8 @@ Package: linkpanel-web-terminal
 Priority: optional
 Version: 1.0.0
 Section: admin
-Maintainer: LinkPanelCP <info@hestiacp.com>
-Homepage: https://www.hestiacp.com
+Maintainer: LinkPanelCP <info@linkpanelcp.com>
+Homepage: https://www.linkpanelcp.com
 Architecture: amd64
 Depends: linkpanel, nodejs (>= 18.0.0)
 Description: linkpanel web terminal

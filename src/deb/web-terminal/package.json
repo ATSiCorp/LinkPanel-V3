@@ -1,5 +1,5 @@
 {
-	"name": "@hestiacp/web-terminal-ws",
+	"name": "@linkpanelcp/web-terminal-ws",
 	"private": true,
 	"version": "1.0.0",
 	"type": "module",

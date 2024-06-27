@@ -28,5 +28,5 @@ $config["password_idn_ascii"] = false;
 // LinkPanel Driver options
 // -----------------------
 // Control Panel host
-$config["password_hestia_host"] = "localhost";
-$config["password_hestia_port"] = "8083";
+$config["password_linkpanel_host"] = "localhost";
+$config["password_linkpanel_port"] = "8083";

@@ -13,8 +13,8 @@
 MODE=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -28,7 +28,7 @@ PMA_CONFIG="/etc/phpmyadmin"
 #----------------------------------------------------------#
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 # Checking root permissions
 if [ "x$(id -u)" != 'x0' ]; then
@@ -65,14 +65,14 @@ phpmyadminkey=$(generate_password)
 apikey=$($BIN/v-add-access-key 'admin' 'phpmyadmin-sso' 'phpMyAdmin' 'plain')
 
 # copy config dir to /usr/share/phpmyadmin/
-cp -f $HESTIA_INSTALL_DIR/phpmyadmin/linkpanel-sso.php $PMA_INSTALL/linkpanel-sso.php
+cp -f $LINKPANEL_INSTALL_DIR/phpmyadmin/linkpanel-sso.php $PMA_INSTALL/linkpanel-sso.php
 chmod 640 $PMA_INSTALL/linkpanel-sso.php
 chown root:www-data $PMA_INSTALL/linkpanel-sso.php
 
 sed -i "s/%PHPMYADMIN_KEY%/$phpmyadminkey/g" $PMA_INSTALL/linkpanel-sso.php
 sed -i "s/%API_KEY%/$apikey/g" $PMA_INSTALL/linkpanel-sso.php
 sed -i "s/%API_HOST_NAME%/$(hostname)/g" $PMA_INSTALL/linkpanel-sso.php
-sed -i "s/%API_HESTIA_PORT%/$BACKEND_PORT/g" $PMA_INSTALL/linkpanel-sso.php
+sed -i "s/%API_LINKPANEL_PORT%/$BACKEND_PORT/g" $PMA_INSTALL/linkpanel-sso.php
 
 # Check if config already contains the keys
 touch $PMA_CONFIG/linkpanel-sso.inc.php
@@ -80,7 +80,7 @@ chmod 640 $PMA_CONFIG/linkpanel-sso.inc.php
 chown root:www-data $PMA_CONFIG/linkpanel-sso.inc.php
 
 echo "<?php
-if(isset(\$_GET['hestia_token']) || isset(\$_COOKIE['SignonSession'])){
+if(isset(\$_GET['linkpanel_token']) || isset(\$_COOKIE['SignonSession'])){
 \$cfg['Servers'][\$i]['auth_type'] = 'signon';
 \$cfg['Servers'][\$i]['SignonSession'] = 'SignonSession';
 \$cfg['Servers'][\$i]['SignonURL'] = 'linkpanel-sso.php';

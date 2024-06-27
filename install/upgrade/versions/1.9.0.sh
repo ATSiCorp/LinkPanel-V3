@@ -38,40 +38,40 @@ if [ ! -f $apt/nodesource.list ] && [ ! -z $(which "node") ]; then
 	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | tee /usr/share/keyrings/nodesource.gpg > /dev/null 2>&1
 fi
 
-# Check if hestiaweb exists
-if [ -z "$(grep ^hestiaweb: /etc/passwd)" ]; then
+# Check if linkpanelweb exists
+if [ -z "$(grep ^linkpanelweb: /etc/passwd)" ]; then
 	# Generate a random password
 	random_password=$(generate_password '32')
-	# Create the new hestiaweb user
-	/usr/sbin/useradd "hestiaweb" -c "$email" --no-create-home
-	# do not allow login into hestiaweb user
-	echo hestiaweb:$random_password | sudo chpasswd -e
-	cp $HESTIA_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
+	# Create the new linkpanelweb user
+	/usr/sbin/useradd "linkpanelweb" -c "$email" --no-create-home
+	# do not allow login into linkpanelweb user
+	echo linkpanelweb:$random_password | sudo chpasswd -e
+	cp $LINKPANEL_COMMON_DIR/sudo/linkpanelweb /etc/sudoers.d/
 	# Keep enabled for now
 	# Remove sudo permissions admin user
 	#rm /etc/sudoers.d/admin/
 fi
 
 # Check if cronjobs have been migrated
-if [ ! -f "/var/spool/cron/crontabs/hestiaweb" ]; then
-	echo "MAILTO=\"\"" > /var/spool/cron/crontabs/hestiaweb
-	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
+if [ ! -f "/var/spool/cron/crontabs/linkpanelweb" ]; then
+	echo "MAILTO=\"\"" > /var/spool/cron/crontabs/linkpanelweb
+	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/linkpanelweb
 	while read line; do
 		parse_object_kv_list "$line"
 		if [ -n "$(echo "$CMD" | grep ^sudo)" ]; then
 			echo "$MIN $HOUR $DAY $MONTH $WDAY $CMD" \
 				| sed -e "s/%quote%/'/g" -e "s/%dots%/:/g" \
-					>> /var/spool/cron/crontabs/hestiaweb
+					>> /var/spool/cron/crontabs/linkpanelweb
 			$BIN/v-delete-cron-job admin "$JOB"
 		fi
 	done < $LINKPANEL/data/users/admin/cron.conf
 	# Update permissions
-	chmod 600 /var/spool/cron/crontabs/hestiaweb
-	chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
+	chmod 600 /var/spool/cron/crontabs/linkpanelweb
+	chown linkpanelweb:linkpanelweb /var/spool/cron/crontabs/linkpanelweb
 
 fi
 
-chown hestiaweb:hestiaweb /usr/local/linkpanel/data/sessions
+chown linkpanelweb:linkpanelweb /usr/local/linkpanel/data/sessions
 
 packages=$(ls --sort=time $LINKPANEL/data/packages | grep .pkg)
 for package in $packages; do

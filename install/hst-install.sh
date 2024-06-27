@@ -4,7 +4,7 @@
 #
 # LinkPanel Control Panel Installation Routine
 # Automatic OS detection wrapper
-# https://www.hestiacp.com/
+# https://www.linkpanelcp.com/
 #
 # Currently Supported Operating Systems:
 #
@@ -96,7 +96,7 @@ check_wget_curl() {
 	# Check wget
 	if [ -e '/usr/bin/wget' ]; then
 		if [ -e '/etc/redhat-release' ]; then
-			wget -q https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install-rhel.sh -O hst-install-rhel.sh
+			wget -q https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/hst-install-rhel.sh -O hst-install-rhel.sh
 			if [ "$?" -eq '0' ]; then
 				bash hst-install-rhel.sh $*
 				exit
@@ -105,7 +105,7 @@ check_wget_curl() {
 				exit 1
 			fi
 		else
-			wget -q https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install-$type.sh -O hst-install-$type.sh
+			wget -q https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/hst-install-$type.sh -O hst-install-$type.sh
 			if [ "$?" -eq '0' ]; then
 				bash hst-install-$type.sh $*
 				exit
@@ -119,7 +119,7 @@ check_wget_curl() {
 	# Check curl
 	if [ -e '/usr/bin/curl' ]; then
 		if [ -e '/etc/redhat-release' ]; then
-			curl -s -O https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install-rhel.sh
+			curl -s -O https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/hst-install-rhel.sh
 			if [ "$?" -eq '0' ]; then
 				bash hst-install-rhel.sh $*
 				exit
@@ -128,7 +128,7 @@ check_wget_curl() {
 				exit 1
 			fi
 		else
-			curl -s -O https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install-$type.sh
+			curl -s -O https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/hst-install-$type.sh
 			if [ "$?" -eq '0' ]; then
 				bash hst-install-$type.sh $*
 				exit

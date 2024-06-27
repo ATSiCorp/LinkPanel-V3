@@ -26,8 +26,8 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 # Modify existing POLICY_USER directives (POLICY_USER_CHANGE_THEME, POLICY_USER_EDIT_WEB_TEMPLATES
 # and POLICY_USER_VIEW_LOGS) that are using value 'true' instead of the correct value 'yes'
 
-hestia_conf="$LINKPANEL/conf/linkpanel.conf"
-hestia_defaults_conf="$LINKPANEL/conf/defaults/linkpanel.conf"
+linkpanel_conf="$LINKPANEL/conf/linkpanel.conf"
+linkpanel_defaults_conf="$LINKPANEL/conf/defaults/linkpanel.conf"
 
 if [ -f /etc/nginx/nginx.conf ]; then
 	echo "[ * ] Mitigate HTTP/2 Rapid Reset Attack via Nginx CVE CVE-2023-44487"
@@ -35,16 +35,16 @@ if [ -f /etc/nginx/nginx.conf ]; then
 fi
 
 # Fix security issue wit FPM pools
-if [ -z "$(grep ^hestiamail: /etc/passwd)" ]; then
+if [ -z "$(grep ^linkpanelmail: /etc/passwd)" ]; then
 	echo "[ * ] Limit permissions www.conf and dummy.conf"
-	/usr/sbin/useradd "hestiamail" -c "$email" --no-create-home
+	/usr/sbin/useradd "linkpanelmail" -c "$email" --no-create-home
 
-	sed -i "s/user = www-data/user = hestiamail/g" /etc/php/*/fpm/pool.d/www.conf
+	sed -i "s/user = www-data/user = linkpanelmail/g" /etc/php/*/fpm/pool.d/www.conf
 
 	php_versions=$($BIN/v-list-sys-php plain)
 	# Substitute php-fpm service name formats
 	for version in $php_versions; do
-		cp -f $HESTIA_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
+		cp -f $LINKPANEL_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
 		sed -i "s/%backend_version%/$version/g" /etc/php/$version/fpm/pool.d/dummy.conf
 	done
 fi

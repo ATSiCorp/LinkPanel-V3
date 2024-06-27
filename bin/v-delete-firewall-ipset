@@ -13,8 +13,8 @@
 ip_name=${1}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -34,7 +34,7 @@ is_object_valid "$ipset_hstobject" 'LISTNAME' "$ip_name"
 ip_version="$(get_object_value "$ipset_hstobject" 'LISTNAME' "$ip_name" '$IP_VERSION')"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 IPSET_BIN="$(command -v ipset)"
 IPSET_PATH="$LINKPANEL/data/firewall/ipset"

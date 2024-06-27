@@ -12,9 +12,9 @@ if [ "$lang" == "all" ]; then
 	languages=$(ls -d "$LINKPANEL/web/locale/*/" | awk -F'/' '{print $(NF-1)}')
 	for lang in $languages; do
 		echo "[ * ] Update $lang "
-		msgfmt "$LINKPANEL/web/locale/$lang/LC_MESSAGES/hestiacp.po" -o "$LINKPANEL/web/locale/$lang/LC_MESSAGES/hestiacp.mo"
+		msgfmt "$LINKPANEL/web/locale/$lang/LC_MESSAGES/linkpanelcp.po" -o "$LINKPANEL/web/locale/$lang/LC_MESSAGES/linkpanelcp.mo"
 	done
 else
 	echo "[ * ] Update $lang "
-	msgfmt "$LINKPANEL/web/locale/$lang/LC_MESSAGES/hestiacp.po" -o "$LINKPANEL/web/locale/$lang/LC_MESSAGES/hestiacp.mo"
+	msgfmt "$LINKPANEL/web/locale/$lang/LC_MESSAGES/linkpanelcp.po" -o "$LINKPANEL/web/locale/$lang/LC_MESSAGES/linkpanelcp.mo"
 fi

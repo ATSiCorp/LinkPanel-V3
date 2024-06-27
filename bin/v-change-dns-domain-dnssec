@@ -15,8 +15,8 @@ domain_idn=$2
 status=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/rebuild.sh
@@ -49,7 +49,7 @@ if [ -n "$status" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 if [ "$DNS_CLUSTER_SYSTEM" != 'linkpanel-zone' ]; then
 	check_result "$E_DISABLED" "DNSSEC is not supported when DNS_CLUSTER_SYSTEM is not set to linkpanel-zone"

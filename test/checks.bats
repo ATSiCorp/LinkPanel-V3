@@ -21,10 +21,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/linkpanel-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/linkpanel-test-env.sh
         echo 'LINKPANEL=/usr/local/linkpanel' >> /tmp/linkpanel-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/linkpanel-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domain=test-5285.linkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domainuk=test-5285.linkpanelcp.com.uk' >> /tmp/linkpanel-test-env.sh
+        echo 'rootdomain=testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'subdomain=cdn.testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
         echo 'database=test-5285_database' >> /tmp/linkpanel-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/linkpanel-test-env.sh
     fi
@@ -136,7 +136,7 @@ r' "key"
 
 
 @test "is_domain_format_valid success" {
-     run is_domain_format_valid 'hestiacp.com' "key"
+     run is_domain_format_valid 'linkpanelcp.com' "key"
     assert_success
 }
 
@@ -154,8 +154,8 @@ r' "key"
     assert_failure $E_INVALID
 }
 
-@test "is_domain_format_valid hestiacp.com." {
-     run is_domain_format_valid 'mx.hestiacp.com.' "key"
+@test "is_domain_format_valid linkpanelcp.com." {
+     run is_domain_format_valid 'mx.linkpanelcp.com.' "key"
     assert_success
 }
 
@@ -169,7 +169,7 @@ r' "key"
 @test "is_dns_record_format_valid" {
     rtype='MX'
     priority=1;
-    run is_dns_record_format_valid 'mx.hestiacp.com.'
+    run is_dns_record_format_valid 'mx.linkpanelcp.com.'
     assert_success
 }
 
@@ -183,26 +183,26 @@ r'
 }
 
 @test "is_alias_format_valid success" {
-     run is_alias_format_valid 'hestiacp.com' "key"
+     run is_alias_format_valid 'linkpanelcp.com' "key"
     assert_success
 }
 
 @test "is_alias_format_valid success www.domain.com" {
-     run is_alias_format_valid 'www.hestiacp.com' "key"
+     run is_alias_format_valid 'www.linkpanelcp.com' "key"
     assert_success
 }
-@test "is_alias_format_valid success hestiacp.com,www.hestiacp.com" {
-     run is_alias_format_valid 'hestiacp.com,www.hestiacp.com' "key"
-    assert_success
-}
-
-@test "is_alias_format_valid success *.hestiacp.com" {
-     run is_alias_format_valid '*.hestiacp.com' "key"
+@test "is_alias_format_valid success linkpanelcp.com,www.linkpanelcp.com" {
+     run is_alias_format_valid 'linkpanelcp.com,www.linkpanelcp.com' "key"
     assert_success
 }
 
-@test "is_alias_format_valid success www.hestiacp.com,*.hestiacp.com" {
-     run is_alias_format_valid 'www.hestiacp.com,*.hestiacp.com' "key"
+@test "is_alias_format_valid success *.linkpanelcp.com" {
+     run is_alias_format_valid '*.linkpanelcp.com' "key"
+    assert_success
+}
+
+@test "is_alias_format_valid success www.linkpanelcp.com,*.linkpanelcp.com" {
+     run is_alias_format_valid 'www.linkpanelcp.com,*.linkpanelcp.com' "key"
     assert_success
 }
 

@@ -24,7 +24,7 @@ class LinkPanelAuth implements Service, AuthInterface {
 
 	protected $private_repos = false;
 
-	protected $hestia_user = "";
+	protected $linkpanel_user = "";
 
 	public function init(array $config = []) {
 		if (isset($_SESSION["user"])) {
@@ -43,7 +43,7 @@ class LinkPanelAuth implements Service, AuthInterface {
 				exit();
 			}
 		}
-		$this->hestia_user = $v_user;
+		$this->linkpanel_user = $v_user;
 		$this->permissions = isset($config["permissions"]) ? (array) $config["permissions"] : [];
 		$this->private_repos = isset($config["private_repos"])
 			? (bool) $config["private_repos"]
@@ -52,12 +52,12 @@ class LinkPanelAuth implements Service, AuthInterface {
 
 	public function user(): ?User {
 		$cmd = "/usr/bin/sudo /usr/local/linkpanel/bin/v-list-user";
-		exec($cmd . " " . quoteshellarg($this->hestia_user) . " json", $output, $return_var);
+		exec($cmd . " " . quoteshellarg($this->linkpanel_user) . " json", $output, $return_var);
 
 		if ($return_var == 0) {
 			$data = json_decode(implode("", $output), true);
-			$hestia_user_info = $data[$this->hestia_user];
-			return $this->transformUser($hestia_user_info);
+			$linkpanel_user_info = $data[$this->linkpanel_user];
+			return $this->transformUser($linkpanel_user_info);
 		}
 
 		return $this->getGuest();
@@ -65,8 +65,8 @@ class LinkPanelAuth implements Service, AuthInterface {
 
 	public function transformUser($hstuser): User {
 		$user = new User();
-		$user->setUsername($this->hestia_user);
-		$user->setName($this->hestia_user . " (" . $hstuser["NAME"] . ")");
+		$user->setUsername($this->linkpanel_user);
+		$user->setName($this->linkpanel_user . " (" . $hstuser["NAME"] . ")");
 		$user->setRole("user");
 		$user->setPermissions($this->permissions);
 		$user->setHomedir("/");

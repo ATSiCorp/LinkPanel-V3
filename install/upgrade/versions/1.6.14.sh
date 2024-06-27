@@ -23,7 +23,7 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Clean up firewall rules restore file.
 if [ "$FIREWALL_SYSTEM" = "iptables" ]; then
-	add_upgrade_message "About iptables rules [non-urgent]\n\nJust in case, if you added custom iptables rules in an unsupported way, they may have been lost.\n\nSee this issue to learn more:\nhttps://github.com/hestiacp/hestiacp/issues/3128"
+	add_upgrade_message "About iptables rules [non-urgent]\n\nJust in case, if you added custom iptables rules in an unsupported way, they may have been lost.\n\nSee this issue to learn more:\nhttps://github.com/ATSiCorp/LinkPanel-V3/issues/3128"
 	echo "[ * ] Clean up firewall rules restore file..."
 	$BIN/v-update-firewall
 fi

@@ -15,8 +15,8 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -28,16 +28,16 @@ available_themes=()
 # Function to process CSS theme files
 get_themes() {
 	# Retrieve list of system themes
-	if [ -d "$HESTIA_THEMES" ]; then
-		for file in "$HESTIA_THEMES"/*.min.css; do
+	if [ -d "$LINKPANEL_THEMES" ]; then
+		for file in "$LINKPANEL_THEMES"/*.min.css; do
 			filename=$(basename "$file" .min.css)
 			available_themes+=("${filename%.*}")
 		done
 	fi
 
 	# Check for existence of custom themes folder and iterate through items
-	if [ -d "$HESTIA_THEMES_CUSTOM" ] && [ "$(ls -A "$HESTIA_THEMES_CUSTOM")" ]; then
-		for file in "$HESTIA_THEMES_CUSTOM"/*.css; do
+	if [ -d "$LINKPANEL_THEMES_CUSTOM" ] && [ "$(ls -A "$LINKPANEL_THEMES_CUSTOM")" ]; then
+		for file in "$LINKPANEL_THEMES_CUSTOM"/*.css; do
 			filename=$(basename "$file" .css)
 			available_themes+=("${filename%.*}")
 		done

@@ -11,10 +11,10 @@ if ($_SESSION["userContext"] != "admin") {
 }
 
 // Data
-exec(HESTIA_CMD . "v-list-sys-linkpanel-updates json", $output, $return_var);
+exec(LINKPANEL_CMD . "v-list-sys-linkpanel-updates json", $output, $return_var);
 $data = json_decode(implode("", $output), true);
 unset($output);
-exec(HESTIA_CMD . "v-list-sys-linkpanel-autoupdate plain", $output, $return_var);
+exec(LINKPANEL_CMD . "v-list-sys-linkpanel-autoupdate plain", $output, $return_var);
 $autoupdate = $output["0"];
 unset($output);
 

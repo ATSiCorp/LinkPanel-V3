@@ -12,7 +12,7 @@ invoke-rc.d linkpanel start || true
 
 # Adapt Port Listing in LINKPANEL NGINX Backend
 source /usr/local/linkpanel/func/syshealth.sh # Load syshealth functions
-syshealth_adapt_hestia_nginx_listen_ports  # Adapt port listing
+syshealth_adapt_linkpanel_nginx_listen_ports  # Adapt port listing
 syshealth_adapt_nginx_resolver
 
 # Run triggers only on updates
@@ -31,8 +31,8 @@ if [ -z "$LINKPANEL" ]; then
 fi
 
 # Check if preinstall hook exists
-if [ -e "/etc/hestiacp/hooks/nginx/pre_install.sh" ]; then
-	/etc/hestiacp/hooks/nginx/pre_install.sh
+if [ -e "/etc/linkpanelcp/hooks/nginx/pre_install.sh" ]; then
+	/etc/linkpanelcp/hooks/nginx/pre_install.sh
 fi
 
 # Load upgrade functions and variables
@@ -46,8 +46,8 @@ if [ -n "$BACKEND_PORT" ]; then
 	/usr/local/linkpanel/bin/v-change-sys-port $BACKEND_PORT
 fi
 
-if [ -e "/etc/hestiacp/hooks/nginx/post_install.sh" ]; then
-	/etc/hestiacp/hooks/nginx/post_install.sh
+if [ -e "/etc/linkpanelcp/hooks/nginx/post_install.sh" ]; then
+	/etc/linkpanelcp/hooks/nginx/post_install.sh
 fi
 
 # Restart linkpanel service

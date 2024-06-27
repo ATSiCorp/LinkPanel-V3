@@ -39,8 +39,8 @@ if [ "$FTP_SYSTEM" == "proftpd" ]; then
 		rm /etc/proftpd/tls.conf
 	fi
 
-	cp -f $HESTIA_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
-	cp -f $HESTIA_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
+	cp -f $LINKPANEL_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
+	cp -f $LINKPANEL_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
 
 fi
 

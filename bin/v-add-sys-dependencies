@@ -9,8 +9,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -40,7 +40,7 @@ if [ -z "$LINKPANEL" ]; then
 	LINKPANEL="/usr/local/linkpanel"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$LINKPANEL_INSTALL_DIR" ]; then
 	echo "ERROR: Environment variables not present, installation aborted."
 	exit 2
 fi
@@ -49,13 +49,13 @@ fi
 if [ ! -f "$COMPOSER_BIN" ]; then
 	$BIN/v-add-user-composer "$user"
 	if [ $? -ne 0 ]; then
-		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">LinkPanel will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a>.</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">LinkPanel will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/ATSiCorp/LinkPanel-V3/issues" target="_blank">open an issue on GitHub</a>.</p>'
 		exit 1
 	fi
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -70,15 +70,15 @@ openssl_installed=$(/usr/local/linkpanel/php/bin/php -m | grep openssl)
 if [ -z "$openssl_installed" ]; then
 	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/bin/php $COMPOSER_BIN --quiet --no-dev install
 else
-	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec $HESTIA_PHP $COMPOSER_BIN --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec $LINKPANEL_PHP $COMPOSER_BIN --quiet --no-dev install
 fi
 
 # Check if installation was successful, if not abort script and throw error message notification and clean-up
 if [ $? -ne 0 ]; then
 	echo "ERROR: PHPMailer installation failed!"
 	echo "Please report this to our development team:"
-	echo "https://github.com/hestiacp/hestiacp/issues"
-	$BIN/v-add-user-notification "$ROOT_USER" 'LinkPanel PHP dependencies installation failed!' '<p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
+	echo "https://github.com/ATSiCorp/LinkPanel-V3/issues"
+	$BIN/v-add-user-notification "$ROOT_USER" 'LinkPanel PHP dependencies installation failed!' '<p>Please <a href="https://github.com/ATSiCorp/LinkPanel-V3/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
 	# Installation failed, clean up files
 	rm --recursive --force ${PM_INSTALL_DIR}/vendor
 	$BIN/v-change-sys-config-value 'USE_SERVER_SMTP' 'n'
@@ -94,7 +94,7 @@ chown $user: -R ${QUICK_INSTALL_DIR}/vendor
 if [ -z "$openssl_installed" ]; then
 	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/bin/php $COMPOSER_BIN --quiet --no-dev install
 else
-	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec $HESTIA_PHP $COMPOSER_BIN --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec $LINKPANEL_PHP $COMPOSER_BIN --quiet --no-dev install
 fi
 
 # Set permissions

@@ -2,8 +2,8 @@
 # info: Install update from Git repository
 # options: REPOSITORY BRANCH INSTALL
 #
-# example: v-update-sys-linkpanel-git hestiacp staging/beta install
-#          # Will download from the hestiacp repository
+# example: v-update-sys-linkpanel-git linkpanelcp staging/beta install
+#          # Will download from the linkpanelcp repository
 #          # Pulls code from staging/beta branch
 #          # install: installs package immediately
 #          # install-auto: installs package and schedules automatic updates from Git
@@ -14,8 +14,8 @@
 #                Variables & Functions                     #
 #----------------------------------------------------------#
 
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -24,7 +24,7 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 NODE_MAJOR=20
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 # Detect and install Node.js if necessary
 if [ -z $(which "node") ]; then
@@ -75,7 +75,7 @@ download_file() {
 	fi
 
 	if [ ! -f "$ARCHIVE_DIR/$filename" ]; then
-		[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
+		[ "$LINKPANEL_DEBUG" ] && echo >&2 DEBUG: wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
 		wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
 		if [ $? -ne 0 ]; then
 			echo >&2 "[!] Archive $ARCHIVE_DIR/$filename is corrupted and exit script"
@@ -96,13 +96,13 @@ download_file() {
 get_branch_file() {
 	local filename=$1
 	local destination=$2
-	[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: Get branch file "$filename" to "$destination"
+	[ "$LINKPANEL_DEBUG" ] && echo >&2 DEBUG: Get branch file "$filename" to "$destination"
 	if [ "$use_src_folder" == 'true' ]; then
 		if [ -z "$destination" ]; then
-			[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" ./
+			[ "$LINKPANEL_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" ./
 			cp -f "$SRC_DIR/$filename" ./
 		else
-			[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" "$destination"
+			[ "$LINKPANEL_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" "$destination"
 			cp -f "$SRC_DIR/$filename" "$destination"
 		fi
 	else
@@ -111,7 +111,7 @@ get_branch_file() {
 }
 
 # Set compiling directory
-BUILD_DIR='/tmp/hestiacp-src'
+BUILD_DIR='/tmp/linkpanelcp-src'
 INSTALL_DIR='/tmp/linkpanel-src'
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ARCHIVE_DIR="/tmp/linkpanel-src/archive/"
@@ -146,8 +146,8 @@ if [ -z "$branch" ]; then
 fi
 
 # Set Version for compiling
-BUILD_VER=$(curl -s https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/linkpanel/control | grep "Version:" | cut -d' ' -f2)
-HESTIA_V="${BUILD_VER}_${BUILD_ARCH}"
+BUILD_VER=$(curl -s https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/src/deb/linkpanel/control | grep "Version:" | cut -d' ' -f2)
+LINKPANEL_V="${BUILD_VER}_${BUILD_ARCH}"
 
 # Create build directories
 rm -rf $BUILD_DIR
@@ -199,7 +199,7 @@ install_build() {
 
 # Set install flags
 if [ -n "$fork" ]; then
-	fork_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/main/src/deb/linkpanel/control -o /dev/null)
+	fork_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/linkpanelcp/main/src/deb/linkpanel/control -o /dev/null)
 	if [ "$fork_check" -ne "200" ]; then
 		echo "ERROR: invalid repository name specified."
 		exit 1
@@ -207,12 +207,12 @@ if [ -n "$fork" ]; then
 		echo "[!] Download code from GitHub repository: $fork"
 	fi
 else
-	fork="hestiacp"
+	fork="linkpanelcp"
 fi
 
 if [ -n "$branch" ]; then
-	echo https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/linkpanel/control
-	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/linkpanel/control -o /dev/null)
+	echo https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/src/deb/linkpanel/control
+	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/src/deb/linkpanel/control -o /dev/null)
 	if [ $branch_check -ne "200" ]; then
 		echo "ERROR: invalid branch name specified."
 		exit 1
@@ -223,7 +223,7 @@ if [ -n "$branch" ]; then
 else
 	source /usr/local/linkpanel/conf/linkpanel.conf
 	branch=$RELEASE_BRANCH
-	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/linkpanel/control -o /dev/null)
+	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/linkpanelcp/$branch/src/deb/linkpanel/control -o /dev/null)
 	if [ "$branch_check" -ne "200" ]; then
 		echo "ERROR: invalid branch name specified."
 		exit 1
@@ -234,7 +234,7 @@ if [ -z "$branch" ]; then
 	echo "ERROR: No branch detected."
 	exit
 fi
-REPO="$fork/hestiacp"
+REPO="$fork/linkpanelcp"
 # Forward slashes in branchname are replaced with dashes to match foldername in github archive.
 branch_dash=$(echo "$branch" | sed 's/\//-/g')
 
@@ -276,84 +276,84 @@ fi
 GIT_REP='https://raw.githubusercontent.com/'$REPO'/'$branch'/src/deb'
 
 # Generate Links for sourcecode
-HESTIA_ARCHIVE_LINK='https://github.com/'$REPO'/archive/'$branch'.tar.gz'
-echo $HESTIA_ARCHIVE_LINK
+LINKPANEL_ARCHIVE_LINK='https://github.com/'$REPO'/archive/'$branch'.tar.gz'
+echo $LINKPANEL_ARCHIVE_LINK
 
 echo "Building LinkPanel Control Panel package..."
 
-BUILD_DIR_HESTIA=$BUILD_DIR/hestia_$HESTIA_V
+BUILD_DIR_LINKPANEL=$BUILD_DIR/linkpanel_$LINKPANEL_V
 
 # Change to build directory
 cd $BUILD_DIR
 
-if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIA" ]; then
+if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_LINKPANEL" ]; then
 	# Check if target directory exist
-	if [ -d $BUILD_DIR_HESTIA ]; then
-		rm -r $BUILD_DIR_HESTIA
+	if [ -d $BUILD_DIR_LINKPANEL ]; then
+		rm -r $BUILD_DIR_LINKPANEL
 	fi
 
 	# Create directory
-	mkdir -p $BUILD_DIR_HESTIA
+	mkdir -p $BUILD_DIR_LINKPANEL
 fi
 
 cd $BUILD_DIR
-rm -rf $BUILD_DIR/hestiacp-$branch_dash
+rm -rf $BUILD_DIR/linkpanelcp-$branch_dash
 # Download and unpack source files
 if [ "$use_src_folder" == 'true' ]; then
-	[ "$HESTIA_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
-	cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
+	[ "$LINKPANEL_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/linkpanelcp-$branch_dash
+	cp -rf "$SRC_DIR/" $BUILD_DIR/linkpanelcp-$branch_dash
 elif [ -d $SRC_DIR ]; then
-	download_file $HESTIA_ARCHIVE_LINK '-' 'fresh' | tar xz
+	download_file $LINKPANEL_ARCHIVE_LINK '-' 'fresh' | tar xz
 fi
 
-mkdir -p $BUILD_DIR_HESTIA/usr/local/linkpanel
+mkdir -p $BUILD_DIR_LINKPANEL/usr/local/linkpanel
 
 # Move needed directories
-cd $BUILD_DIR/hestiacp-$branch_dash
+cd $BUILD_DIR/linkpanelcp-$branch_dash
 
 npm ci
 npm run build
 
-cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/linkpanel/
+cp -rf bin func install web $BUILD_DIR_LINKPANEL/usr/local/linkpanel/
 
 # Set permissions
-find $BUILD_DIR_HESTIA/usr/local/linkpanel/ -type f -exec chmod -x {} \;
+find $BUILD_DIR_LINKPANEL/usr/local/linkpanel/ -type f -exec chmod -x {} \;
 
 # Allow send email via /usr/local/linkpanel/web/inc/mail-wrapper.php via cli
-chmod +x $BUILD_DIR_HESTIA/usr/local/linkpanel/web/inc/mail-wrapper.php
+chmod +x $BUILD_DIR_LINKPANEL/usr/local/linkpanel/web/inc/mail-wrapper.php
 # Allow the executable to be executed
-chmod +x $BUILD_DIR_HESTIA/usr/local/linkpanel/bin/*
-find $BUILD_DIR_HESTIA/usr/local/linkpanel/install/ \( -name '*.sh' \) -exec chmod +x {} \;
-chmod -x $BUILD_DIR_HESTIA/usr/local/linkpanel/install/*.sh
-chown -R root:root $BUILD_DIR_HESTIA
+chmod +x $BUILD_DIR_LINKPANEL/usr/local/linkpanel/bin/*
+find $BUILD_DIR_LINKPANEL/usr/local/linkpanel/install/ \( -name '*.sh' \) -exec chmod +x {} \;
+chmod -x $BUILD_DIR_LINKPANEL/usr/local/linkpanel/install/*.sh
+chown -R root:root $BUILD_DIR_LINKPANEL
 
 if [ "$BUILD_DEB" = true ]; then
 	# Get Debian package files
-	mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-	get_branch_file 'src/deb/linkpanel/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+	mkdir -p $BUILD_DIR_LINKPANEL/DEBIAN
+	get_branch_file 'src/deb/linkpanel/control' "$BUILD_DIR_LINKPANEL/DEBIAN/control"
 	if [ "$BUILD_ARCH" != "amd64" ]; then
-		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
+		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_LINKPANEL/DEBIAN/control"
 	fi
-	get_branch_file 'src/deb/linkpanel/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-	get_branch_file 'src/deb/linkpanel/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-	get_branch_file 'src/deb/linkpanel/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
-	chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
-	chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
+	get_branch_file 'src/deb/linkpanel/copyright' "$BUILD_DIR_LINKPANEL/DEBIAN/copyright"
+	get_branch_file 'src/deb/linkpanel/preinst' "$BUILD_DIR_LINKPANEL/DEBIAN/preinst"
+	get_branch_file 'src/deb/linkpanel/postinst' "$BUILD_DIR_LINKPANEL/DEBIAN/postinst"
+	chmod +x $BUILD_DIR_LINKPANEL/DEBIAN/postinst
+	chmod +x $BUILD_DIR_LINKPANEL/DEBIAN/preinst
 
 	echo Building LinkPanel DEB
-	dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
+	dpkg-deb -Zxz --build $BUILD_DIR_LINKPANEL $DEB_DIR
 fi
 
 if [ "$BUILD_RPM" = true ]; then
 	# Get RHEL package files
-	get_branch_file 'src/rpm/linkpanel/linkpanel.spec' "${BUILD_DIR_HESTIA}/linkpanel.spec"
-	sed -i "s/%LINKPANEL-VERSION%/${HESTIA_V}/g" "${BUILD_DIR_HESTIA}/linkpanel.spec"
-	get_branch_file 'src/rpm/linkpanel/linkpanel.service' "${BUILD_DIR_HESTIA}/linkpanel.service"
+	get_branch_file 'src/rpm/linkpanel/linkpanel.spec' "${BUILD_DIR_LINKPANEL}/linkpanel.spec"
+	sed -i "s/%LINKPANEL-VERSION%/${LINKPANEL_V}/g" "${BUILD_DIR_LINKPANEL}/linkpanel.spec"
+	get_branch_file 'src/rpm/linkpanel/linkpanel.service' "${BUILD_DIR_LINKPANEL}/linkpanel.service"
 
 	# Build RPM package
 	mkdir -p $BUILD_DIR/rpmbuild
 	echo Building LinkPanel RPM
-	rpmbuild -bb --define "sourcedir $BUILD_DIR_HESTIA" --buildroot=$BUILD_DIR/rpmbuild/ ${BUILD_DIR_HESTIA}/linkpanel.spec > ${BUILD_DIR_HESTIA}.rpm.log
+	rpmbuild -bb --define "sourcedir $BUILD_DIR_LINKPANEL" --buildroot=$BUILD_DIR/rpmbuild/ ${BUILD_DIR_LINKPANEL}/linkpanel.spec > ${BUILD_DIR_LINKPANEL}.rpm.log
 	cp ~/rpmbuild/RPMS/$(arch)/linkpanel-*.rpm $RPM_DIR
 	rm ~/rpmbuild/RPMS/$(arch)/linkpanel-*.rpm
 	rm -rf $BUILD_DIR/rpmbuild
@@ -361,10 +361,10 @@ fi
 
 # clear up the source folder
 if [ "$KEEPBUILD" != 'true' ]; then
-	rm -r $BUILD_DIR_HESTIA
-	rm -rf hestiacp-$branch_dash
+	rm -r $BUILD_DIR_LINKPANEL
+	rm -rf linkpanelcp-$branch_dash
 fi
-cd $BUILD_DIR/hestiacp-$branch_dash
+cd $BUILD_DIR/linkpanelcp-$branch_dash
 
 # Installation steps
 if [ "$install" = "install" ] || [ "$install" = "yes" ] || [ "$install" = "install-auto" ]; then

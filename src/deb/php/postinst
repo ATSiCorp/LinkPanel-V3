@@ -12,8 +12,8 @@ if [ ! -e "/usr/local/linkpanel/data/users/" ]; then
 fi
 
 # Check if preinstall hook exists
-if [ -e "/etc/hestiacp/hooks/php/pre_install.sh" ]; then
-	/etc/hestiacp/hooks/php/pre_install.sh
+if [ -e "/etc/linkpanelcp/hooks/php/pre_install.sh" ]; then
+	/etc/linkpanelcp/hooks/php/pre_install.sh
 fi
 
 ###############################################################
@@ -38,6 +38,6 @@ if [ -f "/etc/init.d/linkpanel" ]; then
 fi
 
 # Check if preinstall hook exists
-if [ -e "/etc/hestiacp/hooks/php/post_install.sh" ]; then
-	/etc/hestiacp/hooks/php/post_install.sh
+if [ -e "/etc/linkpanelcp/hooks/php/post_install.sh" ]; then
+	/etc/linkpanelcp/hooks/php/post_install.sh
 fi

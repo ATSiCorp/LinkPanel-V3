@@ -43,9 +43,9 @@ if [ -f "/etc/apt/sources.list.d/linkpanel-beta.list" ]; then
 	rm /etc/apt/sources.list.d/linkpanel-beta.list
 	sed -i 's/#//g' /etc/apt/sources.list.d/linkpanel.list
 fi
-check=$(cat /etc/apt/sources.list.d/linkpanel.list | grep "beta.hestiacp.com")
+check=$(cat /etc/apt/sources.list.d/linkpanel.list | grep "beta.linkpanelcp.com")
 if [ ! -z "$check" ]; then
 	echo "[ ! ] Change to stable release!"
-	sed -i '/beta.hestiacp.com/d' /etc/apt/sources.list.d/linkpanel.list
+	sed -i '/beta.linkpanelcp.com/d' /etc/apt/sources.list.d/linkpanel.list
 	sed -i 's/#//g' /etc/apt/sources.list.d/linkpanel.list
 fi

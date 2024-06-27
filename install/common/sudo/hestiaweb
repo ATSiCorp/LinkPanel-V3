@@ -1,4 +1,4 @@
 Defaults:root !requiretty
 
 # sudo is limited to linkpanel scripts
-hestiaweb   ALL=NOPASSWD:/usr/local/linkpanel/bin/*
+linkpanelweb   ALL=NOPASSWD:/usr/local/linkpanel/bin/*

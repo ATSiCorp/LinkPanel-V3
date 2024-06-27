@@ -195,4 +195,4 @@ public_name = PLAIN
 hide client_send = ^SMTP_RELAY_USER^SMTP_RELAY_PASS
 ```
 
-[See forum topic for more info](https://forum.hestiacp.com/t/oracle-cloud-email-as-relay-doesnt-works/11304/19?)
+[See forum topic for more info](https://forum.linkpanelcp.com/t/oracle-cloud-email-as-relay-doesnt-works/11304/19?)

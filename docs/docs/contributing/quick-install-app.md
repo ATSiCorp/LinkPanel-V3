@@ -2,13 +2,13 @@
 
 One of LinkPanel’s most requested feature is to add support for Softaculous. However, due to the required use of Ioncube in linkpanel-php and because we are against the use of proprietary software, we have instead developed our own **Quick install app** solution.
 
-More information can be found in the [linkpanel-quick-install repo](https://github.com/hestiacp/linkpanel-quick-install/blob/main/Example/ExampleSetup.php)
+More information can be found in the [linkpanel-quick-install repo](https://github.com/linkpanelcp/linkpanel-quick-install/blob/main/Example/ExampleSetup.php)
 
 ## Creating a new app
 
 1. Make a new folder called `Example` in `/usr/local/linkpanel/web/src/app/WebApp/Installers/`
 2. Create a file named `ExampleSetup.php`.
-3. Copy the [example file’s content](https://github.com/hestiacp/linkpanel-quick-install/blob/main/Example/ExampleSetup.php) into your new file.
+3. Copy the [example file’s content](https://github.com/linkpanelcp/linkpanel-quick-install/blob/main/Example/ExampleSetup.php) into your new file.
 
 This will add an app called “Example” when you open the **Quick install app** page.
 
@@ -64,7 +64,7 @@ Enables you to set app requirements and web server templates. For example, some 
 There are multiple ways to install and configure the web app after it is has been downloaded.
 
 - Manipulation of config files.
-- Run commands. For example, use `drush` to install [Drupal](https://github.com/hestiacp/hestiacp/blob/88598deb49cec6a39be4682beb8e9b8720d59c7b/web/src/app/WebApp/Installers/Drupal/DrupalSetup.php#L56-L65).
+- Run commands. For example, use `drush` to install [Drupal](https://github.com/ATSiCorp/LinkPanel-V3/blob/88598deb49cec6a39be4682beb8e9b8720d59c7b/web/src/app/WebApp/Installers/Drupal/DrupalSetup.php#L56-L65).
 - Using curl to provide configure the app over HTTP.
 
 ::: warning
@@ -73,4 +73,4 @@ To prevent any issues, make that all commands are executed as the user, instead 
 
 ## Sharing
 
-Once you are done, you can [submit a Pull Request](https://github.com/hestiacp/hestiacp/pulls) and we will review the code. If it meets our standards, we will include in the next release.
+Once you are done, you can [submit a Pull Request](https://github.com/ATSiCorp/LinkPanel-V3/pulls) and we will review the code. If it meets our standards, we will include in the next release.

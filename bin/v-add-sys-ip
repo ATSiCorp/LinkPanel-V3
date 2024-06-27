@@ -34,8 +34,8 @@ ip_name="$6"
 nat_ip="$7"
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/ip.sh
@@ -71,7 +71,7 @@ if [ "$user" != "$ROOT_USER" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -144,12 +144,12 @@ if [ -n "$WEB_SYSTEM" ]; then
 			echo "NameVirtualHost $ip:$WEB_PORT" > "$web_conf"
 		fi
 		echo "Listen $ip:$WEB_PORT" >> "$web_conf"
-		cat $HESTIA_INSTALL_DIR/apache2/unassigned.conf >> "$web_conf"
+		cat $LINKPANEL_INSTALL_DIR/apache2/unassigned.conf >> "$web_conf"
 		sed -i 's/directIP/'$ip'/g' "$web_conf"
 		sed -i 's/directPORT/'$WEB_PORT'/g' "$web_conf"
 
 	elif [ "$WEB_SYSTEM" = 'nginx' ]; then
-		cp -f $HESTIA_INSTALL_DIR/nginx/unassigned.inc "$web_conf"
+		cp -f $LINKPANEL_INSTALL_DIR/nginx/unassigned.inc "$web_conf"
 		sed -i 's/directIP/'$ip'/g' "$web_conf"
 		process_http2_directive "$web_conf"
 	fi
@@ -200,7 +200,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 # Adapt Port Listing in LINKPANEL NGINX Backend
-syshealth_adapt_hestia_nginx_listen_ports
+syshealth_adapt_linkpanel_nginx_listen_ports
 # Also update resolver
 syshealth_adapt_nginx_resolver
 #----------------------------------------------------------#
@@ -211,8 +211,8 @@ syshealth_adapt_nginx_resolver
 increase_user_value "$user" '$IP_OWNED'
 if [ "$user" = $ROOT_USER ]; then
 	if [ "$ip_status" = 'shared' ]; then
-		for hestia_user in $("$BIN/v-list-users" list); do
-			increase_user_value "$hestia_user" '$IP_AVAIL'
+		for linkpanel_user in $("$BIN/v-list-users" list); do
+			increase_user_value "$linkpanel_user" '$IP_AVAIL'
 		done
 	else
 		increase_user_value $ROOT_USER '$IP_AVAIL'

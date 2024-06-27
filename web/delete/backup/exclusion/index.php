@@ -14,7 +14,7 @@ verify_csrf($_GET);
 if (!empty($_GET["system"])) {
 	$v_system = quoteshellarg($_GET["system"]);
 	exec(
-		HESTIA_CMD . "v-delete-user-backup-exclusions " . $user . " " . $v_system,
+		LINKPANEL_CMD . "v-delete-user-backup-exclusions " . $user . " " . $v_system,
 		$output,
 		$return_var,
 	);

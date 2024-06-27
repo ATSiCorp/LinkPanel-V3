@@ -11,8 +11,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -25,7 +25,7 @@ keygen() {
 HASH=$(keygen)
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -33,7 +33,7 @@ check_hestia_demo_mode
 
 if [ ! -d "$LINKPANEL/data/keys/" ]; then
 	mkdir -p $LINKPANEL/data/keys/
-	chown hestiaweb:root $LINKPANEL/data/keys/
+	chown linkpanelweb:root $LINKPANEL/data/keys/
 	chmod 750 $LINKPANEL/data/keys/
 fi
 

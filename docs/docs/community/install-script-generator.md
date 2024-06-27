@@ -2,7 +2,7 @@
 
 These are some install script generators created by the community:
 
-- [hestiacp-scriptline-generator](https://github.com/gabizz/hestiacp-scriptline-generator)
+- [linkpanelcp-scriptline-generator](https://github.com/gabizz/linkpanelcp-scriptline-generator)
 
   Tiny online app aimed to generate the necessary command for an unattended LinkPanel Control Panel installation.
 

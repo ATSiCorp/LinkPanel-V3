@@ -2,7 +2,7 @@
 # info: deletes temp database user
 # options: USER DBUSER [TYPE] [HOST]
 #
-# example: v-delete-database-temp-user wordpress hestia_sso_user mysql
+# example: v-delete-database-temp-user wordpress linkpanel_sso_user mysql
 #
 # Revokes "temp user" access to a database and removes the user
 # To be used in combination with v-add-database-temp-user
@@ -19,8 +19,8 @@ type=${4-mysql}
 host=$5
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/db.sh
@@ -41,13 +41,13 @@ is_object_valid 'db' 'DB' "$database"
 is_object_unsuspended 'db' 'DB' "$database"
 get_next_dbhost
 
-if [[ $dbuser != *"hestia_sso"* ]]; then
+if [[ $dbuser != *"linkpanel_sso"* ]]; then
 	echo "DBUSER is invalid SSO user"
 	exit "$E_INVALID"
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #

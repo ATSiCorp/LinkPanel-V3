@@ -14,16 +14,16 @@
 format=${1-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
 source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Retrieve LinkPanel Control Panel version number
-HESTIA_VERSION=$(grep VERSION $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
-HESTIA_RELEASE=$(grep RELEASE_BRANCH $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
+LINKPANEL_VERSION=$(grep VERSION $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
+LINKPANEL_RELEASE=$(grep RELEASE_BRANCH $LINKPANEL/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
 
 # JSON list function
 json_list() {
@@ -33,8 +33,8 @@ json_list() {
         "OS": "'$OS'",
         "VERSION": "'$VERSION'",
         "ARCH": "'$ARCH'",
-        "LINKPANEL": "'$HESTIA_VERSION'",
-        "RELEASE": "'$HESTIA_RELEASE'",
+        "LINKPANEL": "'$LINKPANEL_VERSION'",
+        "RELEASE": "'$LINKPANEL_RELEASE'",
         "UPTIME": "'$UPTIME'",
         "LOADAVERAGE": "'$LOADAVERAGE'"
         }'
@@ -45,18 +45,18 @@ json_list() {
 shell_list() {
 	echo "HOSTNAME   OS   VER   ARCH  LINKPANEL  RELEASE  UPTIME   LA"
 	echo "--------   --   ---   ----  ------  -------  ------   --"
-	echo "$HOSTNAME $OS $VERSION $ARCH $HESTIA_VERSION $HESTIA_RELEASE $UPTIME $LOADAVERAGE"
+	echo "$HOSTNAME $OS $VERSION $ARCH $LINKPANEL_VERSION $LINKPANEL_RELEASE $UPTIME $LOADAVERAGE"
 }
 
 # PLAIN list function
 plain_list() {
-	echo -e "$HOSTNAME\t$OS\t$VERSION\t$ARCH\t$HESTIA_VERSION\t$HESTIA_RELEASE\t$UPTIME\t$LOADAVERAGE"
+	echo -e "$HOSTNAME\t$OS\t$VERSION\t$ARCH\t$LINKPANEL_VERSION\t$LINKPANEL_RELEASE\t$UPTIME\t$LOADAVERAGE"
 }
 
 # CSV list function
 csv_list() {
 	echo "HOSTNAME,OS,VERSION,ARCH,LINKPANEL,RELEASE,UPTIME,LOADAVERAGE"
-	echo "$HOSTNAME,$OS,$VERSION,$ARCH,$HESTIA_VERSION,$HESTIA_RELEASE,$UPTIME,$LOADAVERAGE"
+	echo "$HOSTNAME,$OS,$VERSION,$ARCH,$LINKPANEL_VERSION,$LINKPANEL_RELEASE,$UPTIME,$LOADAVERAGE"
 }
 
 #----------------------------------------------------------#

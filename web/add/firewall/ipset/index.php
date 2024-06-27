@@ -51,7 +51,7 @@ if (!empty($_POST["ok"])) {
 	// Add firewall ipset list
 	if (empty($_SESSION["error_msg"])) {
 		exec(
-			HESTIA_CMD .
+			LINKPANEL_CMD .
 				"v-add-firewall-ipset " .
 				quoteshellarg($v_ipname) .
 				" " .

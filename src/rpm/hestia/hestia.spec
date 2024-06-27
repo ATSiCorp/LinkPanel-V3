@@ -7,10 +7,10 @@ Release:        1%{dist}
 Summary:        LinkPanel Control Panel
 Group:          System Environment/Base
 License:        GPLv3
-URL:            https://www.hestiacp.com
+URL:            https://www.linkpanelcp.com
 Source0:        linkpanel-%{version}.tar.gz
 Source1:        linkpanel.service
-Vendor:         hestiacp.com
+Vendor:         linkpanelcp.com
 Requires:       redhat-release >= 8
 Requires:       bash, chkconfig, gawk, sed, acl, sysstat, (setpriv or util-linux), zstd, jq, jailkit
 Conflicts:      vesta
@@ -21,14 +21,14 @@ BuildRequires:  systemd
 This package contains the LinkPanel Control Panel.
 
 %prep
-%autosetup -p1 -n hestiacp
+%autosetup -p1 -n linkpanelcp
 
 %build
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
 mkdir -p %{buildroot}%{_unitdir} %{buildroot}/usr/local/linkpanel
-cp -R %{_builddir}/hestiacp/* %{buildroot}/usr/local/linkpanel/
+cp -R %{_builddir}/linkpanelcp/* %{buildroot}/usr/local/linkpanel/
 %{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/linkpanel.service
 
 %clean
@@ -38,9 +38,9 @@ cp -R %{_builddir}/hestiacp/* %{buildroot}/usr/local/linkpanel/
 # Run triggers only on updates
 if [ -e "/usr/local/linkpanel/data/users/" ]; then
     # Validate version number and replace if different
-    HESTIA_V=$(rpm --queryformat="%{VERSION}" -q linkpanel)
-    if [ ! "$HESTIA_V" = "%{version}" ]; then
-        sed -i "s/VERSION=.*/VERSION='$HESTIA_V'/g" /usr/local/linkpanel/conf/linkpanel.conf
+    LINKPANEL_V=$(rpm --queryformat="%{VERSION}" -q linkpanel)
+    if [ ! "$LINKPANEL_V" = "%{version}" ]; then
+        sed -i "s/VERSION=.*/VERSION='$LINKPANEL_V'/g" /usr/local/linkpanel/conf/linkpanel.conf
     fi
 fi
 

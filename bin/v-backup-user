@@ -15,8 +15,8 @@ user=$1
 notify=${2-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/domain.sh
@@ -148,7 +148,7 @@ fi
 is_backup_enabled
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -183,7 +183,7 @@ let v_disk=$(($(stat -f --format="%a*%S" $BACKUP)))/1024/1024
 if [ "$u_disk" -gt "$v_disk" ]; then
 	let u_disk_original=$(get_user_disk_usage)
 	# Always notify on failure
-	echo "Not enough disk space available ($v_disk mb) to perform the backup  of $user. ( $u_disk_original mb * 2 = $u_disk mb). https://hestiacp.com/docs/server-administration/backup-restore.html" | $SENDMAIL -s "$subj" "$email" "yes"
+	echo "Not enough disk space available ($v_disk mb) to perform the backup  of $user. ( $u_disk_original mb * 2 = $u_disk mb). https://linkpanelcp.com/docs/server-administration/backup-restore.html" | $SENDMAIL -s "$subj" "$email" "yes"
 	# Deleting task from queue
 	sed -i "/v-backup-user $user /d" $LINKPANEL/data/queue/backup.pipe
 	check_result "$E_LIMIT" "not enough disk space available ($v_disk mb) to perform the backup  of $user. ( $u_disk_original mb * 2 = $u_disk mb)."

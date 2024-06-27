@@ -143,4 +143,4 @@ FLUSH PRIVILEGES;
 MYSQL_PMA3
 
 #MYSQL DB and TABLES ADDITION
-mysql -uroot < $HESTIA_INSTALL_DIR/phpmyadmin/create_tables.sql
+mysql -uroot < $LINKPANEL_INSTALL_DIR/phpmyadmin/create_tables.sql

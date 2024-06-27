@@ -118,7 +118,7 @@ v-add-database-host TYPE HOST DBUSER DBPASS [MAX_DB] [CHARSETS] [TPL] [PORT]
 For example:
 
 ```bash
-v-add-database-host mysql db.hestiacp.com root mypassword 500
+v-add-database-host mysql db.linkpanelcp.com root mypassword 500
 ```
 
 If you want you can setup phpMyAdmin on the host server to allow to connect to the database. Create a copy of `01-localhost` file in `/etc/phpmyadmin/conf.d` and change:

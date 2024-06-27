@@ -15,8 +15,8 @@
 package=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -28,10 +28,10 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Checking arg number
 check_args '1' "$#" 'PACKAGE'
-is_hestia_package "linkpanel linkpanel-nginx linkpanel-php" "$package"
+is_linkpanel_package "linkpanel linkpanel-nginx linkpanel-php" "$package"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #

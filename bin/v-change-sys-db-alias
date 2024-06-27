@@ -20,8 +20,8 @@ type=$1
 alias=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -36,7 +36,7 @@ check_args '2' "$#" 'type alias'
 is_common_format_valid "$alias" "Alias"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -52,7 +52,7 @@ if [ "$type" = "pma" ] || [ "$type" = "PMA" ] || [ "$type" = "phpmyadmin" ]; the
 	# Replace old configuration files and update alias
 	if [ -e "/etc/apache2/conf.d/phpmyadmin.inc" ]; then
 		rm -f /etc/apache2/conf.d/phpmyadmin.inc
-		cp -f $HESTIA_INSTALL_DIR/pma/apache.conf /etc/apache2/conf.d/phpmyadmin.inc
+		cp -f $LINKPANEL_INSTALL_DIR/pma/apache.conf /etc/apache2/conf.d/phpmyadmin.inc
 		sed -i "s|%pma_alias%|$alias|g" /etc/apache2/conf.d/phpmyadmin.inc
 
 		# Restart services
@@ -61,7 +61,7 @@ if [ "$type" = "pma" ] || [ "$type" = "PMA" ] || [ "$type" = "phpmyadmin" ]; the
 
 	if [ -e "/etc/nginx/conf.d/phpmyadmin.inc" ]; then
 		rm -f /etc/nginx/conf.d/phpmyadmin.inc
-		cp -f $HESTIA_INSTALL_DIR/nginx/phpmyadmin.inc /etc/nginx/conf.d/phpmyadmin.inc
+		cp -f $LINKPANEL_INSTALL_DIR/nginx/phpmyadmin.inc /etc/nginx/conf.d/phpmyadmin.inc
 		sed -i "s|%pma_alias%|$alias|g" /etc/nginx/conf.d/phpmyadmin.inc
 
 		# Restart services
@@ -80,7 +80,7 @@ if [ "$type" = "pga" ] || [ "$type" = "PGA" ] || [ "$type" = "phppgadmin" ]; the
 	# Replace old configuration files and update alias
 	if [ -e "/etc/apache2/conf.d/phppgadmin.inc" ]; then
 		rm -f /etc/apache2/conf.d/phppgadmin.inc
-		cp -f $HESTIA_INSTALL_DIR/pga/phppgadmin.conf /etc/apache2/conf.d/phppgadmin.inc
+		cp -f $LINKPANEL_INSTALL_DIR/pga/phppgadmin.conf /etc/apache2/conf.d/phppgadmin.inc
 		sed -i "s|%pga_alias%|$alias|g" /etc/apache2/conf.d/phppgadmin.inc
 
 		# Restart services
@@ -89,7 +89,7 @@ if [ "$type" = "pga" ] || [ "$type" = "PGA" ] || [ "$type" = "phppgadmin" ]; the
 
 	if [ -e "/etc/nginx/conf.d/phppgadmin.inc" ]; then
 		rm -f /etc/nginx/conf.d/phppgadmin.inc
-		cp -f $HESTIA_INSTALL_DIR/nginx/phppgadmin.inc /etc/nginx/conf.d/phppgadmin.inc
+		cp -f $LINKPANEL_INSTALL_DIR/nginx/phppgadmin.inc /etc/nginx/conf.d/phppgadmin.inc
 		sed -i "s|%pga_alias%|$alias|g" /etc/nginx/conf.d/phppgadmin.inc
 
 		# Restart services

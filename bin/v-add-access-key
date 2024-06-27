@@ -18,8 +18,8 @@ comment=$3
 format=${4-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -47,7 +47,7 @@ access_key_id="$(keygen)"
 secret_access_key="$(keygen 40 yes)"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 # Remove whitespace and bin path from permissions
 permissions="$(cleanup_key_permissions "$permissions")"

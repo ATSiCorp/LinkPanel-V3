@@ -5,7 +5,7 @@
 putenv("LANGUAGE=" . detect_user_language());
 setlocale(LC_ALL, "C.UTF-8");
 
-$domain = "hestiacp";
+$domain = "linkpanelcp";
 $localedir = "/usr/local/linkpanel/web/locale";
 bindtextdomain($domain, $localedir);
 textdomain($domain);

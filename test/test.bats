@@ -22,10 +22,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/linkpanel-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/linkpanel-test-env.sh
         echo 'LINKPANEL=/usr/local/linkpanel' >> /tmp/linkpanel-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/linkpanel-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domain=test-5285.linkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domainuk=test-5285.linkpanelcp.com.uk' >> /tmp/linkpanel-test-env.sh
+        echo 'rootdomain=testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'subdomain=cdn.testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
         echo 'database=test-5285_database' >> /tmp/linkpanel-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/linkpanel-test-env.sh
         echo 'pguser=test5290' >> /tmp/linkpanel-test-env.sh
@@ -362,48 +362,48 @@ function check_ip_not_banned(){
 #----------------------------------------------------------#
 
 @test "User: Add new user" {
-    run v-add-user $user $user $user@hestiacp.com default "Super Test"
+    run v-add-user $user $user $user@linkpanelcp.com default "Super Test"
     assert_success
     refute_output
 }
 
 @test "User: Add new user Failed 1" {
-	run v-add-user 'jäap' $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jäap' $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 @test "User: Add new user Failed 2" {
-	run v-add-user 'ëaap' $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'ëaap' $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 3" {
-	run v-add-user 'jaaẞ'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jaaẞ'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 4" {
-	run v-add-user '1234'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user '1234'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 5" {
-	run v-add-user '1aap'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user '1aap'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 6" {
-	run v-add-user 'ib_Buffer'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'ib_Buffer'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: The user name'
 }
 
 @test "User: Add new user Success 1" {
-	run v-add-user 'jaap01'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jaap01'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_success
 	refute_output
 }
@@ -415,7 +415,7 @@ function check_ip_not_banned(){
 }
 
 @test "User: Add new user Success 2" {
-	run v-add-user 'buffer'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'buffer'  $user $user@linkpanelcp2.com default "Super Test"
 	assert_success
 	refute_output
 }
@@ -433,13 +433,13 @@ function check_ip_not_banned(){
 }
 
 @test "User: Change user email" {
-    run v-change-user-contact "$user" tester@hestiacp.com
+    run v-change-user-contact "$user" tester@linkpanelcp.com
     assert_success
     refute_output
 }
 
 @test "User: Change user contact invalid email " {
-    run v-change-user-contact "$user" testerhestiacp.com
+    run v-change-user-contact "$user" testerlinkpanelcp.com
     assert_failure $E_INVALID
     assert_output --partial 'Error: invalid email format'
 }
@@ -1411,11 +1411,11 @@ function check_ip_not_banned(){
 }
 
 @test "DNS: Add domain record MX" {
-    run v-add-dns-record $user $domain '@' MX mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '@' MX mx.linkpanelcp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.linkpanelcp.com."
 
     run v-change-dns-record $user $domain 50 '@' MX mx.linkpanel.com
     assert_success
@@ -1430,11 +1430,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record NS" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain '@' NS mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '@' NS mx.linkpanelcp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.linkpanelcp.com."
 
     run v-change-dns-record $user $domain 50 '@' NS mx.linkpanel.com
     assert_success
@@ -1449,11 +1449,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record SRV" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain '_test_domain' SRV mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '_test_domain' SRV mx.linkpanelcp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.linkpanelcp.com."
 
     run v-change-dns-record $user $domain 50 '_test.domain' SRV mx.linkpanel.com
     assert_success
@@ -1468,11 +1468,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record CNAME" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain 'mail' CNAME mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain 'mail' CNAME mx.linkpanelcp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.linkpanelcp.com."
 
     run v-change-dns-record $user $domain 50 'mail' CNAME mx.linkpanel.com
     assert_success
@@ -1652,23 +1652,23 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account alias" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks
+	run v-add-mail-account-alias $user $domain test linkpanelcprocks
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacprocks@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "linkpanelcprocks@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account alias 2" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks2
+	run v-add-mail-account-alias $user $domain test linkpanelcprocks2
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacprocks2@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "linkpanelcprocks2@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account alias 3" {
-	run v-add-mail-account-alias $user $domain test hestiacp
+	run v-add-mail-account-alias $user $domain test linkpanelcp
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacp@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "linkpanelcp@$domain"
 	refute_output
 }
 
@@ -1680,9 +1680,9 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account 4" {
-	run v-add-mail-account $user $domain hestiarocks3 "$userpass2"
+	run v-add-mail-account $user $domain linkpanelrocks3 "$userpass2"
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/limits "hestiarocks3@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/limits "linkpanelrocks3@$domain"
 	refute_output
 }
 
@@ -1701,7 +1701,7 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account alias Invalid length" {
-	run v-add-mail-account-alias $user $domain test 'hestiacp-really-rocks-but-i-want-to-have-feature-xyz-and-i-want-it-now'
+	run v-add-mail-account-alias $user $domain test 'linkpanelcp-really-rocks-but-i-want-to-have-feature-xyz-and-i-want-it-now'
 	assert_failure $E_INVALID
 }
 @test "MAIL: Add account alias Invalid" {
@@ -1722,7 +1722,7 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account alias (duplicate)" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks
+	run v-add-mail-account-alias $user $domain test linkpanelcprocks
 	assert_failure $E_EXISTS
 }
 
@@ -1810,7 +1810,7 @@ function check_ip_not_banned(){
 @test "Allow Users: User can't add user.user2.com " {
     # Case: admin company.tld
     # users should not be allowed to add user.company.tld
-    run v-add-user $user2 $user2 $user@hestiacp.com default "Super Test"
+    run v-add-user $user2 $user2 $user@linkpanelcp.com default "Super Test"
     assert_success
     refute_output
 
@@ -1979,7 +1979,7 @@ function check_ip_not_banned(){
   if [ -z "$(echo $DB_SYSTEM | grep -w "pgsql")" ]; then
     skip "PostGreSQL is not installed"
   fi
-  run v-add-user $pguser $pguser $user@hestiacp.com default "Super Test"
+  run v-add-user $pguser $pguser $user@linkpanelcp.com default "Super Test"
   run v-add-database "$pguser" "database" "dbuser" "1234ABCD" "pgsql"
   assert_success
   refute_output
@@ -2172,32 +2172,32 @@ echo   "1.2.3.4" >> $LINKPANEL/data/firewall/excludes.conf
 
 @test "Package: Create new Package" {
     cp $LINKPANEL/data/packages/default.pkg /tmp/package
-    run v-add-user-package /tmp/package hestiatest
+    run v-add-user-package /tmp/package linkpaneltest
     assert_success
     refute_output
 }
 
 @test "Package: Assign user to new Package" {
-    run v-change-user-package  $user hestiatest
+    run v-change-user-package  $user linkpaneltest
     assert_success
     refute_output
 }
 
 @test "Package: Create new package (Duplicate)" {
     sed -i "s/BANDWIDTH='unlimited'/BANDWIDTH='100'/g" /tmp/package
-    run v-add-user-package /tmp/package hestiatest
+    run v-add-user-package /tmp/package linkpaneltest
     assert_failure $E_EXISTS
 }
 
 @test "Package: Update new Package" {
     sed -i "s/BANDWIDTH='unlimited'/BANDWIDTH='100'/g" /tmp/package
-    run v-add-user-package /tmp/package hestiatest yes
+    run v-add-user-package /tmp/package linkpaneltest yes
     assert_success
     refute_output
 }
 
 @test "Package: Update package of user" {
-    run v-change-user-package  $user hestiatest
+    run v-change-user-package  $user linkpaneltest
     assert_success
     refute_output
     run grep "BANDWIDTH='100'" $LINKPANEL/data/users/$user/user.conf
@@ -2206,24 +2206,24 @@ echo   "1.2.3.4" >> $LINKPANEL/data/firewall/excludes.conf
 }
 
 @test "Package: Copy package Not Exists" {
-  run v-copy-user-package hestiadoesnotexists hestiatest2
+  run v-copy-user-package linkpaneldoesnotexists linkpaneltest2
   assert_failure $E_NOTEXIST
 }
 
 @test "Package: Copy package" {
-  run v-copy-user-package hestiatest hestiatest2
+  run v-copy-user-package linkpaneltest linkpaneltest2
   assert_success
   refute_output
 }
 
 @test "Package: Copy package Exists" {
-  run v-copy-user-package hestiatest hestiatest2
+  run v-copy-user-package linkpaneltest linkpaneltest2
   assert_failure $E_EXISTS
 }
 
 @test "Package: Delete package" {
-    run v-delete-user-package hestiatest
-    run v-delete-user-package hestiatest2
+    run v-delete-user-package linkpaneltest
+    run v-delete-user-package linkpaneltest2
     rm /tmp/package
     assert_success
     refute_output

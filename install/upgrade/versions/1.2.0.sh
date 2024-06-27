@@ -83,8 +83,8 @@ fi
 
 # Enable Roundcube plugins
 if [ -d /usr/share/roundcube ]; then
-	cp -f $HESTIA_INSTALL_DIR/roundcube/plugins/config_newmail_notifier.inc.php /etc/roundcube/plugins/newmail_notifier/config.inc.php
-	cp -f $HESTIA_INSTALL_DIR/roundcube/plugins/config_zipdownload.inc.php /etc/roundcube/plugins/zipdownload/config.inc.php
+	cp -f $LINKPANEL_INSTALL_DIR/roundcube/plugins/config_newmail_notifier.inc.php /etc/roundcube/plugins/newmail_notifier/config.inc.php
+	cp -f $LINKPANEL_INSTALL_DIR/roundcube/plugins/config_zipdownload.inc.php /etc/roundcube/plugins/zipdownload/config.inc.php
 	[ -f "/etc/roundcube/config.inc.php" ] && sed -i "s/array('password')/array('password','newmail_notifier','zipdownload')/g" /etc/roundcube/config.inc.php
 fi
 
@@ -123,11 +123,11 @@ if [ "$WEB_SYSTEM" = "apache2" ]; then
 	rm --force /etc/apache2/conf-enabled/linkpanel-event.conf
 
 	if [ $(a2query -M) = 'event' ] && [ ! -e "/etc/apache2/conf.d/linkpanel-event.conf" ]; then
-		cp -f $HESTIA_INSTALL_DIR/apache2/linkpanel-event.conf /etc/apache2/conf.d/
+		cp -f $LINKPANEL_INSTALL_DIR/apache2/linkpanel-event.conf /etc/apache2/conf.d/
 	fi
 
 	# Move apache mod_status config to /mods-available and rename it to prevent losing changes on upgrade
-	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/linkpanel-status.conf
+	cp -f $LINKPANEL_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/linkpanel-status.conf
 	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/linkpanel-status.load
 	a2dismod --quiet status > /dev/null 2>&1
 	a2enmod --quiet linkpanel-status > /dev/null 2>&1
@@ -145,7 +145,7 @@ if [ -z "$FILE_MANAGER_CHECK" ]; then
 	else
 		echo "[ * ] Updating File Manager configuration..."
 		# Update configuration.php
-		cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
+		cp -f $LINKPANEL_INSTALL_DIR/filemanager/filegator/configuration.php $LINKPANEL/web/fm/configuration.php
 		# Set environment variable for interface
 		$LINKPANEL/bin/v-change-sys-config-value 'FILE_MANAGER' 'true'
 	fi

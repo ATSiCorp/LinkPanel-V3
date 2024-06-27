@@ -27,7 +27,7 @@ if (!empty($_POST["user"]) && empty($_POST["code"])) {
 	if ($return_var == 0) {
 		$data = json_decode(implode("", $output), true);
 		unset($output);
-		exec(HESTIA_CMD . "v-get-user-value " . $v_user . " RKEYEXP", $output, $return_var);
+		exec(LINKPANEL_CMD . "v-get-user-value " . $v_user . " RKEYEXP", $output, $return_var);
 		$rkeyexp = json_decode(implode("", $output), true);
 		if ($rkeyexp === null || $rkeyexp < time() - 1) {
 			if ($email == $data[$user]["CONTACT"]) {
@@ -38,7 +38,7 @@ if (!empty($_POST["user"]) && empty($_POST["code"])) {
 				fwrite($fp, $hash . "\n");
 				fclose($fp);
 				exec(
-					HESTIA_CMD . "v-change-user-rkey " . $v_user . " " . $v_rkey . "",
+					LINKPANEL_CMD . "v-change-user-rkey " . $v_user . " " . $v_rkey . "",
 					$output,
 					$return_var,
 				);
@@ -164,20 +164,20 @@ if (!empty($_POST["user"]) && !empty($_POST["code"]) && !empty($_POST["password"
 	if ($_POST["password"] == $_POST["password_confirm"]) {
 		$v_user = quoteshellarg($_POST["user"]);
 		$user = $_POST["user"];
-		exec(HESTIA_CMD . "v-list-user " . $v_user . " json", $output, $return_var);
+		exec(LINKPANEL_CMD . "v-list-user " . $v_user . " json", $output, $return_var);
 		if ($return_var == 0) {
 			$data = json_decode(implode("", $output), true);
 			$rkey = $data[$user]["RKEY"];
 			if (password_verify($_POST["code"], $rkey)) {
 				unset($output);
-				exec(HESTIA_CMD . "v-get-user-value " . $v_user . " RKEYEXP", $output, $return_var);
+				exec(LINKPANEL_CMD . "v-get-user-value " . $v_user . " RKEYEXP", $output, $return_var);
 				if ($output[0] > time() - 900) {
 					$v_password = tempnam("/tmp", "vst");
 					$fp = fopen($v_password, "w");
 					fwrite($fp, $_POST["password"] . "\n");
 					fclose($fp);
 					exec(
-						HESTIA_CMD . "v-change-user-password " . $v_user . " " . $v_password,
+						LINKPANEL_CMD . "v-change-user-password " . $v_user . " " . $v_password,
 						$output,
 						$return_var,
 					);
@@ -194,7 +194,7 @@ if (!empty($_POST["user"]) && !empty($_POST["code"]) && !empty($_POST["password"
 					sleep(5);
 					$error = _("Code has been expired");
 					exec(
-						HESTIA_CMD .
+						LINKPANEL_CMD .
 							"v-log-user-login " .
 							$v_user .
 							" " .
@@ -212,7 +212,7 @@ if (!empty($_POST["user"]) && !empty($_POST["code"]) && !empty($_POST["password"
 				sleep(5);
 				$error = _("Invalid username or code");
 				exec(
-					HESTIA_CMD .
+					LINKPANEL_CMD .
 						"v-log-user-login " .
 						$v_user .
 						" " .

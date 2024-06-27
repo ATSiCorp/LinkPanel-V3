@@ -31,7 +31,7 @@ if [ ! -z "$IMAP_SYSTEM" ]; then
 	echo "[ * ] Hardening security of Roundcube webmail..."
 	$BIN/v-update-mail-templates > /dev/null 2>&1
 	if [ -e /etc/nginx/conf.d/webmail.inc ]; then
-		cp -f /etc/nginx/conf.d/webmail.inc $HESTIA_BACKUP/conf/
+		cp -f /etc/nginx/conf.d/webmail.inc $LINKPANEL_BACKUP/conf/
 		sed -i "s/config|temp|logs/README.md|config|temp|logs|bin|SQL|INSTALL|LICENSE|CHANGELOG|UPGRADING/g" /etc/nginx/conf.d/webmail.inc
 	fi
 fi
@@ -106,8 +106,8 @@ done
 if fail2ban-client status sshd > /dev/null 2>&1; then
 	fail2ban-client stop sshd > /dev/null 2>&1
 	if [ -f /etc/fail2ban/jail.d/defaults-debian.conf ]; then
-		mkdir -p $HESTIA_BACKUP/conf/fail2ban/jail.d
-		mv /etc/fail2ban/jail.d/defaults-debian.conf $HESTIA_BACKUP/conf/fail2ban/jail.d/
+		mkdir -p $LINKPANEL_BACKUP/conf/fail2ban/jail.d
+		mv /etc/fail2ban/jail.d/defaults-debian.conf $LINKPANEL_BACKUP/conf/fail2ban/jail.d/
 	fi
 fi
 
@@ -211,7 +211,7 @@ fi
 num_php_versions=$(ls -d /etc/php/*/fpm/pool.d 2> /dev/null | wc -l)
 if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	echo "[ * ] Enabling modular Multi-PHP backend..."
-	cp -rf $LINKPANEL/data/templates/web $HESTIA_BACKUP/templates/web
+	cp -rf $LINKPANEL/data/templates/web $LINKPANEL_BACKUP/templates/web
 	bash $LINKPANEL/install/upgrade/manual/migrate_multiphp.sh > /dev/null 2>&1
 fi
 

@@ -1,9 +1,9 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: linkpanel
-Source: https://www.hestiacp.com
+Source: https://www.linkpanelcp.com
 
 Files: *
-Copyright: 2018-2023, LinkPanel Control Panel <info@hestiacp.com>
+Copyright: 2018-2023, LinkPanel Control Panel <info@linkpanelcp.com>
 License: GPL-3.0+
 Remarks: LinkPanel is a fork from VestaCP, special thanks to vestacp.com and Serghey Rodin
 

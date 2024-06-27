@@ -14,8 +14,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/ip.sh
@@ -30,7 +30,7 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 #----------------------------------------------------------#
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -164,7 +164,7 @@ for ip in $ips; do
 done
 
 # Updating NAT
-pub_ipv4="$(curl -fsLm5 --retry 2 --ipv4 https://ip.hestiacp.com/)"
+pub_ipv4="$(curl -fsLm5 --retry 2 --ipv4 https://ip.linkpanelcp.com/)"
 if [ ! -e "$LINKPANEL/data/ips/$pub_ipv4" ]; then
 	if [ -z "$(grep -R "$pub_ipv4" $LINKPANEL/data/ips/)" ]; then
 		ip="$(ls -t $LINKPANEL/data/ips/ | head -n1)"

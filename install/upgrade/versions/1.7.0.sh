@@ -20,8 +20,8 @@
 # load config because we need to know if proftpd is installed
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/ip.sh
@@ -103,7 +103,7 @@ fi
 if [ -f /etc/logrotate.d/httpd-prerotate/awstats ]; then
 	echo "[ * ] Update Awstats prerotate to LinkPanel update method..."
 	# Replace awstatst function
-	cp -f $HESTIA_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
+	cp -f $LINKPANEL_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
 fi
 
 if [ "$PHPMYADMIN_KEY" != "" ]; then

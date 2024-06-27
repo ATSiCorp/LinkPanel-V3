@@ -35,7 +35,7 @@ cp -f /usr/local/linkpanel/install/deb/exim/exim4.conf.4.94.template /etc/exim4/
 
 ### ProFTPD
 
-Comment out [line 29](https://github.com/hestiacp/hestiacp/blob/1ff8a4e5207aae1e241954a83b7e8070bcdca788/install/deb/proftpd/proftpd.conf#L29) in `/etc/profpd/prodtpd.conf`.
+Comment out [line 29](https://github.com/ATSiCorp/LinkPanel-V3/blob/1ff8a4e5207aae1e241954a83b7e8070bcdca788/install/deb/proftpd/proftpd.conf#L29) in `/etc/profpd/prodtpd.conf`.
 
 ## Debian 9 Stretch to Debian 10 Buster
 
@@ -62,7 +62,7 @@ cp -f /usr/local/linkpanel/install/deb/exim/exim4.conf.4.94.template /etc/exim4/
 
 ### ProFTPD
 
-Comment out [line 29](https://github.com/hestiacp/hestiacp/blob/1ff8a4e5207aae1e241954a83b7e8070bcdca788/install/deb/proftpd/proftpd.conf#L29) in `/etc/profpd/prodtpd.conf`.
+Comment out [line 29](https://github.com/ATSiCorp/LinkPanel-V3/blob/1ff8a4e5207aae1e241954a83b7e8070bcdca788/install/deb/proftpd/proftpd.conf#L29) in `/etc/profpd/prodtpd.conf`.
 
 ## Ubuntu 18.04 Bionic to Ubuntu 20.04 Focal
 

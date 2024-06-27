@@ -22,8 +22,8 @@ protocol=$(echo "$protocol" | tr '[:lower:]' '[:upper:]')
 iptables="/sbin/iptables"
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source "$LINKPANEL/func/main.sh"
 # shellcheck source=/usr/local/linkpanel/func/firewall.sh
@@ -32,9 +32,9 @@ source "$LINKPANEL/func/firewall.sh"
 source_conf "$LINKPANEL/conf/linkpanel.conf"
 
 # Get linkpanel port by reading nginx.conf
-hestiaport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$LINKPANEL/nginx/conf/nginx.conf")
-if [ -z "$hestiaport" ]; then
-	hestiaport=8083
+linkpanelport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$LINKPANEL/nginx/conf/nginx.conf")
+if [ -z "$linkpanelport" ]; then
+	linkpanelport=8083
 fi
 
 #----------------------------------------------------------#
@@ -46,7 +46,7 @@ is_format_valid 'chain' 'port_ext' 'protocol'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -86,7 +86,7 @@ case $chain in
 		protocol=TCP
 		;;
 	LINKPANEL)
-		port=$hestiaport
+		port=$linkpanelport
 		protocol=TCP
 		;;
 	RECIDIVE)

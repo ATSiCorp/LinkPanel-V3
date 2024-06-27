@@ -16,9 +16,9 @@ class LinkPanelApp {
 	}
 
 	public function run(string $cmd, $args, &$cmd_result = null): bool {
-		$cli_script = realpath(HESTIA_DIR_BIN . $cmd);
-		if (!str_starts_with((string) $cli_script, HESTIA_DIR_BIN)) {
-			$errstr = "$cmd is trying to traverse outside of " . HESTIA_DIR_BIN;
+		$cli_script = realpath(LINKPANEL_DIR_BIN . $cmd);
+		if (!str_starts_with((string) $cli_script, LINKPANEL_DIR_BIN)) {
+			$errstr = "$cmd is trying to traverse outside of " . LINKPANEL_DIR_BIN;
 			trigger_error($errstr);
 			throw new \Exception($errstr);
 		}
@@ -87,7 +87,7 @@ class LinkPanelApp {
 		$install_folder = $this->getUserHomeDir() . DIRECTORY_SEPARATOR . ".composer";
 
 		if (!file_exists($install_folder)) {
-			exec(HESTIA_CMD . "v-rebuild-user " . $this->user(), $output, $return_code);
+			exec(LINKPANEL_CMD . "v-rebuild-user " . $this->user(), $output, $return_code);
 			if ($return_code !== 0) {
 				throw new \Exception("Unable to rebuild user");
 			}

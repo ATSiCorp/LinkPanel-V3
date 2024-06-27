@@ -23,7 +23,7 @@
 # Insert any necessary verification steps here
 
 # Perform verification if read-only mode is enabled
-# check_hestia_demo_mode
+# check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #

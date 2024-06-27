@@ -16,7 +16,7 @@ if ($_SESSION["userContext"] != "admin") {
 
 if (!empty($_GET["user"])) {
 	$v_username = quoteshellarg($_GET["user"]);
-	exec(HESTIA_CMD . "v-suspend-user " . $v_username, $output, $return_var);
+	exec(LINKPANEL_CMD . "v-suspend-user " . $v_username, $output, $return_var);
 }
 check_return_code($return_var, $output);
 unset($output);

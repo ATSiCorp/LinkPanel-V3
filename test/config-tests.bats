@@ -21,10 +21,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/linkpanel-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/linkpanel-test-env.sh
         echo 'LINKPANEL=/usr/local/linkpanel' >> /tmp/linkpanel-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/linkpanel-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domain=test-5285.linkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domainuk=test-5285.linkpanelcp.com.uk' >> /tmp/linkpanel-test-env.sh
+        echo 'rootdomain=testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'subdomain=cdn.testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
         echo 'database=test-5285_database' >> /tmp/linkpanel-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/linkpanel-test-env.sh
     fi
@@ -36,27 +36,27 @@ function setup() {
 }
 
 @test "Setup Test domain" {
-    run v-add-user $user $user $user@hestiacp.com default "Super Test"
+    run v-add-user $user $user $user@linkpanelcp.com default "Super Test"
     assert_success
     refute_output
 
-    run v-add-web-domain $user 'testhestiacp.com'
+    run v-add-web-domain $user 'testlinkpanelcp.com'
     assert_success
     refute_output
 
-    ssl=$(v-generate-ssl-cert "testhestiacp.com" "info@testhestiacp.com" US CA "Orange County" LinkPanelCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
-    mv $ssl/testhestiacp.com.crt /tmp/testhestiacp.com.crt
-    mv $ssl/testhestiacp.com.key /tmp/testhestiacp.com.key
+    ssl=$(v-generate-ssl-cert "testlinkpanelcp.com" "info@testlinkpanelcp.com" US CA "Orange County" LinkPanelCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
+    mv $ssl/testlinkpanelcp.com.crt /tmp/testlinkpanelcp.com.crt
+    mv $ssl/testlinkpanelcp.com.key /tmp/testlinkpanelcp.com.key
 
     # Use self signed certificates during last test
-    run v-add-web-domain-ssl $user testhestiacp.com /tmp
+    run v-add-web-domain-ssl $user testlinkpanelcp.com /tmp
     assert_success
     refute_output
 }
 
 @test "Web Config test" {
     for template in $(v-list-web-templates plain); do
-        run v-change-web-domain-tpl $user testhestiacp.com $template
+        run v-change-web-domain-tpl $user testlinkpanelcp.com $template
         assert_success
         refute_output
     done
@@ -65,7 +65,7 @@ function setup() {
 @test "Proxy Config test" {
     if [ "$PROXY_SYSTEM" = "nginx" ]; then
         for template in $(v-list-proxy-templates plain); do
-            run v-change-web-domain-proxy-tpl $user testhestiacp.com $template
+            run v-change-web-domain-proxy-tpl $user testlinkpanelcp.com $template
             assert_success
             refute_output
         done

@@ -14,8 +14,8 @@ refresh=${1:-no}
 
 # Includes
 source /etc/profile.d/linkpanel.sh
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -29,7 +29,7 @@ is_refresh_ipset_format_valid "$refresh" 'Refresh IP lists (load/yes/no)'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 ipset_hstobject='../../../data/firewall/ipset'
 

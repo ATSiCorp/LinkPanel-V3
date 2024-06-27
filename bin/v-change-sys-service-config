@@ -16,8 +16,8 @@ service=$2
 restart=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -35,7 +35,7 @@ if [ ! -e "$src" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -73,7 +73,7 @@ case $service in
 	clamd) dst=$($BIN/v-list-sys-clamd-config plain) ;;
 	fail2ban) dst='/etc/fail2ban/jail.local' ;;
 	ssh) dst='/etc/ssh/sshd_config' ;;
-	hestiaweb) dst='/var/spool/cron/crontabs/hestiaweb' ;;
+	linkpanelweb) dst='/var/spool/cron/crontabs/linkpanelweb' ;;
 	*) check_result $E_NOTEXIST "service $service doesn't exist" ;;
 esac
 

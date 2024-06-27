@@ -45,16 +45,16 @@ With the release of LinkPanel 1.4.6 we have added pre-install and post-install h
 
 Hooks are located in one of the following files:
 
-- `/etc/hestiacp/hooks/pre_install.sh`
-- `/etc/hestiacp/hooks/post_install.sh`
+- `/etc/linkpanelcp/hooks/pre_install.sh`
+- `/etc/linkpanelcp/hooks/post_install.sh`
 
 ::: tip
-Don’t forget to make the file executable by running `chmod +x /etc/hestiacp/hooks/[file].sh`.
+Don’t forget to make the file executable by running `chmod +x /etc/linkpanelcp/hooks/[file].sh`.
 :::
 
 For example, to disable demo mode on pre-install:
 
-```bash /etc/hestiacp/hooks/pre_install.sh
+```bash /etc/linkpanelcp/hooks/pre_install.sh
 #!/bin/bash
 sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $LINKPANEL/conf/linkpanel.conf
 ```

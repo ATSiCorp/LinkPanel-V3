@@ -12,7 +12,7 @@ if [ "$FTP_SYSTEM" = "vsftpd" ]; then
 	if [ -e /etc/vsftpd.conf ]; then
 		rm -f /etc/vsftpd.conf
 	fi
-	cp -f $HESTIA_INSTALL_DIR/vsftpd/vsftpd.conf /etc/
+	cp -f $LINKPANEL_INSTALL_DIR/vsftpd/vsftpd.conf /etc/
 	chmod 644 /etc/vsftpd.conf
 fi
 

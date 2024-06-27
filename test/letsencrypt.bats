@@ -21,7 +21,7 @@ function setup() {
 }
 
 @test "[ User ] Create new user" {
-    run v-add-user $user $user $user@hestiacp.com default "Super Test"
+    run v-add-user $user $user $user@linkpanelcp.com default "Super Test"
     assert_success
     refute_output
 }
@@ -111,7 +111,7 @@ function setup() {
 }
 
 @test "[ Redirect ] Add Domain redirect to other website" {
-    run v-add-web-domain-redirect $user "redirect.$domain" "https://hestiacp.com" 301 "yes"
+    run v-add-web-domain-redirect $user "redirect.$domain" "https://linkpanelcp.com" 301 "yes"
     assert_success
     refute_output
 }

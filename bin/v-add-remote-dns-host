@@ -32,8 +32,8 @@ dns_user=${6-dns-cluster}
 DNS_USER=$dns_user
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/remote.sh
@@ -65,7 +65,7 @@ is_dnshost_new
 is_dnshost_alive
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -120,14 +120,14 @@ check_result $? "$HOST sync failed" "$E_CONNECT"
 
 # Adding local  dns-cluster cron job
 cmd="v-update-sys-queue dns-cluster"
-check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/hestiaweb" 2> /dev/null)
+check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/linkpanelweb" 2> /dev/null)
 if [ -z "$check_cron" ] && [ ! -z "$CRON_SYSTEM" ]; then
 	min='*/5'
 	hour='0'
 	day='*'
 	month='*'
 	wday='*'
-	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/$cmd" > "/var/spool/cron/crontabs/hestiaweb"
+	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/$cmd" > "/var/spool/cron/crontabs/linkpanelweb"
 fi
 
 # Logging

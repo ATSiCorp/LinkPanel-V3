@@ -1,7 +1,7 @@
 <footer class="app-footer">
 	<div class="container">
 		<p>
-			<a href="https://hestiacp.com/" class="app-footer-link" target="_blank">
+			<a href="https://linkpanelcp.com/" class="app-footer-link" target="_blank">
 				LinkPanel Control Panel
 			</a>
 			v<?= $_SESSION["VERSION"] ?>

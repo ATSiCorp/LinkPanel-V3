@@ -15,8 +15,8 @@ download=${1-no}
 reset=${2-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source "$LINKPANEL/func/main.sh"
 # load config file
@@ -33,31 +33,31 @@ fi
 if [ -f "$LINKPANEL/web/images/custom/logo.svg" ]; then
 	cp -f "$LINKPANEL/web/images/custom/logo.svg" "$LINKPANEL/web/images/logo.svg"
 elif [ ! -f "$LINKPANEL/web/images/custom/logo.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/hestiacp/hestiacp/release/web/images/logo.svg" "$LINKPANEL/web/images/logo.svg"
+	download_file "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/web/images/logo.svg" "$LINKPANEL/web/images/logo.svg"
 fi
 
 if [ -f "$LINKPANEL/web/images/custom/logo.png" ]; then
 	cp -f "$LINKPANEL/web/images/custom/logo.png" "$LINKPANEL/web/images/logo.png"
 elif [ ! -f "$LINKPANEL/web/images/custom/logo.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/hestiacp/hestiacp/release/web/images/logo.png" "$LINKPANEL/web/images/logo.png"
+	download_file "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/web/images/logo.png" "$LINKPANEL/web/images/logo.png"
 fi
 
 if [ -f "$LINKPANEL/web/images/custom/logo-header.svg" ]; then
 	cp -f "$LINKPANEL/web/images/custom/logo-header.svg" "$LINKPANEL/web/images/logo-header.svg"
 elif [ ! -f "$LINKPANEL/web/images/custom/logo-header.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/hestiacp/hestiacp/release/web/images/logo-header.svg" "$LINKPANEL/web/images/logo-header.svg"
+	download_file "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/web/images/logo-header.svg" "$LINKPANEL/web/images/logo-header.svg"
 fi
 
 if [ -f "$LINKPANEL/web/images/custom/favicon.png" ]; then
 	cp -f "$LINKPANEL/web/images/custom/favicon.png" "$LINKPANEL/web/images/favicon.png"
 elif [ ! -f "$LINKPANEL/web/images/custom/favicon.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/hestiacp/hestiacp/release/web/images/favicon.png" "$LINKPANEL/web/images/favicon.png"
+	download_file "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/web/images/favicon.png" "$LINKPANEL/web/images/favicon.png"
 fi
 
 if [ -f "$LINKPANEL/web/images/custom/favicon.ico" ]; then
 	cp -f "$LINKPANEL/web/images/custom/favicon.ico" "$LINKPANEL/web/favicon.ico"
 elif [ ! -f "$LINKPANEL/web/images/custom/favicon.ico" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/hestiacp/hestiacp/release/web/favicon.ico" "$LINKPANEL/web/favicon.ico"
+	download_file "https://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/web/favicon.ico" "$LINKPANEL/web/favicon.ico"
 fi
 
 #----------------------------------------------------------#

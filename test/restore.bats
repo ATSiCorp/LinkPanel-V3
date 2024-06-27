@@ -21,10 +21,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/linkpanel-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/linkpanel-test-env.sh
         echo 'LINKPANEL=/usr/local/linkpanel' >> /tmp/linkpanel-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/linkpanel-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/linkpanel-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domain=test-5285.linkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'domainuk=test-5285.linkpanelcp.com.uk' >> /tmp/linkpanel-test-env.sh
+        echo 'rootdomain=testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
+        echo 'subdomain=cdn.testlinkpanelcp.com' >> /tmp/linkpanel-test-env.sh
         echo 'database=test-5285_database' >> /tmp/linkpanel-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/linkpanel-test-env.sh
     fi
@@ -90,7 +90,7 @@ function validate_web_domain() {
 
 #Test backup
 #  LinkPanel v1.1.1 archive contains:
-#    user: hestia111
+#    user: linkpanel111
 #    web:
 #      - test.linkpanel.com (+SSL self-signed)
 #    dns:
@@ -100,11 +100,11 @@ function validate_web_domain() {
 #    mail acc:
 #      - testaccount@test.linkpanel.com
 #    db:
-#      - hestia111_db
+#      - linkpanel111_db
 #    cron:
 #      - 1: /bin/true
 #  LinkPanel 1.7.0 archive contains (As zstd format)
-#    user: hestia131
+#    user: linkpanel131
 #    web:
 #      - test.linkpanel.com (+SSL self-signed)
 #        FTP Account
@@ -116,11 +116,11 @@ function validate_web_domain() {
 #        Ratelimit: 10
 #    mail acc:
 #      - testaccount@test.linkpanel.com
-#           Alias: info@test.hestiacp.com
+#           Alias: info@test.linkpanelcp.com
 #           Ratelimit: 20
 #      - support@test.linkpanel.com
 #    db:
-#      - hestia170_db
+#      - linkpanel170_db
 #    cron:
 #      - 1: /bin/true
 #  Vesta 0.9.8-23 archive contains:
@@ -149,8 +149,8 @@ function validate_web_domain() {
 
     mkdir -p /backup
 
-    local archive_name="hestia111.2020-03-26"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    local archive_name="linkpanel111.2020-03-26"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -219,8 +219,8 @@ function validate_web_domain() {
 
     mkdir -p /backup
 
-    local archive_name="hestia111.2020-03-26"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    local archive_name="linkpanel111.2020-03-26"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -283,8 +283,8 @@ function validate_web_domain() {
 
     mkdir -p /backup
 
-    local archive_name="hestia170.2022-08-23"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    local archive_name="linkpanel170.2022-08-23"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -376,8 +376,8 @@ function validate_web_domain() {
 
     mkdir -p /backup
 
-    local archive_name="hestia170.2022-08-23"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    local archive_name="linkpanel170.2022-08-23"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -466,7 +466,7 @@ function validate_web_domain() {
     mkdir -p /backup
 
     local archive_name="vesta09823.2018-10-18"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -536,7 +536,7 @@ function validate_web_domain() {
     mkdir -p /backup
 
     local archive_name="vesta09823.2018-10-18"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.linkpanelcp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"

@@ -23,9 +23,9 @@ export default defineConfig({
 		nav: nav(),
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/hestiacp/hestiacp' },
+			{ icon: 'github', link: 'https://github.com/linkpanelcp/linkpanelcp' },
 			{ icon: 'twitter', link: 'https://twitter.com/LinkPanelPanel' },
-			{ icon: 'facebook', link: 'https://www.facebook.com/hestiacp' },
+			{ icon: 'facebook', link: 'https://www.facebook.com/linkpanelcp' },
 		],
 
 		sidebar: { '/docs/': sidebarDocs() },
@@ -33,7 +33,7 @@ export default defineConfig({
 		outline: [2, 3],
 
 		editLink: {
-			pattern: 'https://github.com/hestiacp/hestiacp/edit/main/docs/:path',
+			pattern: 'https://github.com/ATSiCorp/LinkPanel-V3/edit/main/docs/:path',
 			text: 'Edit this page on GitHub',
 		},
 
@@ -45,7 +45,7 @@ export default defineConfig({
 		algolia: {
 			appId: 'V04P0P5D2R',
 			apiKey: '7a90a3ac7f9313f174c50b0f301f7ec6',
-			indexName: 'hestia_cp',
+			indexName: 'linkpanel_cp',
 		},
 	},
 });
@@ -57,23 +57,23 @@ function nav() {
 		{ text: 'Install', link: '/install' },
 		{ text: 'Documentation', link: '/docs/introduction/getting-started', activeMatch: '/docs/' },
 		{ text: 'Team', link: '/team' },
-		{ text: 'Demo', link: 'https://demo.hestiacp.com:8083/' },
-		{ text: 'Forum', link: 'https://forum.hestiacp.com/' },
+		{ text: 'Demo', link: 'https://demo.linkpanelcp.com:8083/' },
+		{ text: 'Forum', link: 'https://forum.linkpanelcp.com/' },
 		{ text: 'Donate', link: '/donate' },
 		{
 			text: `v${version}`,
 			items: [
 				{
 					text: 'Changelog',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/CHANGELOG.md',
+					link: 'https://github.com/ATSiCorp/LinkPanel-V3/blob/main/CHANGELOG.md',
 				},
 				{
 					text: 'Contributing',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md',
+					link: 'https://github.com/ATSiCorp/LinkPanel-V3/blob/main/CONTRIBUTING.md',
 				},
 				{
 					text: 'Security policy',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/SECURITY.md',
+					link: 'https://github.com/ATSiCorp/LinkPanel-V3/blob/main/SECURITY.md',
 				},
 			],
 		},

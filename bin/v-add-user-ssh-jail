@@ -15,8 +15,8 @@ user=$1
 restart=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -37,7 +37,7 @@ check_args '1' "$#" 'USER'
 is_format_valid 'user'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -75,7 +75,7 @@ if [ ! -d "$chroot" ]; then
 	# with linkpanel.
 	/sbin/jk_jailuser -n -s "$shell_path" -j "$chroot" "$user"
 
-	# Reset home directory and shell again for hestiacp because jailkit changes these.
+	# Reset home directory and shell again for linkpanelcp because jailkit changes these.
 	# Normally these are needed to redirect the ssh user to it's chroot but because we
 	# use a custom sshd_config to redirect the user to it's chroot we don't need it to be
 	# changed in /etc/passwd for the user.

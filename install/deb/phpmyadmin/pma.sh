@@ -100,4 +100,4 @@ else
 fi
 
 #MYSQL DB and TABLES ADDITION
-$mysql_server -uroot < "$HESTIA_INSTALL_DIR/phpmyadmin/create_tables.sql"
+$mysql_server -uroot < "$LINKPANEL_INSTALL_DIR/phpmyadmin/create_tables.sql"

@@ -14,8 +14,8 @@ MODE=$1
 FORCE=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -38,13 +38,13 @@ if [ -z "$LINKPANEL" ]; then
 	LINKPANEL="/usr/local/linkpanel"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$LINKPANEL_INSTALL_DIR" ]; then
 	echo "Error: LinkPanel environment vars not present"
 	exit 2
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 # Check if File Manager components are installed
 if [ "$FORCE" != "yes" ] && [ ! -e "$FM_INSTALL_DIR" ]; then

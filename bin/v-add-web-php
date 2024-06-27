@@ -14,8 +14,8 @@
 version=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -54,7 +54,7 @@ if [[ ! "$multiphp_v" =~ $version ]]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -130,9 +130,9 @@ fi
 update-rc.d php$version-fpm defaults > /dev/null 2>&1
 v_tpl=${version//./}
 rm -f /etc/php/$version/fpm/pool.d/*
-cp -f $HESTIA_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
+cp -f $LINKPANEL_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
 sed -i "s/%backend_version%/$version/g" /etc/php/$version/fpm/pool.d/dummy.conf
-cp -f $HESTIA_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
+cp -f $LINKPANEL_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
 sed -i "s/fpm_v/$version/g" /etc/php/$version/fpm/php-fpm.conf
 
 # Increase max upload and max post size
@@ -152,7 +152,7 @@ sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=512/g" /etc
 sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=100000/g" /etc/php/$version/fpm/php.ini
 
 # Install backend template
-cp -f $HESTIA_INSTALL_DIR/php-fpm/multiphp.tpl \
+cp -f $LINKPANEL_INSTALL_DIR/php-fpm/multiphp.tpl \
 	$LINKPANEL/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
 
 #----------------------------------------------------------#

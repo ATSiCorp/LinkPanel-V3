@@ -1,6 +1,6 @@
 [Unit]
 Description=LinkPanel web console
-Documentation=https://www.hestiacp.com
+Documentation=https://www.linkpanelcp.com
 Wants=network-online.target
 After=network-online.target
 Requires=linkpanel-php.service

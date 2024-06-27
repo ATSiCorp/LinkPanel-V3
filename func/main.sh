@@ -22,8 +22,8 @@ source_conf() {
 if [ -z "$user" ]; then
 	if [ -z "$ROOT_USER" ]; then
 		if [ -z "$LINKPANEL" ]; then
-			# shellcheck source=/etc/hestiacp/linkpanel.conf
-			source /etc/hestiacp/linkpanel.conf
+			# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+			source /etc/linkpanelcp/linkpanel.conf
 		fi
 		source_conf "$LINKPANEL/conf/linkpanel.conf" # load config file
 	fi
@@ -38,19 +38,19 @@ BACKUP_DISK_LIMIT=95
 BACKUP_LA_LIMIT=$(grep -c '^processor' /proc/cpuinfo)
 RRD_STEP=300
 BIN=$LINKPANEL/bin
-HESTIA_INSTALL_DIR="$LINKPANEL/install/deb"
-HESTIA_COMMON_DIR="$LINKPANEL/install/common"
-HESTIA_BACKUP="/root/hst_backups/$(date +%d%m%Y%H%M)"
-HESTIA_PHP="$LINKPANEL/php/bin/php"
+LINKPANEL_INSTALL_DIR="$LINKPANEL/install/deb"
+LINKPANEL_COMMON_DIR="$LINKPANEL/install/common"
+LINKPANEL_BACKUP="/root/hst_backups/$(date +%d%m%Y%H%M)"
+LINKPANEL_PHP="$LINKPANEL/php/bin/php"
 USER_DATA=$LINKPANEL/data/users/$user
 WEBTPL=$LINKPANEL/data/templates/web
 MAILTPL=$LINKPANEL/data/templates/mail
 DNSTPL=$LINKPANEL/data/templates/dns
 RRD=$LINKPANEL/web/rrd
 SENDMAIL="$LINKPANEL/web/inc/mail-wrapper.php"
-HESTIA_GIT_REPO="https://raw.githubusercontent.com/hestiacp/hestiacp"
-HESTIA_THEMES="$LINKPANEL/web/css/themes"
-HESTIA_THEMES_CUSTOM="$LINKPANEL/web/css/themes/custom"
+LINKPANEL_GIT_REPO="https://raw.githubusercontent.com/linkpanelcp/linkpanelcp"
+LINKPANEL_THEMES="$LINKPANEL/web/css/themes"
+LINKPANEL_THEMES_CUSTOM="$LINKPANEL/web/css/themes/custom"
 SCRIPT="$(basename $0)"
 CHECK_RESULT_CALLBACK=""
 
@@ -1585,7 +1585,7 @@ download_file() {
 	fi
 }
 
-check_hestia_demo_mode() {
+check_linkpanel_demo_mode() {
 	demo_mode=$(grep DEMO_MODE /usr/local/linkpanel/conf/linkpanel.conf | cut -d '=' -f2 | sed "s|'||g")
 	if [ -n "$demo_mode" ] && [ "$demo_mode" = "yes" ]; then
 		echo "ERROR: Unable to perform operation due to security restrictions that are in place."
@@ -1625,7 +1625,7 @@ multiphp_default_version() {
 	echo "$sys_phpversion"
 }
 
-is_hestia_package() {
+is_linkpanel_package() {
 	check=false
 	for pkg in $1; do
 		if [ "$pkg" == "$2" ]; then
@@ -1633,7 +1633,7 @@ is_hestia_package() {
 		fi
 	done
 	if [ "$check" != "true" ]; then
-		check_result $E_INVALID "$2 package is not controlled by hestiacp"
+		check_result $E_INVALID "$2 package is not controlled by linkpanelcp"
 	fi
 }
 

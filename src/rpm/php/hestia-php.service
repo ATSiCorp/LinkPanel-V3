@@ -1,6 +1,6 @@
 [Unit]
 Description=LinkPanel PHP daemon
-Documentation=https://www.hestiacp.com
+Documentation=https://www.linkpanelcp.com
 PartOf=linkpanel.service
 
 [Service]

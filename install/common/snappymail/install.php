@@ -34,10 +34,10 @@ if (!file_exists($sFile)) {
 				"plugin" => [
 					"pass_min_length" => 8,
 					"pass_min_strength" => 60,
-					"driver_hestia_enabled" => true,
-					"driver_hestia_allowed_emails" => "*",
-					"hestia_host" => gethostname(),
-					"hestia_port" => $argv[4], // $BACKEND_PORT
+					"driver_linkpanel_enabled" => true,
+					"driver_linkpanel_allowed_emails" => "*",
+					"linkpanel_host" => gethostname(),
+					"linkpanel_port" => $argv[4], // $BACKEND_PORT
 				],
 			],
 			JSON_PRETTY_PRINT,

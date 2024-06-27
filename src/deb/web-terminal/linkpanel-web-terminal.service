@@ -1,6 +1,6 @@
 [Unit]
 Description=LinkPanelCP Web Terminal
-Documentation=https://hestiacp.com/docs/
+Documentation=https://linkpanelcp.com/docs/
 After=network.target
 
 [Service]

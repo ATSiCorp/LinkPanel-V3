@@ -113,7 +113,7 @@ Depending on the server setup, this option may not be available.
 Any custom templates will also show up here.
 
 ::: tip
-Any custom templates starting with `caching-` will allow the use of the **<i class="fas fa-fw fa-trash"></i> Purge Nginx Cache** button. Make sure a `.sh` file exists for `caching-my-template` with at least [this content](https://github.com/hestiacp/hestiacp/blob/main/install/deb/templates/web/nginx/caching.sh)
+Any custom templates starting with `caching-` will allow the use of the **<i class="fas fa-fw fa-trash"></i> Purge Nginx Cache** button. Make sure a `.sh` file exists for `caching-my-template` with at least [this content](https://github.com/ATSiCorp/LinkPanel-V3/blob/main/install/deb/templates/web/nginx/caching.sh)
 :::
 
 ### Web templates

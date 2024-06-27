@@ -18,8 +18,8 @@ aliases=$3
 mail=${4// /}
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # shellcheck source=/usr/local/linkpanel/func/domain.sh
@@ -108,7 +108,7 @@ debug_log() {
 }
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -572,7 +572,7 @@ fi
 if [ -z "$(grep v-update-letsen "$LINKPANEL/data/users/$ROOT_USER/cron.conf")" ]; then
 	min=$(generate_password '012345' '2')
 	hour=$(generate_password '1234567' '1')
-	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" > /etc/cron.d/hestiaweb
+	echo "$min $hour * * * sudo /usr/local/linkpanel/bin/v-update-letsencrypt-ssl" > /etc/cron.d/linkpanelweb
 fi
 
 # Updating letsencrypt key

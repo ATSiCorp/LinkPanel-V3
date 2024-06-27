@@ -1,7 +1,7 @@
 #=========================================================================#
 # Default Web Domain Template                                             #
 # DO NOT MODIFY THIS FILE! CHANGES WILL BE LOST WHEN REBUILDING DOMAINS   #
-# https://hestiacp.com/docs/server-administration/web-templates.html      #
+# https://linkpanelcp.com/docs/server-administration/web-templates.html      #
 #=========================================================================#
 
 # phpMyAdmin and phpPgAdmin require access as www-data instead of user for security reasons

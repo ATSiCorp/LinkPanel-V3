@@ -9,8 +9,8 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/linkpanel.conf
-source /etc/hestiacp/linkpanel.conf
+# shellcheck source=/etc/linkpanelcp/linkpanel.conf
+source /etc/linkpanelcp/linkpanel.conf
 # shellcheck source=/usr/local/linkpanel/func/main.sh
 source $LINKPANEL/func/main.sh
 # load config file
@@ -23,14 +23,14 @@ source_conf "$LINKPANEL/conf/linkpanel.conf"
 is_system_enabled "$CRON_SYSTEM" 'CRON_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_linkpanel_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
 #----------------------------------------------------------#
 
-sed -i "/v-update-sys-linkpanel-all/d" "/var/spool/cron/crontabs/hestiaweb"
-sed -i "/v-update-sys-linkpanel-git/d" "/var/spool/cron/crontabs/hestiaweb"
+sed -i "/v-update-sys-linkpanel-all/d" "/var/spool/cron/crontabs/linkpanelweb"
+sed -i "/v-update-sys-linkpanel-git/d" "/var/spool/cron/crontabs/linkpanelweb"
 
 #----------------------------------------------------------#
 #                       LinkPanel                             #
