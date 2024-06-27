@@ -493,8 +493,8 @@ function syshealth_repair_system_config() {
 		$BIN/v-change-sys-config-value "DISABLE_IP_CHECK" "no"
 	fi
 	if [[ -z $(check_key_exists 'APP_NAME') ]]; then
-		echo "[ ! ] Adding missing variable to linkpanel.conf: APP_NAME ('LinkPanel Control Panel')"
-		$BIN/v-change-sys-config-value "APP_NAME" "LinkPanel Control Panel"
+		echo "[ ! ] Adding missing variable to linkpanel.conf: APP_NAME ('LinkPanel')"
+		$BIN/v-change-sys-config-value "APP_NAME" "LinkPanel"
 	fi
 	if [[ -z $(check_key_exists 'FROM_NAME') ]]; then
 		# Default is always APP_NAME
