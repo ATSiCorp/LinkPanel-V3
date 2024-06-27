@@ -4,7 +4,7 @@ Priority: optional
 Version: 1.9.0~alpha
 Section: admin
 Maintainer: LinkPanelCP <info@linkpanelcp.com>
-Homepage: https://www.linkpanelcp.com
+Homepage: https://linkpanel.atsi.cloud
 Architecture: amd64
 Depends: bash, awk, sed, acl, sysstat, setpriv | util-linux (>= 2.33), zstd, lsb-release, idn2, jq, jailkit
 Description: linkpanel

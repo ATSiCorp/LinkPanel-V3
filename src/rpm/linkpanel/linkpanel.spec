@@ -7,7 +7,7 @@ Release:        1%{dist}
 Summary:        LinkPanel Control Panel
 Group:          System Environment/Base
 License:        GPLv3
-URL:            https://www.linkpanelcp.com
+URL:            https://linkpanel.atsi.cloud
 Source0:        linkpanel-%{version}.tar.gz
 Source1:        linkpanel.service
 Vendor:         linkpanelcp.com

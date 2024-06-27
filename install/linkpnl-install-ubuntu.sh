@@ -3,7 +3,7 @@
 # ======================================================== #
 #
 # LinkPanel Control Panel Installer for Ubuntu
-# https://www.linkpanelcp.com/
+# https://linkpanel.atsi.cloud/
 #
 # Currently Supported Versions:
 # Ubuntu 20.04, 22.04 LTS
@@ -575,7 +575,7 @@ install_welcome_message() {
 		echo "                          USE AT YOUR OWN RISK                      "
 	fi
 	echo "                                  ${DISPLAY_VER}                        "
-	echo "                            www.linkpanelcp.com                            "
+	echo "                            linkpanel.atsi.cloud                            "
 	echo
 	echo "========================================================================"
 	echo
@@ -2414,7 +2414,7 @@ Note: Automatic updates are enabled by default. If you would like to disable the
 please log in and navigate to Server > Updates to turn them off.
 
 Help support the LinkPanel Control Panel project by donating via PayPal:
-https://www.linkpanelcp.com/donate
+https://linkpanel.atsi.cloud/donate
 
 --
 Sincerely yours,

@@ -4,7 +4,7 @@ Priority: optional
 Version: 1.25.2-1
 Section: admin
 Maintainer: LinkPanelCP <info@linkpanelcp.com>
-Homepage: https://www.linkpanelcp.com
+Homepage: https://linkpanel.atsi.cloud
 Architecture: amd64
 Depends: linkpanel
 Description: linkpanel Nginx

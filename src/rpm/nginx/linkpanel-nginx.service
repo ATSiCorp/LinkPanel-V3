@@ -1,6 +1,6 @@
 [Unit]
 Description=LinkPanel nginx - administration web server
-Documentation=https://www.linkpanelcp.com
+Documentation=https://linkpanel.atsi.cloud
 PartOf=linkpanel.service
 After=linkpanel-php.service
 

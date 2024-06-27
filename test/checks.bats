@@ -188,11 +188,11 @@ r'
 }
 
 @test "is_alias_format_valid success www.domain.com" {
-     run is_alias_format_valid 'www.linkpanelcp.com' "key"
+     run is_alias_format_valid 'linkpanel.atsi.cloud' "key"
     assert_success
 }
-@test "is_alias_format_valid success linkpanelcp.com,www.linkpanelcp.com" {
-     run is_alias_format_valid 'linkpanelcp.com,www.linkpanelcp.com' "key"
+@test "is_alias_format_valid success linkpanelcp.com,linkpanel.atsi.cloud" {
+     run is_alias_format_valid 'linkpanelcp.com,linkpanel.atsi.cloud' "key"
     assert_success
 }
 
@@ -201,8 +201,8 @@ r'
     assert_success
 }
 
-@test "is_alias_format_valid success www.linkpanelcp.com,*.linkpanelcp.com" {
-     run is_alias_format_valid 'www.linkpanelcp.com,*.linkpanelcp.com' "key"
+@test "is_alias_format_valid success linkpanel.atsi.cloud,*.linkpanelcp.com" {
+     run is_alias_format_valid 'linkpanel.atsi.cloud,*.linkpanelcp.com' "key"
     assert_success
 }
 

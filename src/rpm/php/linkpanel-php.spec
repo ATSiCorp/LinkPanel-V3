@@ -6,7 +6,7 @@ Version:        8.2.8
 Release:        1%{dist}
 Summary:        LinkPanel internal PHP
 Group:          System Environment/Base
-URL:            https://www.linkpanelcp.com
+URL:            https://linkpanel.atsi.cloud
 Source0:        https://www.php.net/distributions/php-%{version}.tar.gz
 Source1:        linkpanel-php.service
 Source2:        php-fpm.conf

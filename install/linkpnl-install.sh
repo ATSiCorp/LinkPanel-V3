@@ -4,7 +4,7 @@
 #
 # LinkPanel Control Panel Installation Routine
 # Automatic OS detection wrapper
-# https://www.linkpanelcp.com/
+# https://linkpanel.atsi.cloud/
 #
 # Currently Supported Operating Systems:
 #

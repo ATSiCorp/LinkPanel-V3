@@ -130,13 +130,13 @@ upgrade_complete_message() {
 	echo "Sincerely,                                                                   "
 	echo "The LinkPanel Control Panel development team                                    "
 	echo
-	echo "Web:      https://www.linkpanelcp.com/                                          "
+	echo "Web:      https://linkpanel.atsi.cloud/                                          "
 	echo "Docs:     https://docs.linkpanelcp.com/										   "
 	echo "Forum:    https://forum.linkpanelcp.com/                                        "
 	echo "GitHub:   https://github.com/ATSiCorp/LinkPanel-V3/                              "
 	echo
 	echo "Help support the LinkPanel Control Panel project by donating via PayPal:        "
-	echo "https://www.linkpanelcp.com/donate                                              "
+	echo "https://linkpanel.atsi.cloud/donate                                              "
 	echo
 	echo "Made with love & pride by the open-source community around the world.        "
 	echo
@@ -233,7 +233,7 @@ upgrade_send_notification_to_email() {
 		echo "- Check our forums for possible solutions: https://forum.linkpanelcp.com" >> $message_tmp_file
 		echo "- File an issue report on GitHub: https://github.com/ATSiCorp/LinkPanel-V3/issues" >> $message_tmp_file
 		echo "" >> $message_tmp_file
-		echo "Help support the LinkPanel Control Panel project by donating via PayPal: https://www.linkpanelcp.com/donate" >> $message_tmp_file
+		echo "Help support the LinkPanel Control Panel project by donating via PayPal: https://linkpanel.atsi.cloud/donate" >> $message_tmp_file
 		echo "===================================================" >> $message_tmp_file
 		echo "Have a wonderful day," >> $message_tmp_file
 		echo "The LinkPanel Control Panel development team" >> $message_tmp_file
