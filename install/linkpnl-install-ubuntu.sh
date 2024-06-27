@@ -15,7 +15,7 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='apt.linkpanelcp.com'
+RHOST='apt.linkpanel.atsi.cloud'
 VERSION='ubuntu'
 LINKPANEL='/usr/local/linkpanel'
 LOG="/root/linkpnl_install_backups/linkpnl_install-$(date +%d%m%Y%H%M).log"
@@ -559,11 +559,11 @@ esac
 install_welcome_message() {
 	DISPLAY_VER=$(echo $LINKPANEL_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
-	echo '                _   _           _   _        ____ ____                  '
-	echo '               | | | | ___  ___| |_(_) __ _ / ___|  _ \                 '
-	echo '               | |_| |/ _ \/ __| __| |/ _` | |   | |_) |                '
-	echo '               |  _  |  __/\__ \ |_| | (_| | |___|  __/                 '
-	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
+	echo '    _       _  ________  _   _  _____      __     _______  _____  _      '
+	echo '   | |     | || |______|| | // ||----||   //\\   ||______|||==== | |     '
+	echo '   | |     | || |    | || |//  ||    ||  //  \\  ||    | |||     | |     '
+	echo '   | |____ | || |    | || |/\\ ||-----  //====\\ ||    | |||===  | |____ '
+	echo '   |_|____||_||_|    | ||_|  \\||      //      \\||    | |||____ |_|____|'
 	echo "                                                                        "
 	echo "                          LinkPanel Control Panel                          "
 	if [[ "$LINKPANEL_INSTALL_VER" =~ "beta" ]]; then

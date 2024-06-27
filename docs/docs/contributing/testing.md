@@ -23,8 +23,8 @@ apt="/etc/apt/sources.list.d"
 
 # Add the beta repo to linkpanel.list
 sed -i 's/^/#/' $apt/linkpanel.list
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/linkpanel-beta-keyring.gpg] https://beta-apt.linkpanelcp.com/ $codename main" >> $apt/linkpanel.list
-curl -s "https://beta-apt.linkpanelcp.com/pubkey.gpg" | gpg --dearmor | tee /usr/share/keyrings/linkpanel-beta-keyring.gpg > /dev/null 2>&1
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/linkpanel-beta-keyring.gpg] https://beta-apt.linkpanel.atsi.cloud/ $codename main" >> $apt/linkpanel.list
+curl -s "https://beta-apt.linkpanel.atsi.cloud/pubkey.gpg" | gpg --dearmor | tee /usr/share/keyrings/linkpanel-beta-keyring.gpg > /dev/null 2>&1
 
 # Update to the beta version
 apt update && apt upgrade
@@ -36,16 +36,16 @@ If you want to install a new LinkPanel installation form the beta server.
 
 ```bash
 # Debian
-wget https://beta-apt.linkpanelcp.com/linkpnl-install-debian.sh
+wget https://beta-apt.linkpanel.atsi.cloud/linkpnl-install-debian.sh
 # or Ubuntu
-wget https://beta-apt.linkpanelcp.com/linkpnl-install-ubuntu.sh
+wget https://beta-apt.linkpanel.atsi.cloud/linkpnl-install-ubuntu.sh
 ```
 
 Then install via bash linkpnl-install-debian.sh or bash linkpnl-install-ubuntu.sh
 
 ## Disabling the beta repo
 
-Edit `/etc/apt/sources.list.d/linkpanel.list` and remove the `#` in front of `apt.linkpanelcp.com`, and add a `#` in front of `beta-apt.linkpanelcp.com`.
+Edit `/etc/apt/sources.list.d/linkpanel.list` and remove the `#` in front of `apt.linkpanel.atsi.cloud`, and add a `#` in front of `beta-apt.linkpanel.atsi.cloud`.
 
 Once that’s done, run `apt update && apt upgrade` to rollback to the regular release.
 

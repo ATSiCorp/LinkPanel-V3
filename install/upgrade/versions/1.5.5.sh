@@ -51,7 +51,7 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 	codename="$(lsb_release -s -c)"
 	release="$(lsb_release -s -r)"
 	mariadb_v=$(mysql -V | awk 'NR==1{print $5}' | head -c 4)
-	RHOST='apt.linkpanelcp.com'
+	RHOST='apt.linkpanel.atsi.cloud'
 
 	apt="/etc/apt/sources.list.d"
 
