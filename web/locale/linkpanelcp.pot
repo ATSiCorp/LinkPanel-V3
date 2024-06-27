@@ -3924,7 +3924,7 @@ msgid "Enable automatic HTTPS redirection"
 msgstr ""
 
 #: ../../web/templates/pages/edit_web.php:186
-msgid "Enable HTTP Strict Transport Security (HSTS)"
+msgid "Enable HTTP Strict Transport Security (LINKPNLS)"
 msgstr ""
 
 #: ../../web/templates/pages/edit_web.php:249

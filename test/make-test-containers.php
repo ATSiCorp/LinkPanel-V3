@@ -8,8 +8,8 @@
 #
 # - container name will be generated depending on enabled features (os,proxy,webserver and php)
 # - 'SHARED_HOST_FOLDER' will be mounted in the (guest lxc) container at '/home/ubuntu/source/' and linkpanelcp src folder is expected to be there
-# - wildcard dns *.hst.domain.tld can be used to point to vm host
-# - watch install log ex:(host) tail -n 100 -f /tmp/hst_installer_hst-ub1604-a2-mphp
+# - wildcard dns *.linkpnl.domain.tld can be used to point to vm host
+# - watch install log ex:(host) tail -n 100 -f /tmp/linkpnl_installer_linkpnl-ub1604-a2-mphp
 #
 # CONFIG HOST STEPS:
 #   export SHARED_HOST_FOLDER="/home/myuser/projectfiles"
@@ -21,7 +21,7 @@
 # Nginx reverse proxy config: /etc/nginx/conf.d/lxc-linkpanel.conf
 server {
     listen 80;
-    server_name ~(?<lxcname>hst-.+)\.hst\.domain\.tld$;
+    server_name ~(?<lxcname>linkpnl-.+)\.linkpnl\.domain\.tld$;
     location / {
         set $backend_upstream "http://$lxcname:80";
         proxy_pass $backend_upstream;
@@ -31,7 +31,7 @@ server {
 }
 server {
     listen 8083;
-    server_name ~^(?<lxcname>hst-.+)\.hst\.domain\.tld$;
+    server_name ~^(?<lxcname>linkpnl-.+)\.linkpnl\.domain\.tld$;
     location / {
         set $backend_upstream "https://$lxcname:8083";
         proxy_pass $backend_upstream;
@@ -39,7 +39,7 @@ server {
 }
 
 # use lxc resolver /etc/nginx/nginx.conf
-# test resolver ip ex: dig +short @10.240.232.1 hst-ub1804-ngx-a2-mphp
+# test resolver ip ex: dig +short @10.240.232.1 linkpnl-ub1804-ngx-a2-mphp
 http {
 ...
     resolver 10.240.232.1 ipv6=off valid=5s;
@@ -49,26 +49,26 @@ http {
 */
 
 ##  Uncomment and configure the following vars
-# define('DOMAIN',     'hst.domain.tld');
+# define('DOMAIN',     'linkpnl.domain.tld');
 # define('SHARED_HOST_FOLDER', '/home/myuser/projectfiles');
-# define('HST_PASS',   ''); // <- # openssl rand -base64 12
-# define('HST_EMAIL',  'user@domain.tld');
-define("HST_BRANCH", "~localsrc");
-define("HST_ARGS", "--force --interactive no --clamav no -p " . HST_PASS . " --email " . HST_EMAIL);
+# define('LINKPNL_PASS',   ''); // <- # openssl rand -base64 12
+# define('LINKPNL_EMAIL',  'user@domain.tld');
+define("LINKPNL_BRANCH", "~localsrc");
+define("LINKPNL_ARGS", "--force --interactive no --clamav no -p " . LINKPNL_PASS . " --email " . LINKPNL_EMAIL);
 define("LXC_TIMEOUT", 30);
 
 if (
 	!defined("SHARED_HOST_FOLDER") ||
-	!defined("HST_PASS") ||
-	!defined("HST_EMAIL") ||
-	!defined("HST_BRANCH") ||
+	!defined("LINKPNL_PASS") ||
+	!defined("LINKPNL_EMAIL") ||
+	!defined("LINKPNL_BRANCH") ||
 	!defined("DOMAIN")
 ) {
 	die("Error: missing variables" . PHP_EOL);
 }
 
 $containers = [
-	//    ['description'=>'hst-d9-ngx-a2-mphp',       'os'=>'debian9',     'nginx'=>true,  'apache2'=>true,    'php'=>'multiphp',  'dns'=>'auto', 'exim'=>'auto'],
+	//    ['description'=>'linkpnl-d9-ngx-a2-mphp',       'os'=>'debian9',     'nginx'=>true,  'apache2'=>true,    'php'=>'multiphp',  'dns'=>'auto', 'exim'=>'auto'],
 	[
 		"description" => "ub1804 ngx mphp",
 		"os" => "ubuntu18.04",
@@ -152,10 +152,10 @@ $containers = [
 ];
 
 array_walk($containers, function (&$element) {
-	$lxc_name = "hst-"; // hostname and lxc name prefix. Update nginx reverse proxy config after altering this value
-	$hst_args = HST_ARGS;
+	$lxc_name = "linkpnl-"; // hostname and lxc name prefix. Update nginx reverse proxy config after altering this value
+	$linkpnl_args = LINKPNL_ARGS;
 
-	$element["hst_installer"] = "hst-install-ubuntu.sh";
+	$element["linkpnl_installer"] = "linkpnl-install-ubuntu.sh";
 	$element["lxc_image"] = "ubuntu:18.04";
 
 	if ($element["os"] == "ubuntu16.04") {
@@ -163,11 +163,11 @@ array_walk($containers, function (&$element) {
 		$lxc_name .= "ub1604";
 	} elseif ($element["os"] == "debian8") {
 		$element["lxc_image"] = "images:debian/8";
-		$element["hst_installer"] = "hst-install-debian.sh";
+		$element["linkpnl_installer"] = "linkpnl-install-debian.sh";
 		$lxc_name .= "d8";
 	} elseif ($element["os"] == "debian9") {
 		$element["lxc_image"] = "images:debian/9";
-		$element["hst_installer"] = "hst-install-debian.sh";
+		$element["linkpnl_installer"] = "linkpnl-install-debian.sh";
 		$lxc_name .= "d9";
 	} else {
 		$lxc_name .= "ub1804";
@@ -176,57 +176,57 @@ array_walk($containers, function (&$element) {
 
 	if ($element["nginx"] === true) {
 		$lxc_name .= "-ngx";
-		$hst_args .= " --nginx yes";
+		$linkpnl_args .= " --nginx yes";
 	} else {
-		$hst_args .= " --nginx no";
+		$linkpnl_args .= " --nginx no";
 	}
 
 	if ($element["apache2"] === true) {
 		$lxc_name .= "-a2";
-		$hst_args .= " --apache yes";
+		$linkpnl_args .= " --apache yes";
 	} else {
-		$hst_args .= " --apache no";
+		$linkpnl_args .= " --apache no";
 	}
 
 	if ($element["php"] == "fpm") {
 		$lxc_name .= "-fpm";
-		$hst_args .= " --phpfpm yes";
+		$linkpnl_args .= " --phpfpm yes";
 	} elseif ($element["php"] == "multiphp") {
 		$lxc_name .= "-mphp";
-		$hst_args .= " --multiphp yes";
+		$linkpnl_args .= " --multiphp yes";
 	}
 
 	if (isset($element["dns"])) {
 		if ($element["dns"] === true || $element["dns"] == "auto") {
-			$hst_args .= " --named yes";
+			$linkpnl_args .= " --named yes";
 		} else {
-			$hst_args .= " --named no";
+			$linkpnl_args .= " --named no";
 		}
 	}
 
 	if (isset($element["exim"])) {
 		if ($element["exim"] === true || $element["exim"] == "auto") {
-			$hst_args .= " --exim yes";
+			$linkpnl_args .= " --exim yes";
 		} else {
-			$hst_args .= " --exim no";
+			$linkpnl_args .= " --exim no";
 		}
 	}
 
 	if (isset($element["webmail"])) {
 		if ($element["webmail"] === true || $element["webmail"] == "auto") {
-			$hst_args .= " --dovecot yes";
+			$linkpnl_args .= " --dovecot yes";
 		} else {
-			$hst_args .= " --dovecot no";
+			$linkpnl_args .= " --dovecot no";
 		}
 	}
 
 	$element["lxc_name"] = $lxc_name;
 	$element["hostname"] = $lxc_name . "." . DOMAIN;
 
-	// $hst_args .= ' --with-debs /home/ubuntu/source/linkpanelcp/src/pkgs/develop/' . $element['os'];
-	$hst_args .= " --with-debs /tmp/linkpanelcp-src/debs";
-	$hst_args .= " --hostname " . $element["hostname"];
-	$element["hst_args"] = $hst_args;
+	// $linkpnl_args .= ' --with-debs /home/ubuntu/source/linkpanelcp/src/pkgs/develop/' . $element['os'];
+	$linkpnl_args .= " --with-debs /tmp/linkpanelcp-src/debs";
+	$linkpnl_args .= " --hostname " . $element["hostname"];
+	$element["linkpnl_args"] = $linkpnl_args;
 });
 
 function lxc_run($args, &$rc) {
@@ -345,7 +345,7 @@ function check_lxc_container($container) {
 	exit(0);
 }
 
-function hst_installer_worker($container) {
+function linkpnl_installer_worker($container) {
 	$pid = pcntl_fork();
 	if ($pid > 0) {
 		return $pid;
@@ -354,23 +354,23 @@ function hst_installer_worker($container) {
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "/home/ubuntu/source/linkpanelcp/src/hst_autocompile.sh --linkpanel \"' .
-			HST_BRANCH .
+			' -- bash -c "/home/ubuntu/source/linkpanelcp/src/linkpnl_autocompile.sh --linkpanel \"' .
+			LINKPNL_BRANCH .
 			'\" no"',
 	);
 
-	$hver = getLinkPanelVersion(HST_BRANCH);
+	$hver = getLinkPanelVersion(LINKPNL_BRANCH);
 	echo "Install LinkPanel ${hver} on " . $container["lxc_name"] . PHP_EOL;
-	echo "Args: " . $container["hst_args"] . PHP_EOL;
+	echo "Args: " . $container["linkpnl_args"] . PHP_EOL;
 
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
 			' -- bash -c "cd \"/home/ubuntu/source/linkpanelcp\"; install/' .
-			$container["hst_installer"] .
+			$container["linkpnl_installer"] .
 			" " .
-			$container["hst_args"] .
-			'" 2>&1 > /tmp/hst_installer_' .
+			$container["linkpnl_args"] .
+			'" 2>&1 > /tmp/linkpnl_installer_' .
 			$container["lxc_name"],
 	);
 
@@ -406,7 +406,7 @@ foreach ($containers as $container) {
 		continue;
 	}
 
-	$worker_pid = hst_installer_worker($container);
+	$worker_pid = linkpnl_installer_worker($container);
 	if ($worker_pid > 0) {
 		$worker_pool[] = $worker_pid;
 	}

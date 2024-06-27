@@ -63,10 +63,10 @@ class LinkPanelAuth implements Service, AuthInterface {
 		return $this->getGuest();
 	}
 
-	public function transformUser($hstuser): User {
+	public function transformUser($linkpnluser): User {
 		$user = new User();
 		$user->setUsername($this->linkpanel_user);
-		$user->setName($this->linkpanel_user . " (" . $hstuser["NAME"] . ")");
+		$user->setName($this->linkpanel_user . " (" . $linkpnluser["NAME"] . ")");
 		$user->setRole("user");
 		$user->setPermissions($this->permissions);
 		$user->setHomedir("/");

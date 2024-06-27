@@ -21,7 +21,7 @@ server {
 	if ($anti_replay = 307) { return 307 https://$host$request_uri; }
 	if ($anti_replay = 425) { return 425; }
 
-  include %home%/%user%/conf/web/%domain%/nginx.hsts.conf*;
+  include %home%/%user%/conf/web/%domain%/nginx.linkpnls.conf*;
 
   # Rewrites
   location / {

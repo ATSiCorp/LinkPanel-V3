@@ -202,7 +202,7 @@ class LinkPanelApp {
 		string $dbtype = "mysql",
 		string $charset = "utf8mb4",
 	) {
-		$v_password = tempnam("/tmp", "hst");
+		$v_password = tempnam("/tmp", "linkpnl");
 		$fp = fopen($v_password, "w");
 		fwrite($fp, $dbpass . "\n");
 		fclose($fp);

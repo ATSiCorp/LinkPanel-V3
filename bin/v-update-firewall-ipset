@@ -31,13 +31,13 @@ is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 # Perform verification if read-only mode is enabled
 check_linkpanel_demo_mode
 
-ipset_hstobject='../../../data/firewall/ipset'
+ipset_linkpnlobject='../../../data/firewall/ipset'
 
-for ipset_name in $(search_objects "$ipset_hstobject" 'SUSPENDED' 'no' 'LISTNAME' 2> /dev/null); do
+for ipset_name in $(search_objects "$ipset_linkpnlobject" 'SUSPENDED' 'no' 'LISTNAME' 2> /dev/null); do
 
-	ipset_time="$(get_object_value "$ipset_hstobject" 'LISTNAME' "$ipset_name" '$TIME')"
-	ipset_date="$(get_object_value "$ipset_hstobject" 'LISTNAME' "$ipset_name" '$DATE')"
-	ipset_au="$(get_object_value "$ipset_hstobject" 'LISTNAME' "$ipset_name" '$AUTOUPDATE')"
+	ipset_time="$(get_object_value "$ipset_linkpnlobject" 'LISTNAME' "$ipset_name" '$TIME')"
+	ipset_date="$(get_object_value "$ipset_linkpnlobject" 'LISTNAME' "$ipset_name" '$DATE')"
+	ipset_au="$(get_object_value "$ipset_linkpnlobject" 'LISTNAME' "$ipset_name" '$AUTOUPDATE')"
 
 	if [ "$ipset_au" = 'no' ] || [ "$refresh" = 'load' ]; then
 		# Load existing ip list files in the kernel but don't auto update them

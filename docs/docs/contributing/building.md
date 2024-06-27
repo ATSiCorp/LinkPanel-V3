@@ -23,11 +23,11 @@ git checkout main
 cd ./src/
 
 # Compile packages
-./hst_autocompile.sh --all --noinstall --keepbuild '~localsrc'
+./linkpnl_autocompile.sh --all --noinstall --keepbuild '~localsrc'
 
 cd ../install
 
-bash hst-install-{os}.sh --with-debs /tmp/linkpanelcp-src/deb/
+bash linkpnl-install-{os}.sh --with-debs /tmp/linkpanelcp-src/deb/
 ```
 
 Any option can be appended to the installer command. [See the complete list](../introduction/getting-started#list-of-installation-options).
@@ -36,12 +36,12 @@ Any option can be appended to the installer command. [See the complete list](../
 
 ```bash
 # Only LinkPanel
-./hst_autocompile.sh --linkpanel --noinstall --keepbuild '~localsrc'
+./linkpnl_autocompile.sh --linkpanel --noinstall --keepbuild '~localsrc'
 ```
 
 ```bash
 # LinkPanel + linkpanel-nginx and linkpanel-php
-./hst_autocompile.sh --all --noinstall --keepbuild '~localsrc'
+./linkpnl_autocompile.sh --all --noinstall --keepbuild '~localsrc'
 ```
 
 ## Build and install packages
@@ -52,12 +52,12 @@ Use if you have LinkPanel already installed, for your changes to take effect.
 
 ```bash
 # Only LinkPanel
-./hst_autocompile.sh --linkpanel --install '~localsrc'
+./linkpnl_autocompile.sh --linkpanel --install '~localsrc'
 ```
 
 ```bash
 # LinkPanel + linkpanel-nginx and linkpanel-php
-./hst_autocompile.sh --all --install '~localsrc'
+./linkpnl_autocompile.sh --all --install '~localsrc'
 ```
 
 ## Updating LinkPanel from GitHub

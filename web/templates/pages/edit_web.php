@@ -181,9 +181,9 @@
 					</label>
 				</div>
 				<div class="form-check u-mb20">
-					<input class="form-check-input" type="checkbox" name="v_ssl_hsts" id="ssl_hsts" <?php if ($v_ssl_hsts == 'yes') echo 'checked' ?>>
-					<label for="ssl_hsts">
-						<?= _("Enable HTTP Strict Transport Security (HSTS)") ?>
+					<input class="form-check-input" type="checkbox" name="v_ssl_linkpnls" id="ssl_linkpnls" <?php if ($v_ssl_linkpnls == 'yes') echo 'checked' ?>>
+					<label for="ssl_linkpnls">
+						<?= _("Enable HTTP Strict Transport Security (LINKPNLS)") ?>
 						<a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security" target="_blank">
 							<i class="fas fa-question-circle"></i>
 						</a>

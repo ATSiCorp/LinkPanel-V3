@@ -1161,15 +1161,15 @@ v-add-web-domain-ssl-force admin acme.com
 
 This function forces SSL for the requested domain.
 
-## v-add-web-domain-ssl-hsts
+## v-add-web-domain-ssl-linkpnls
 
-[Source](https://github.com/ATSiCorp/LinkPanel-V3/blob/release/bin/v-add-web-domain-ssl-hsts)
+[Source](https://github.com/ATSiCorp/LinkPanel-V3/blob/release/bin/v-add-web-domain-ssl-linkpnls)
 
-Adding hsts to a domain
+Adding linkpnls to a domain
 
 **Options**: `USER` `DOMAIN` `[RESTART]` `[QUIET]`
 
-This function enables HSTS for the requested domain.
+This function enables LINKPNLS for the requested domain.
 
 ## v-add-web-domain-ssl-preset
 
@@ -3702,9 +3702,9 @@ v-delete-web-domain-ssl-force admin domain.tld
 
 This function removes force SSL configurations.
 
-## v-delete-web-domain-ssl-hsts
+## v-delete-web-domain-ssl-linkpnls
 
-[Source](https://github.com/ATSiCorp/LinkPanel-V3/blob/release/bin/v-delete-web-domain-ssl-hsts)
+[Source](https://github.com/ATSiCorp/LinkPanel-V3/blob/release/bin/v-delete-web-domain-ssl-linkpnls)
 
 remove ssl force from domain
 
@@ -3713,7 +3713,7 @@ remove ssl force from domain
 **Examples**:
 
 ```bash
-v-delete-web-domain-ssl-hsts user domain.tld
+v-delete-web-domain-ssl-linkpnls user domain.tld
 ```
 
 This function removes force SSL configurations.

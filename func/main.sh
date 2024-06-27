@@ -40,7 +40,7 @@ RRD_STEP=300
 BIN=$LINKPANEL/bin
 LINKPANEL_INSTALL_DIR="$LINKPANEL/install/deb"
 LINKPANEL_COMMON_DIR="$LINKPANEL/install/common"
-LINKPANEL_BACKUP="/root/hst_backups/$(date +%d%m%Y%H%M)"
+LINKPANEL_BACKUP="/root/linkpnl_backups/$(date +%d%m%Y%H%M)"
 LINKPANEL_PHP="$LINKPANEL/php/bin/php"
 USER_DATA=$LINKPANEL/data/users/$user
 WEBTPL=$LINKPANEL/data/templates/web
@@ -1441,11 +1441,11 @@ check_access_key_cmd() {
 		local allowed_commands
 		if [[ -n "$PERMISSIONS" ]]; then
 			allowed_commands="$(get_apis_commands "$PERMISSIONS")"
-			if [[ -z "$(echo ",${allowed_commands}," | grep ",${hst_command},")" ]]; then
-				check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $hst_command"
+			if [[ -z "$(echo ",${allowed_commands}," | grep ",${linkpnl_command},")" ]]; then
+				check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $linkpnl_command"
 			fi
 		elif [[ -z "$PERMISSIONS" && "$USER" != "$ROOT_USER" ]]; then
-			check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $hst_command"
+			check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $linkpnl_command"
 		fi
 		user_arg_position="0"
 	elif [[ ! -e "$BIN/$cmd" ]]; then
@@ -1457,20 +1457,20 @@ check_access_key_cmd() {
 		local allowed_commands
 		if [[ -n "$PERMISSIONS" ]]; then
 			allowed_commands="$(get_apis_commands "$PERMISSIONS")"
-			if [[ -z "$(echo ",${allowed_commands}," | grep ",${hst_command},")" ]]; then
-				check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $hst_command"
+			if [[ -z "$(echo ",${allowed_commands}," | grep ",${linkpnl_command},")" ]]; then
+				check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $linkpnl_command"
 			fi
 		elif [[ -z "$PERMISSIONS" && "$USER" != "$ROOT_USER" ]]; then
-			check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $hst_command"
+			check_result "$E_FORBIDEN" "Key $access_key_id don't have permission to run the command $linkpnl_command"
 		fi
 
 		if [[ "$USER" == "$ROOT_USER" ]]; then
 			# Admin can run commands for any user
 			user_arg_position="0"
 		else
-			user_arg_position="$(search_command_arg_position "$hst_command" "USER")"
+			user_arg_position="$(search_command_arg_position "$linkpnl_command" "USER")"
 			if ! [[ "$user_arg_position" =~ ^[0-9]+$ ]]; then
-				check_result "$E_FORBIDEN" "Command $hst_command not found"
+				check_result "$E_FORBIDEN" "Command $linkpnl_command not found"
 			fi
 		fi
 	fi
@@ -1768,11 +1768,11 @@ get_apis_commands() {
 # * 0:   It doesn't have the argument;
 # * 1-9: The position of the argument in the command.
 search_command_arg_position() {
-	local hst_command="$(basename "$1")"
+	local linkpnl_command="$(basename "$1")"
 	local arg_name="$2"
 
-	local command_path="$BIN/$hst_command"
-	if [[ -z "$hst_command" || ! -e "$command_path" ]]; then
+	local command_path="$BIN/$linkpnl_command"
+	if [[ -z "$linkpnl_command" || ! -e "$command_path" ]]; then
 		echo "-1"
 		return
 	fi

@@ -25,7 +25,7 @@ steps:
       - git submodule update --init --recursive
   - name: Build LinkPanel package and install
     commands:
-      - ./src/hst_autocompile.sh --linkpanel --install '~localsrc'
+      - ./src/linkpnl_autocompile.sh --linkpanel --install '~localsrc'
   - name: Reset Web templates
     commands:
       - rm /usr/local/linkpanel/data/templates/web/nginx/php-fpm/*.*
@@ -81,7 +81,7 @@ steps:
       - git submodule update --init --recursive
   - name: Build LinkPanel package install
     commands:
-      - ./src/hst_autocompile.sh --linkpanel --install '~localsrc'
+      - ./src/linkpnl_autocompile.sh --linkpanel --install '~localsrc'
   - name: Reset Web templates
     commands:
       - rm /usr/local/linkpanel/data/templates/web/nginx/php-fpm/*.*
@@ -133,7 +133,7 @@ steps:
     image: debian:bookworm
     commands:
       - ln -snf /etc/localtime && echo CET > /etc/timezone
-      - ./src/hst_autocompile.sh --dontinstalldeps --linkpanel --debug --cross --noinstall --keepbuild '~localsrc'
+      - ./src/linkpnl_autocompile.sh --dontinstalldeps --linkpanel --debug --cross --noinstall --keepbuild '~localsrc'
       - mkdir -p ./linkpanel/
       - mv /tmp/linkpanelcp-src/deb/*.deb ./linkpanel/
   - name: Upload

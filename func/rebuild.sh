@@ -329,9 +329,9 @@ rebuild_web_domain_conf() {
 		$BIN/v-add-web-domain-ssl-force $user $domain no yes
 	fi
 
-	if [ "$SSL_HSTS" = 'yes' ]; then
-		$BIN/v-delete-web-domain-ssl-hsts $user $domain no yes
-		$BIN/v-add-web-domain-ssl-hsts $user $domain no yes
+	if [ "$SSL_LINKPNLS" = 'yes' ]; then
+		$BIN/v-delete-web-domain-ssl-linkpnls $user $domain no yes
+		$BIN/v-add-web-domain-ssl-linkpnls $user $domain no yes
 	fi
 	if [ "$FASTCGI_CACHE" = 'yes' ]; then
 		$BIN/v-delete-fastcgi-cache $user $domain

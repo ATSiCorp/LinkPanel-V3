@@ -26,7 +26,7 @@ fi
 
 # Generate dhparam
 if [ ! -e /etc/ssl/dhparam.pem ]; then
-	echo "[ * ] Enabling HTTPS Strict Transport Security (HSTS) support..."
+	echo "[ * ] Enabling HTTPS Strict Transport Security (LINKPNLS) support..."
 	mv /etc/nginx/nginx.conf $LINKPANEL_BACKUP/conf/
 	cp -f $LINKPANEL_INSTALL_DIR/nginx/nginx.conf /etc/nginx/
 

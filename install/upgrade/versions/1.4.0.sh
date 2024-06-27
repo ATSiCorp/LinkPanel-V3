@@ -184,7 +184,7 @@ fi
 # Update ClamAV configuration file
 if [ -f "/etc/clamav/clamd.conf" ]; then
 	cp -f $LINKPANEL_INSTALL_DIR/clamav/clamd.conf /etc/clamav/
-	$LINKPANEL/bin/v-add-user-notification admin 'ClamAV config has been overwritten' 'Warning: If you have manualy changed /etc/clamav/clamd.conf and any changes you made will be lost an backup has been created in the /root/hst_backups folder with the original config. If you have not changed the config file you can ignore this message'
+	$LINKPANEL/bin/v-add-user-notification admin 'ClamAV config has been overwritten' 'Warning: If you have manualy changed /etc/clamav/clamd.conf and any changes you made will be lost an backup has been created in the /root/linkpnl_backups folder with the original config. If you have not changed the config file you can ignore this message'
 fi
 
 ##### COMMANDS FOR V1.5.X

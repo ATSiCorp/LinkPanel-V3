@@ -29,9 +29,9 @@ is_format_valid 'ip_name'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Define variables for ipset configuration
-ipset_hstobject='../../../data/firewall/ipset'
-is_object_valid "$ipset_hstobject" 'LISTNAME' "$ip_name"
-ip_version="$(get_object_value "$ipset_hstobject" 'LISTNAME' "$ip_name" '$IP_VERSION')"
+ipset_linkpnlobject='../../../data/firewall/ipset'
+is_object_valid "$ipset_linkpnlobject" 'LISTNAME' "$ip_name"
+ip_version="$(get_object_value "$ipset_linkpnlobject" 'LISTNAME' "$ip_name" '$IP_VERSION')"
 
 # Perform verification if read-only mode is enabled
 check_linkpanel_demo_mode

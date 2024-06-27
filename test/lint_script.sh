@@ -42,7 +42,7 @@ else
 fi
 
 # Set debug path and ensure it exists
-DEBUG_PATH="$HOME/hst-debug/"
+DEBUG_PATH="$HOME/linkpnl-debug/"
 if [ ! -d "$DEBUG_PATH" ]; then
 	mkdir "$DEBUG_PATH"
 fi

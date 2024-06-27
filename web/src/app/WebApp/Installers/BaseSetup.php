@@ -181,7 +181,7 @@ abstract class BaseSetup implements InstallerInterface {
 	}
 
 	public function saveTempFile(string $data) {
-		$tmp_file = tempnam("/tmp", "hst.");
+		$tmp_file = tempnam("/tmp", "linkpnl.");
 		if (empty($tmp_file)) {
 			throw new \Exception("Error creating temp file");
 		}

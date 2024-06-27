@@ -35,8 +35,8 @@ check_linkpanel_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-PRVKEY_FILE="$HOMEDIR/$user/.ssh/hst-filemanager-key"
-PUBKEY_FILE="$HOMEDIR/$user/.ssh/hst-filemanager-key.pub"
+PRVKEY_FILE="$HOMEDIR/$user/.ssh/linkpnl-filemanager-key"
+PUBKEY_FILE="$HOMEDIR/$user/.ssh/linkpnl-filemanager-key.pub"
 AUTHKEY_FILE="$HOMEDIR/$user/.ssh/authorized_keys"
 
 [ -z "$(readlink -f "$PRVKEY_FILE" | egrep "^$HOMEDIR/$user/.ssh/")" ] && check_result "$E_FORBIDEN" "Invalid private key file path"

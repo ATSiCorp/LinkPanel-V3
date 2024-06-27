@@ -18,9 +18,9 @@ export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.linkpanelcp.com'
 VERSION='ubuntu'
 LINKPANEL='/usr/local/linkpanel'
-LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
+LOG="/root/linkpnl_install_backups/linkpnl_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
-hst_backups="/root/hst_install_backups/$(date +%d%m%Y%H%M)"
+linkpnl_backups="/root/linkpnl_install_backups/$(date +%d%m%Y%H%M)"
 spinner="/-\|"
 os='ubuntu'
 release="$(lsb_release -s -r)"
@@ -438,7 +438,7 @@ echo
 apt-get -qq update
 
 # Creating backup directory
-mkdir -p "$hst_backups"
+mkdir -p "$linkpnl_backups"
 
 # Pre-install packages
 echo "[ * ] Installing dependencies..."
@@ -522,11 +522,11 @@ if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
 		echo -e "\e[33mERROR: Install script version does not match package version!\e[0m"
 		echo -e "\e[33mPlease download the installer from the release branch in order to continue:\e[0m"
 		echo ""
-		echo -e "\e[33mhttps://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/hst-install.sh\e[0m"
+		echo -e "\e[33mhttps://raw.githubusercontent.com/ATSiCorp/LinkPanel-V3/release/install/linkpnl-install.sh\e[0m"
 		echo ""
 		echo -e "\e[33mTo test pre-release versions, build the .deb packages and re-run the installer:\e[0m"
-		echo -e "  \e[33m./hst_autocompile.sh \e[1m--linkpanel branchname no\e[21m\e[0m"
-		echo -e "  \e[33m./hst-install.sh .. \e[1m--with-debs /tmp/linkpanelcp-src/debs\e[21m\e[0m"
+		echo -e "  \e[33m./linkpnl_autocompile.sh \e[1m--linkpanel branchname no\e[21m\e[0m"
+		echo -e "  \e[33m./linkpnl-install.sh .. \e[1m--with-debs /tmp/linkpanelcp-src/debs\e[21m\e[0m"
 		echo ""
 		check_result 1 "Installation aborted"
 	fi
@@ -767,7 +767,7 @@ if [[ -z "$email" ]]; then
 fi
 
 # Defining backup directory
-echo -e "Installation backup directory: $hst_backups"
+echo -e "Installation backup directory: $linkpnl_backups"
 
 # Print Log File Path
 echo "Installation log file: $LOG"
@@ -872,66 +872,66 @@ check_result $? 'apt-get upgrade failed'
 #----------------------------------------------------------#
 
 # Creating backup directory tree
-mkdir -p $hst_backups
-cd $hst_backups
+mkdir -p $linkpnl_backups
+cd $linkpnl_backups
 mkdir nginx apache2 php vsftpd proftpd bind exim4 dovecot clamd
 mkdir spamassassin mysql postgresql openssl linkpanel
 
 # Backup OpenSSL configuration
-cp /etc/ssl/openssl.cnf $hst_backups/openssl > /dev/null 2>&1
+cp /etc/ssl/openssl.cnf $linkpnl_backups/openssl > /dev/null 2>&1
 
 # Backup nginx configuration
 systemctl stop nginx > /dev/null 2>&1
-cp -r /etc/nginx/* $hst_backups/nginx > /dev/null 2>&1
+cp -r /etc/nginx/* $linkpnl_backups/nginx > /dev/null 2>&1
 
 # Backup Apache configuration
 systemctl stop apache2 > /dev/null 2>&1
-cp -r /etc/apache2/* $hst_backups/apache2 > /dev/null 2>&1
+cp -r /etc/apache2/* $linkpnl_backups/apache2 > /dev/null 2>&1
 rm -f /etc/apache2/conf.d/* > /dev/null 2>&1
 
 # Backup PHP-FPM configuration
 systemctl stop php*-fpm > /dev/null 2>&1
-cp -r /etc/php/* $hst_backups/php > /dev/null 2>&1
+cp -r /etc/php/* $linkpnl_backups/php > /dev/null 2>&1
 
 # Backup Bind configuration
 systemctl stop bind9 > /dev/null 2>&1
-cp -r /etc/bind/* $hst_backups/bind > /dev/null 2>&1
+cp -r /etc/bind/* $linkpnl_backups/bind > /dev/null 2>&1
 
 # Backup Vsftpd configuration
 systemctl stop vsftpd > /dev/null 2>&1
-cp /etc/vsftpd.conf $hst_backups/vsftpd > /dev/null 2>&1
+cp /etc/vsftpd.conf $linkpnl_backups/vsftpd > /dev/null 2>&1
 
 # Backup ProFTPD configuration
 systemctl stop proftpd > /dev/null 2>&1
-cp /etc/proftpd/* $hst_backups/proftpd > /dev/null 2>&1
+cp /etc/proftpd/* $linkpnl_backups/proftpd > /dev/null 2>&1
 
 # Backup Exim configuration
 systemctl stop exim4 > /dev/null 2>&1
-cp -r /etc/exim4/* $hst_backups/exim4 > /dev/null 2>&1
+cp -r /etc/exim4/* $linkpnl_backups/exim4 > /dev/null 2>&1
 
 # Backup ClamAV configuration
 systemctl stop clamav-daemon > /dev/null 2>&1
-cp -r /etc/clamav/* $hst_backups/clamav > /dev/null 2>&1
+cp -r /etc/clamav/* $linkpnl_backups/clamav > /dev/null 2>&1
 
 # Backup SpamAssassin configuration
 systemctl stop spamassassin > /dev/null 2>&1
-cp -r /etc/spamassassin/* $hst_backups/spamassassin > /dev/null 2>&1
+cp -r /etc/spamassassin/* $linkpnl_backups/spamassassin > /dev/null 2>&1
 
 # Backup Dovecot configuration
 systemctl stop dovecot > /dev/null 2>&1
-cp /etc/dovecot.conf $hst_backups/dovecot > /dev/null 2>&1
-cp -r /etc/dovecot/* $hst_backups/dovecot > /dev/null 2>&1
+cp /etc/dovecot.conf $linkpnl_backups/dovecot > /dev/null 2>&1
+cp -r /etc/dovecot/* $linkpnl_backups/dovecot > /dev/null 2>&1
 
 # Backup MySQL/MariaDB configuration and data
 systemctl stop mysql > /dev/null 2>&1
 killall -9 mysqld > /dev/null 2>&1
-mv /var/lib/mysql $hst_backups/mysql/mysql_datadir > /dev/null 2>&1
-cp -r /etc/mysql/* $hst_backups/mysql > /dev/null 2>&1
-mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
+mv /var/lib/mysql $linkpnl_backups/mysql/mysql_datadir > /dev/null 2>&1
+cp -r /etc/mysql/* $linkpnl_backups/mysql > /dev/null 2>&1
+mv -f /root/.my.cnf $linkpnl_backups/mysql > /dev/null 2>&1
 
 # Backup LinkPanel
 systemctl stop linkpanel > /dev/null 2>&1
-cp -r $LINKPANEL/* $hst_backups/linkpanel > /dev/null 2>&1
+cp -r $LINKPANEL/* $linkpnl_backups/linkpanel > /dev/null 2>&1
 apt-get -y purge linkpanel linkpanel-nginx linkpanel-php > /dev/null 2>&1
 rm -rf $LINKPANEL > /dev/null 2>&1
 
@@ -1491,26 +1491,26 @@ fi
 # Generating SSL certificate
 echo "[ * ] Generating default self-signed SSL certificate..."
 $LINKPANEL/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
-	'San Francisco' 'LinkPanel Control Panel' 'IT' > /tmp/hst.pem
+	'San Francisco' 'LinkPanel Control Panel' 'IT' > /tmp/linkpnl.pem
 
 # Parsing certificate file
-crt_end=$(grep -n "END CERTIFICATE-" /tmp/hst.pem | cut -f 1 -d:)
+crt_end=$(grep -n "END CERTIFICATE-" /tmp/linkpnl.pem | cut -f 1 -d:)
 if [ "$release" = "22.04" ]; then
-	key_start=$(grep -n "BEGIN PRIVATE KEY" /tmp/hst.pem | cut -f 1 -d:)
-	key_end=$(grep -n "END PRIVATE KEY" /tmp/hst.pem | cut -f 1 -d:)
+	key_start=$(grep -n "BEGIN PRIVATE KEY" /tmp/linkpnl.pem | cut -f 1 -d:)
+	key_end=$(grep -n "END PRIVATE KEY" /tmp/linkpnl.pem | cut -f 1 -d:)
 else
-	key_start=$(grep -n "BEGIN RSA" /tmp/hst.pem | cut -f 1 -d:)
-	key_end=$(grep -n "END RSA" /tmp/hst.pem | cut -f 1 -d:)
+	key_start=$(grep -n "BEGIN RSA" /tmp/linkpnl.pem | cut -f 1 -d:)
+	key_end=$(grep -n "END RSA" /tmp/linkpnl.pem | cut -f 1 -d:)
 fi
 
 # Adding SSL certificate
 echo "[ * ] Adding SSL certificate to LinkPanel Control Panel..."
 cd $LINKPANEL/ssl
-sed -n "1,${crt_end}p" /tmp/hst.pem > certificate.crt
-sed -n "$key_start,${key_end}p" /tmp/hst.pem > certificate.key
+sed -n "1,${crt_end}p" /tmp/linkpnl.pem > certificate.crt
+sed -n "$key_start,${key_end}p" /tmp/linkpnl.pem > certificate.key
 chown root:mail $LINKPANEL/ssl/*
 chmod 660 $LINKPANEL/ssl/*
-rm /tmp/hst.pem
+rm /tmp/linkpnl.pem
 
 # Install dhparam.pem
 cp -f $LINKPANEL_INSTALL_DIR/ssl/dhparam.pem /etc/ssl

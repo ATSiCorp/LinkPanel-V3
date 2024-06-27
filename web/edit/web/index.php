@@ -63,7 +63,7 @@ if (!empty($v_ssl)) {
 	$v_ssl_pub_key = $ssl_str[$v_domain]["PUB_KEY"];
 	$v_ssl_issuer = $ssl_str[$v_domain]["ISSUER"];
 	$v_ssl_forcessl = $data[$v_domain]["SSL_FORCE"];
-	$v_ssl_hsts = $data[$v_domain]["SSL_HSTS"];
+	$v_ssl_linkpnls = $data[$v_domain]["SSL_LINKPNLS"];
 }
 $v_letsencrypt = $data[$v_domain]["LETSENCRYPT"];
 if (empty($v_letsencrypt)) {
@@ -796,7 +796,7 @@ if (!empty($_POST["save"])) {
 		$v_ssl_ca = "";
 		$v_ssl = "no";
 		$v_ssl_forcessl = "no";
-		$v_ssl_hsts = "no";
+		$v_ssl_linkpnls = "no";
 		$restart_web = "yes";
 		$restart_proxy = "yes";
 	}
@@ -961,16 +961,16 @@ if (!empty($_POST["save"])) {
 		$restart_proxy = "yes";
 	}
 
-	// Add SSL HSTS
-	if (!empty($_POST["v_ssl_hsts"]) && !empty($_POST["v_ssl"]) && empty($_SESSION["error_msg"])) {
+	// Add SSL LINKPNLS
+	if (!empty($_POST["v_ssl_linkpnls"]) && !empty($_POST["v_ssl"]) && empty($_SESSION["error_msg"])) {
 		exec(
-			LINKPANEL_CMD . "v-add-web-domain-ssl-hsts " . $user . " " . quoteshellarg($v_domain),
+			LINKPANEL_CMD . "v-add-web-domain-ssl-linkpnls " . $user . " " . quoteshellarg($v_domain),
 			$output,
 			$return_var,
 		);
 		check_return_code($return_var, $output);
 		unset($output);
-		$v_ssl_hsts = "yes";
+		$v_ssl_linkpnls = "yes";
 		$restart_web = "yes";
 		$restart_proxy = "yes";
 	}
@@ -993,16 +993,16 @@ if (!empty($_POST["save"])) {
 		$restart_proxy = "yes";
 	}
 
-	// Delete SSL HSTS
-	if ($v_ssl_hsts == "yes" && empty($_POST["v_ssl_hsts"]) && empty($_SESSION["error_msg"])) {
+	// Delete SSL LINKPNLS
+	if ($v_ssl_linkpnls == "yes" && empty($_POST["v_ssl_linkpnls"]) && empty($_SESSION["error_msg"])) {
 		exec(
-			LINKPANEL_CMD . "v-delete-web-domain-ssl-hsts " . $user . " " . quoteshellarg($v_domain),
+			LINKPANEL_CMD . "v-delete-web-domain-ssl-linkpnls " . $user . " " . quoteshellarg($v_domain),
 			$output,
 			$return_var,
 		);
 		check_return_code($return_var, $output);
 		unset($output);
-		$v_ssl_hsts = "no";
+		$v_ssl_linkpnls = "no";
 		$restart_web = "yes";
 		$restart_proxy = "yes";
 	}

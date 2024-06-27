@@ -22,7 +22,7 @@ This seems to occur specifically when the line `Subsystem sftp /usr/lib/openssh/
 
 Short answer: add `Subsystem sftp internal-sftp` to `/etc/ssh/sshd_config`.
 
-Long answer: Refer to the install script `./install/hst-install-{distro}.sh` for all the changes made to `/etc/ssh/sshd_config`. For Debian, the changes can be summarised as follows:
+Long answer: Refer to the install script `./install/linkpnl-install-{distro}.sh` for all the changes made to `/etc/ssh/sshd_config`. For Debian, the changes can be summarised as follows:
 
 ```bash
 # LinkPanelCP Changes to the default /etc/ssh/sshd_config in Debian 10 Buster

@@ -75,7 +75,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 		}
 	}
 	# Create filemanager sftp key if missing and trash it after 30 min
-	if (!file_exists("/home/" . basename($v_user) . "/.ssh/hst-filemanager-key")) {
+	if (!file_exists("/home/" . basename($v_user) . "/.ssh/linkpnl-filemanager-key")) {
 		exec(
 			"sudo /usr/local/linkpanel/bin/v-add-user-sftp-key " .
 				quoteshellarg(basename($v_user)) .
@@ -118,7 +118,7 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 		"host" => "127.0.0.1",
 		"port" => intval($_SESSION["SFTP_PORT"]),
 		"username" => basename($v_user),
-		"privateKey" => "/home/" . basename($v_user) . "/.ssh/hst-filemanager-key",
+		"privateKey" => "/home/" . basename($v_user) . "/.ssh/linkpnl-filemanager-key",
 		"root" => $root,
 		"timeout" => 10,
 		"directoryPerm" => 0755,

@@ -36,12 +36,12 @@ If you want to install a new LinkPanel installation form the beta server.
 
 ```bash
 # Debian
-wget https://beta-apt.linkpanelcp.com/hst-install-debian.sh
+wget https://beta-apt.linkpanelcp.com/linkpnl-install-debian.sh
 # or Ubuntu
-wget https://beta-apt.linkpanelcp.com/hst-install-ubuntu.sh
+wget https://beta-apt.linkpanelcp.com/linkpnl-install-ubuntu.sh
 ```
 
-Then install via bash hst-install-debian.sh or bash hst-install-ubuntu.sh
+Then install via bash linkpnl-install-debian.sh or bash linkpnl-install-ubuntu.sh
 
 ## Disabling the beta repo
 

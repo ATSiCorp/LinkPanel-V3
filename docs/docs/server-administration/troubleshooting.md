@@ -50,7 +50,7 @@ Configuration file '/etc/apache2/apache2.conf'
 
 If you see this message **ALWAYS** press "N" or **ENTER** to select the default value!
 
-How ever if you entered Y or I. Then replace the config that can be found in /root/hst_backups/xxxxx/conf/apache2/ folder and copy over apache2.conf and ports.conf to /etc/apache2/ folder
+How ever if you entered Y or I. Then replace the config that can be found in /root/linkpnl_backups/xxxxx/conf/apache2/ folder and copy over apache2.conf and ports.conf to /etc/apache2/ folder
 
 xxxxxx is the date/time the backup is made during the last update of LinkPanelCP
 

@@ -1,8 +1,8 @@
 #!/bin/bash
-# info: Adding hsts to a domain
+# info: Adding linkpnls to a domain
 # options: USER DOMAIN [RESTART] [QUIET]
 #
-# This function enables HSTS for the requested domain.
+# This function enables LINKPNLS for the requested domain.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -51,26 +51,26 @@ fi
 
 # Check for Apache/Nginx or Nginx/PHP-FPM configuration
 if [ -z "$PROXY_SYSTEM" ]; then
-	hstsconf="$HOMEDIR/$user/conf/web/$domain/$WEB_SYSTEM.hsts.conf"
+	linkpnlsconf="$HOMEDIR/$user/conf/web/$domain/$WEB_SYSTEM.linkpnls.conf"
 else
-	hstsconf="$HOMEDIR/$user/conf/web/$domain/$PROXY_SYSTEM.hsts.conf"
+	linkpnlsconf="$HOMEDIR/$user/conf/web/$domain/$PROXY_SYSTEM.linkpnls.conf"
 fi
 
-echo 'add_header Strict-Transport-Security "max-age=31536000;" always;' > $hstsconf
+echo 'add_header Strict-Transport-Security "max-age=31536000;" always;' > $linkpnlsconf
 
-chown root:$user $hstsconf
-chmod 640 $hstsconf
+chown root:$user $linkpnlsconf
+chmod 640 $linkpnlsconf
 
 #----------------------------------------------------------#
 #                       LinkPanel                             #
 #----------------------------------------------------------#
 
-if [ -z "$SSL_HSTS" ]; then
-	add_object_key "web" 'DOMAIN' "$domain" 'SSL_HSTS' 'SSL_FORCE'
+if [ -z "$SSL_LINKPNLS" ]; then
+	add_object_key "web" 'DOMAIN' "$domain" 'SSL_LINKPNLS' 'SSL_FORCE'
 fi
 
 # Set forcessl flag to enabled
-update_object_value 'web' 'DOMAIN' "$domain" '$SSL_HSTS' 'yes'
+update_object_value 'web' 'DOMAIN' "$domain" '$SSL_LINKPNLS' 'yes'
 
 # Restart web server
 $BIN/v-restart-web "$restart"
@@ -82,7 +82,7 @@ check_result $? "Proxy restart failed" > /dev/null
 
 # Logging
 if [ "$quiet" != "yes" ]; then
-	$BIN/v-log-action "$user" "Info" "Web" "HTTP Strict Transport Security (HSTS) enabled (Domain: $domain)."
+	$BIN/v-log-action "$user" "Info" "Web" "HTTP Strict Transport Security (LINKPNLS) enabled (Domain: $domain)."
 fi
 log_event "$OK" "$ARGUMENTS"
 

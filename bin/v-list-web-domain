@@ -38,7 +38,7 @@ json_list() {
         "STATS_USER": "'$STATS_USER'",
         "SSL": "'$SSL'",
         "SSL_FORCE": "'$SSL_FORCE'",
-        "SSL_HSTS": "'$SSL_HSTS'",
+        "SSL_LINKPNLS": "'$SSL_LINKPNLS'",
         "SSL_HOME": "'$SSL_HOME'",
         "LETSENCRYPT": "'$LETSENCRYPT'",
         "FTP_USER": "'$FTP_USER'",
@@ -76,8 +76,8 @@ shell_list() {
 		if [ -n "$SSL_FORCE" ]; then
 			echo "SSL_FORCE:        $SSL_FORCE"
 		fi
-		if [ -n "$SSL_HSTS" ]; then
-			echo "SSL_HSTS:         $SSL_HSTS"
+		if [ -n "$SSL_LINKPNLS" ]; then
+			echo "SSL_LINKPNLS:         $SSL_LINKPNLS"
 		fi
 	fi
 	echo "TEMPLATE:         $TPL"
@@ -124,7 +124,7 @@ shell_list() {
 # PLAIN list function
 plain_list() {
 	echo -ne "$DOMAIN\t$IP\t$IP6\t$DOCROOT\t$U_DISK\t$U_BANDWIDTH\t$TPL\t"
-	echo -ne "$ALIAS\t$STATS\t$STATS_USER\t$SSL\t$SSL_FORCE\t$SSL_HSTS\t$SSL_HOME\t,$LETSENCRYPT"
+	echo -ne "$ALIAS\t$STATS\t$STATS_USER\t$SSL\t$SSL_FORCE\t$SSL_LINKPNLS\t$SSL_HOME\t,$LETSENCRYPT"
 	echo -ne "$FTP_USER\t$FTP_PATH\t$AUTH_USER\t$BACKEND\t$PROXY\t"
 	echo -e "$PROXY_EXT\t$SUSPENDED\t$TIME\t$DATE"
 }
@@ -132,10 +132,10 @@ plain_list() {
 # CSV list function
 csv_list() {
 	echo -n "DOMAIN,IP,IP6,DOCROOT,U_DISK,U_BANDWIDTH,TPL,ALIAS,STATS,STATS_USER,SSL,"
-	echo -n "SSL_FORCE,SSL_HSTS,SSL_HOME,LETSENCRYPT,FTP_USER,FTP_PATH,AUTH_USER,BACKEND,PROXY,PROXY_EXT,"
+	echo -n "SSL_FORCE,SSL_LINKPNLS,SSL_HOME,LETSENCRYPT,FTP_USER,FTP_PATH,AUTH_USER,BACKEND,PROXY,PROXY_EXT,"
 	echo "SUSPENDED,TIME,DATE"
 	echo -n "$DOMAIN,$IP,$IP6,$DOCROOT,$U_DISK,$U_BANDWIDTH,$TPL,\"$ALIAS\",$STATS"
-	echo -n "\"$STATS_USER\",$SSL,$SSL_FORCE,$SSL_HSTS,$SSL_HOME,$LETSENCRYPT,\"$FTP_USER\",\"$FTP_PATH\","
+	echo -n "\"$STATS_USER\",$SSL,$SSL_FORCE,$SSL_LINKPNLS,$SSL_HOME,$LETSENCRYPT,\"$FTP_USER\",\"$FTP_PATH\","
 	echo -n "\"$AUTH_USER\",$BACKEND,$PROXY,\"$PROXY_EXT\",$SUSPENDED,$TIME,"
 	echo "$DATE"
 }

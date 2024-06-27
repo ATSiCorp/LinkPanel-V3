@@ -340,7 +340,7 @@ upgrade_init_backup() {
 
 upgrade_init_logging() {
 	# Set log file path
-	LOG="$LINKPANEL_BACKUP/hst-upgrade-$(date +%d%m%Y%H%M).log"
+	LOG="$LINKPANEL_BACKUP/linkpnl-upgrade-$(date +%d%m%Y%H%M).log"
 
 	# Create log file
 	touch $LOG

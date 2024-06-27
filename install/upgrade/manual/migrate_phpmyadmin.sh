@@ -33,11 +33,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
 	# Create an backup of current config
 	echo "[ * ] Backing up old configuration files..."
-	mkdir -p /root/hst_backup_man/phmyadmin
-	cp -r /etc/phpmyadmin/* /root/hst_backup_man/phmyadmin
+	mkdir -p /root/linkpnl_backup_man/phmyadmin
+	cp -r /etc/phpmyadmin/* /root/linkpnl_backup_man/phmyadmin
 
-	mkdir -p /root/hst_backup_man/var_phmyadmin
-	cp -r /var/lib/phpmyadmin/* /root/hst_backup_man/var_phmyadmin
+	mkdir -p /root/linkpnl_backup_man/var_phmyadmin
+	cp -r /var/lib/phpmyadmin/* /root/linkpnl_backup_man/var_phmyadmin
 
 	echo '[ * ] Marking phpmyadmin as held in apt...'
 	apt-mark hold phpmyadmin
