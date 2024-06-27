@@ -1,0 +1,62 @@
+{
+	"name": "hestia",
+	"private": true,
+	"version": "1.9.0~alpha",
+	"description": "An open-source Linux web server control panel.",
+	"repository": "https://github.com/hestiacp/hestiacp",
+	"license": "GPL-3.0-or-later",
+	"type": "module",
+	"scripts": {
+		"docs:dev": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:serve": "vitepress serve docs",
+		"docs:test": "vitest run --config docs/.vitepress/vitest.config.js",
+		"build": "node build.js",
+		"lint": "prettier --cache --check . && eslint --cache . && stylelint web/css/src/**/*.css && markdownlint-cli2 *.md docs/**/*.md",
+		"lint-staged": "lint-staged",
+		"format": "prettier --cache --write .",
+		"preinstall": "npx only-allow npm",
+		"prepare": "husky"
+	},
+	"dependencies": {
+		"@alpinejs/collapse": "^3.14.1",
+		"@fortawesome/fontawesome-free": "^6.5.2",
+		"alpinejs": "^3.14.1",
+		"chart.js": "^4.4.3",
+		"check-password-strength": "^2.0.10",
+		"floating-vue": "^5.2.2",
+		"nanoid": "^5.0.7",
+		"normalize.css": "^8.0.1",
+		"xterm": "^5.3.0",
+		"xterm-addon-canvas": "^0.5.0",
+		"xterm-addon-webgl": "^0.16.0"
+	},
+	"devDependencies": {
+		"@prettier/plugin-php": "^0.22.2",
+		"@testing-library/vue": "^8.1.0",
+		"@vitejs/plugin-vue": "^5.0.5",
+		"browserslist": "^4.23.1",
+		"esbuild": "^0.21.5",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-editorconfig": "^4.0.3",
+		"eslint-plugin-import": "^2.29.1",
+		"husky": "^9.0.11",
+		"jsdom": "^24.1.0",
+		"lightningcss": "^1.25.1",
+		"lint-staged": "^15.2.7",
+		"markdownlint-cli2": "^0.13.0",
+		"prettier": "^3.3.2",
+		"prettier-plugin-nginx": "^1.0.3",
+		"prettier-plugin-sh": "^0.14.0",
+		"prettier-plugin-sql": "^0.18.0",
+		"stylelint": "^16.6.1",
+		"stylelint-config-standard": "^36.0.1",
+		"vitepress": "^1.2.3",
+		"vitest": "^1.6.0",
+		"vue": "^3.4.30"
+	},
+	"browserslist": [
+		"defaults"
+	]
+}
