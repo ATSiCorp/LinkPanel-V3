@@ -15,7 +15,7 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='apt.linkpanel.atsi.cloud'
+RHOST='mirror.nl.datapacket.com'
 VERSION='ubuntu'
 LINKPANEL='/usr/local/linkpanel'
 LOG="/root/linkpnl_install_backups/linkpnl_install-$(date +%d%m%Y%H%M).log"
