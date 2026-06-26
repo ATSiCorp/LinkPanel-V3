@@ -42,7 +42,7 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 			ARCH="arm64"
 			;;
 		*)
-			echo "   [ ! ] Unsuported architectrue"
+			echo "   [ ! ] Unsupported architecture"
 			;;
 	esac
 

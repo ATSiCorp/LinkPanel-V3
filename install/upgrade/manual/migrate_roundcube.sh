@@ -1,5 +1,5 @@
 #!/bin/bash
-# info: Disconnect Roundcube from APT and solving issues with Roundcube accidental updates from ATP
+# info: Disconnect Roundcube from APT and solving issues with Roundcube accidental updates from APT
 
 #----------------------------------------------------------#
 #                    Variable&Function                     #
@@ -24,7 +24,7 @@ fi
 #                       Action                             #
 #----------------------------------------------------------#
 
-echo "To remove Roundcube you will need use the root password. Password can be found in /usr/local/linkpanel/conf/mysql.conf"
+echo "To remove Roundcube you will need to use the root password. Password can be found in /usr/local/linkpanel/conf/mysql.conf"
 read -p 'Would you like to continue? [y/n]' -n 1 -r
 echo # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -34,7 +34,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	echo "SET FOREIGN_KEY_CHECKS = 0;" >> ~/roundcube.sql
 	mysqldump --add-drop-table roundcube >> ~/roundcube.sql
 	echo "SET FOREIGN_KEY_CHECKS = 1;" >> ~/roundcube.sql
-	echo '[ * ] Remove Roundcube via ATP'
+	echo '[ * ] Remove Roundcube via APT'
 	apt-get autoremove roundcube-core roundcube-mysql roundcube-plugins
 	echo '[ * ] Delete possible trail'
 	# make sure everything is deleted

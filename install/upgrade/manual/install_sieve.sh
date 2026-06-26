@@ -1,7 +1,7 @@
 #!/bin/bash
 # info: Install / remove  sieve / manage-sieve for Dovecot
 #
-# Thos function installs manage-sieve functionality for dovecot.
+# This function installs manage-sieve functionality for dovecot.
 
 #----------------------------------------------------------#
 #                    Variable&Function                     #
@@ -22,7 +22,7 @@ source_conf "$LINKPANEL/install/upgrade/upgrade.conf"
 
 #check if string already exists
 if grep "dovecot_virtual_delivery" /etc/exim4/exim4.conf.template; then
-	echo "Plugin allready enabled"
+	echo "Plugin already enabled"
 	exit 0
 fi
 

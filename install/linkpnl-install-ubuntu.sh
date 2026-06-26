@@ -186,7 +186,7 @@ sort_config_file() {
 validate_username() {
 	if [[ "$username" =~ ^[[:alnum:]][-|\.|_[:alnum:]]{0,28}[[:alnum:]]$ ]]; then
 		if [ -n "$(grep ^$username: /etc/passwd /etc/group)" ]; then
-			echo -e "\nUsername or Group allready exists please select a new user name or delete the user and / or group."
+			echo -e "\nUsername or Group already exists please select a new user name or delete the user and / or group."
 		else
 			return 1
 		fi
@@ -1177,7 +1177,7 @@ systemctl restart ssh
 
 # Disable AWStats cron
 rm -f /etc/cron.d/awstats
-# Replace awstatst function
+# Replace awstats function
 cp -f $LINKPANEL_INSTALL_DIR/logrotate/httpd-prerotate/* /etc/logrotate.d/httpd-prerotate/
 
 # Set directory color
