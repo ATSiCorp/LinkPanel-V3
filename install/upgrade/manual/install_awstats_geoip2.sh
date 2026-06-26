@@ -20,7 +20,7 @@ source $LINKPANEL/conf/linkpanel.conf
 
 #check if string already exists
 if grep "geoip2" $LINKPANEL/data/templates/web/awstats/awstats.tpl; then
-	echo "Plugin allready enabled"
+	echo "Plugin already enabled"
 	exit 0
 fi
 

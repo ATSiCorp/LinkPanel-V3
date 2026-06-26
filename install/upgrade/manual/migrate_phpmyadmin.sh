@@ -1,5 +1,5 @@
 #!/bin/bash
-# info: Disconnect phpMyadmin from APT and solving issues with PHPMyadmin accidental updates from ATP
+# info: Disconnect phpMyadmin from APT and solving issues with PHPMyadmin accidental updates from APT
 
 #----------------------------------------------------------#
 #                    Variable&Function                     #
@@ -15,7 +15,7 @@ source $LINKPANEL/conf/linkpanel.conf
 #                    Verifications                         #
 #----------------------------------------------------------#
 
-echo "To remove phpMyAdmin you will need use the root password. Password can be found in /usr/local/linkpanel/conf/mysql.conf"
+echo "To remove phpMyAdmin you will need to use the root password. Password can be found in /usr/local/linkpanel/conf/mysql.conf"
 read -p 'Would you like to continue? [y/n]'
 
 #----------------------------------------------------------#
@@ -31,7 +31,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 		$BIN/v-delete-sys-pma-sso
 	fi
 
-	# Create an backup of current config
+	# Create a backup of current config
 	echo "[ * ] Backing up old configuration files..."
 	mkdir -p /root/linkpnl_backup_man/phmyadmin
 	cp -r /etc/phpmyadmin/* /root/linkpnl_backup_man/phmyadmin

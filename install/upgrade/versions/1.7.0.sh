@@ -96,13 +96,13 @@ if [ "$FTP_SYSTEM" = 'proftpd' ]; then
 fi
 
 if echo "$BACKUP_SYSTEM" | grep "google" > /dev/null; then
-	echo "[ ! ] Deprecation notice: Backup via Google Cloud has been removed setup backup again via Rclone to reinstate the backup and restore capebilities!"
-	add_upgrade_message "Deprecation notice: Backup via Google Cloud has been removed setup backup again via Rclone to reinstate the backup and restore capebilities!"
+	echo "[ ! ] Deprecation notice: Backup via Google Cloud has been removed setup backup again via Rclone to reinstate the backup and restore capabilities!"
+	add_upgrade_message "Deprecation notice: Backup via Google Cloud has been removed setup backup again via Rclone to reinstate the backup and restore capabilities!"
 fi
 
 if [ -f /etc/logrotate.d/httpd-prerotate/awstats ]; then
 	echo "[ * ] Update Awstats prerotate to LinkPanel update method..."
-	# Replace awstatst function
+	# Replace awstats function
 	cp -f $LINKPANEL_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
 fi
 

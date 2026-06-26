@@ -20,7 +20,7 @@ is_ip_owner() {
 # Check if ip address is free
 is_ip_free() {
 	if [ -e "$LINKPANEL/data/ips/$ip" ]; then
-		check_result "$E_EXISTS" "$ip is already exists"
+		check_result "$E_EXISTS" "$ip already exists"
 	fi
 }
 

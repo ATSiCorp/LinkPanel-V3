@@ -98,7 +98,7 @@ if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 
 				web_tpl="$domain_tpl"
 				if [ -f "${WEBTPL}/$WEB_SYSTEM/php-fpm/$web_tpl.tpl" ]; then
-					# php-fpm backend folder allready has a template with the same name
+					# php-fpm backend folder already has a template with the same name
 					web_tpl="custom-$domain_tpl"
 				fi
 
